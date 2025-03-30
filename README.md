@@ -33,3 +33,16 @@ View previously sold items
 
 ### Class Descriptions
 
+- **User.java**: 
+
+- **UserInterface.java**: 
+
+- **Item.java**:
+
+- **ItemInterface.java**:
+
+- **Database.java**:
+
+- **DatabaseInterface.java**: 
+
+
