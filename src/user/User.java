@@ -1,9 +1,14 @@
 package src.user;
 
+import src.Marketplace.Item;
+
+import java.util.ArrayList;
+
 public class User implements UserInterface {
     private String username;
     private String password;
     private double balance;
+    private ArrayList<Item> itemsForSale;
 
     public User(String username, String password) {
         this.username = username;
@@ -32,5 +37,13 @@ public class User implements UserInterface {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public ArrayList<Item> getItemsForSale() {
+        return itemsForSale;
+    }
+
+    public void setItemsForSale(ArrayList<Item> items) {
+        this.itemsForSale = items;
     }
 }
