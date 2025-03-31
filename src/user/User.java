@@ -66,4 +66,8 @@ public class User implements UserInterface {
     public void setItemsForSale(ArrayList<Item> items) {
         this.itemsForSale = items;
     }
+
+    public void addItem(Item item) {
+        itemsForSale.add(item);
+    }
 }

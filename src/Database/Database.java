@@ -4,7 +4,7 @@ import src.user.User;
 
 import java.util.Scanner;
 
-public class Database {
+public class Database implements DatabaseInterface{
     private User user;
     private boolean menu;
 
@@ -12,7 +12,7 @@ public class Database {
     Basic implementation of logging in
     TODO: make restrictions for username and password
      */
-    public void introPanel() {
+    public void introMenu() {
         Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("Welcome to the Market Place!");
