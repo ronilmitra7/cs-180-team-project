@@ -46,13 +46,28 @@ public class Database implements DatabaseInterface{
         } while (menu);
     }
 
+    /*
+    TODO: Read through the file, find the user's information, check if it matches
+     */
+
     public static synchronized boolean logIn(User user) {
+        Scanner scanner = new Scanner(System.in);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     public static synchronized boolean signUp(User user) {
         Scanner scanner = new Scanner(System.in);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
+                true))) {
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,15 +86,21 @@ public class Database implements DatabaseInterface{
                 users.add(line);
             }
 
+            boolean found = false;
             for (int i = 0; i < users.size(); i++) {
                 if (user.toString().equals(users.get(i))) {
                     users.remove(i);
                     System.out.println("User deleted");
+                    found = true;
                     break;
                 }
             }
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", false));
+            if (!found) {
+                System.out.println("User not found");
+            }
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt"));
             for (int i = 0; i < users.size(); i++) {
                 writer.write(users.get(i) + "\n");
             }
