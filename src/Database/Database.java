@@ -3,6 +3,7 @@ package src.Database;
 import src.user.User;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface{
@@ -61,8 +62,30 @@ public class Database implements DatabaseInterface{
     }
 
     public static synchronized void deleteUser(User user) {
+        ArrayList<String> users = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                users.add(line);
+            }
+
+            for (int i = 0; i < users.size(); i++) {
+                if (user.toString().equals(users.get(i))) {
+                    users.remove(i);
+                    System.out.println("User deleted");
+                    break;
+                }
+            }
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", false));
+            for (int i = 0; i < users.size(); i++) {
+                writer.write(users.get(i) + "\n");
+            }
+
+            writer.close();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
