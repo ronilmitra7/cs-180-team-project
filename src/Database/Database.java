@@ -2,9 +2,7 @@ package src.Database;
 
 import src.user.User;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface{
@@ -60,5 +58,13 @@ public class Database implements DatabaseInterface{
         }
 
         return false;
+    }
+
+    public static synchronized void deleteUser(User user) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

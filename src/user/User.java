@@ -77,4 +77,8 @@ public class User implements UserInterface {
     public void addItem(Item item) {
         itemsForSale.add(item);
     }
+
+    public String toString() {
+        return String.format("%s,%s,%s,%s", name, email, username, password);
+    }
 }
