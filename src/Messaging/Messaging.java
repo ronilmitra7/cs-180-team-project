@@ -19,7 +19,7 @@ public class Messaging implements MessagingInterface {
         }
 
         if (!db.userExists(recipient)) {
-            System.out.println("User " + recipient + " does not exist. Message failed to send.");
+            System.out.printf("User %s does not exist. Message failed to send.", recipient);
         }
     }
 

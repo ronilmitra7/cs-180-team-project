@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Database implements DatabaseInterface{
+public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
 
@@ -20,26 +20,29 @@ public class Database implements DatabaseInterface{
             System.out.println("Welcome to the Market Place!");
             System.out.println("1. Sign up");
             System.out.println("2. Log in");
+            System.out.println("3. Delete account");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            System.out.println("Enter your full name");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter your email");
+            String email = scanner.nextLine();
+
+            System.out.println("Enter your username");
+            String username = scanner.nextLine();
+
+            System.out.println("Enter your password");
+            String password = scanner.nextLine();
+
             if (choice == 1) {
-                System.out.println("Enter your full name");
-                String name = scanner.nextLine();
-
-                System.out.println("Enter your email");
-                String email = scanner.nextLine();
-
-                System.out.println("Enter your username");
-                String username = scanner.nextLine();
-
-                System.out.println("Enter your password");
-                String password = scanner.nextLine();
-
-                User newUser = new User(name, email, username, password);
+                //log in
             } else if (choice == 2) {
-
+                //sign up
+            } else if (choice == 3) {
+                deleteUser(new User(name, email, username, password));
             } else {
                 System.out.println("Invalid choice! Please try again");
             }
