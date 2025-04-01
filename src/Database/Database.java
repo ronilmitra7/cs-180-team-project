@@ -2,6 +2,9 @@ package src.Database;
 
 import src.user.User;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface{
@@ -42,5 +45,20 @@ public class Database implements DatabaseInterface{
                 System.out.println("Invalid choice! Please try again");
             }
         } while (menu);
+    }
+
+    public static synchronized boolean logIn(User user) {
+
+    }
+
+    public static synchronized boolean signUp(User user) {
+        Scanner scanner = new Scanner(System.in);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", true))) {
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
