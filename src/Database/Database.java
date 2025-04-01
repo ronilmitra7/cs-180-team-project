@@ -111,4 +111,22 @@ public class Database implements DatabaseInterface{
             e.printStackTrace();
         }
     }
+
+    public synchronized boolean userExists(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+            String line;
+            while (reader.readLine() != null) {
+                String[] parts = reader.readLine().split(",");
+                if (parts[2].equals(username)) {
+                    System.out.println("User found");
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("User not found");
+        return false;
+    }
 }
