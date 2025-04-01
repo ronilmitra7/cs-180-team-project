@@ -48,7 +48,7 @@ public class Database implements DatabaseInterface{
     }
 
     public static synchronized boolean logIn(User user) {
-
+        return false;
     }
 
     public static synchronized boolean signUp(User user) {
