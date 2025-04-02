@@ -115,7 +115,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
-    public synchronized boolean userExists(String username) {
+    public static synchronized boolean userExists(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
