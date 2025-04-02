@@ -19,6 +19,11 @@ public class User implements UserInterface {
         this.password = password;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User() {
         this.name = "";
         this.email = "";
