@@ -83,6 +83,10 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
+    public boolean isValid() throws InvalidUserException {
+        return false;
+    }
+
     public String toString() {
         return String.format("%s,%s,%s,%s", name, email, username, password);
     }
