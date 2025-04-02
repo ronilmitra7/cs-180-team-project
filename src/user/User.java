@@ -83,6 +83,18 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
+    public boolean isValid(User user) {
+        if (user.getUsername().length() > 11 || username.contains(" ")) {
+            return false;
+
+        }
+        if (user.getPassword().length() > 11) {
+            return false;
+        }
+
+        return true;
+    }
+
     public String toString() {
         return String.format("%s,%s,%s,%s", name, email, username, password);
     }
