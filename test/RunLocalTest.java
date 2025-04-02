@@ -69,7 +69,7 @@ public class RunLocalTest {
             Assert.assertFalse("Ensure that `Database` is NOT `abstract`!",
                     Modifier.isAbstract(modifiers));
             Assert.assertEquals("Ensure that `Database` extends `Object`!",
-                    JComponent.class, superclass);
+                    Object.class, superclass);
             Assert.assertTrue("Ensure that `Database` implements `DatabaseInterface`!",
                     Arrays.asList(superinterfaces).contains(DatabaseInterface.class));
 
@@ -95,7 +95,7 @@ public class RunLocalTest {
             Assert.assertFalse("Ensure that `Messaging` is NOT `abstract`!",
                     Modifier.isAbstract(modifiers));
             Assert.assertEquals("Ensure that `Messaging` extends `Object`!",
-                    JComponent.class, superclass);
+                    Object.class, superclass);
             Assert.assertTrue("Ensure that `Messaging` implements `MessagingInterface`!",
                     Arrays.asList(superinterfaces).contains(MessagingInterface.class));
 
@@ -121,7 +121,7 @@ public class RunLocalTest {
             Assert.assertFalse("Ensure that `User` is NOT `abstract`!",
                     Modifier.isAbstract(modifiers));
             Assert.assertEquals("Ensure that `User` extends `Object`!",
-                    JComponent.class, superclass);
+                    Object.class, superclass);
             Assert.assertTrue("Ensure that `User` implements `UserInterface`!",
                     Arrays.asList(superinterfaces).contains(UserInterface.class));
 
@@ -147,7 +147,7 @@ public class RunLocalTest {
             Assert.assertFalse("Ensure that `Item` is NOT `abstract`!",
                     Modifier.isAbstract(modifiers));
             Assert.assertEquals("Ensure that `Item` extends `Object`!",
-                    JComponent.class, superclass);
+                    Object.class, superclass);
             Assert.assertTrue("Ensure that `Item` implements `ItemInterface`!",
                     Arrays.asList(superinterfaces).contains(ItemInterface.class));
 
