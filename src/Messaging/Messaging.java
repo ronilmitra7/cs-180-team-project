@@ -7,19 +7,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Messaging implements MessagingInterface {
-    private User sender;
+    private final User sender;
 
     public Messaging(User sender) {
         this.sender = sender;
     }
 
     public void sendMessage(String message, String recipient) {
-        Database db = new Database();
         if (message.isEmpty()) {
             System.out.println("You can't send an empty message");
         }
 
-        if (!db.userExists(recipient)) {
+        if (!Database.userExists(recipient)) {
             System.out.printf("User %s does not exist. Message failed to send.", recipient);
         }
 
