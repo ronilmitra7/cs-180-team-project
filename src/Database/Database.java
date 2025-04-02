@@ -12,7 +12,7 @@ public class Database implements DatabaseInterface {
 
     /*
     Basic implementation of logging in
-    TODO: make restrictions for username and password
+    TODO: make restrictions for username and password in User.java
      */
     public void introMenu() {
         Scanner scanner = new Scanner(System.in);
