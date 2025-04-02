@@ -222,6 +222,9 @@ public class Database implements DatabaseInterface {
 
                     System.out.println("Successfully purchased the item!");
 
+                    user.setBalance(user.getBalance() - item.getPrice());
+
+
                 }
 
                 BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
@@ -260,6 +263,8 @@ public class Database implements DatabaseInterface {
                     bfw.write(item.toString() + "\n");
 
                     System.out.println("Successfully Added the item");
+
+                    user.setBalance(user.getBalance() + item.getPrice());
 
                 } else {
 

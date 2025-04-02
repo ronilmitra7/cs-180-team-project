@@ -56,4 +56,11 @@ public class Item implements ItemInterface {
     public void setForSale(boolean forSale) {
         this.forSale = forSale;
     }
+
+    public String toString() {
+
+        return this.itemID + "," + this.name + "," + this.price + ","  + this.seller.getName() + "," + this.forSale;
+
+    }
+
 }
