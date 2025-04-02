@@ -202,5 +202,17 @@ public class RunLocalTest {
 
             Assert.assertTrue("Ensure you Sign Up users properly!", signUpResult && userExistsInFile);
         }
+
+        @Test
+        public void sendMessageTest() {
+            User user = new User("username", "12345");
+            User user1 = new User("username1", "12345");
+        }
+
+        @Test
+        public void receiveMessageTest() {
+            User user = new User("username", "12345");
+            User user1 = new User("username1", "12345");
+        }
     }
 }
