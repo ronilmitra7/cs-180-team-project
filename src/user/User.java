@@ -83,8 +83,16 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
-    public boolean isValid() throws InvalidUserException {
-        return false;
+    public boolean isValid(User user) {
+        if (user.getUsername().length() > 11 || username.contains(" ")) {
+            return false;
+
+        }
+        if (user.getPassword().length() > 11) {
+            return false;
+        }
+
+        return true;
     }
 
     public String toString() {
