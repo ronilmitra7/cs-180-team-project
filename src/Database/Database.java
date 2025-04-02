@@ -118,8 +118,8 @@ public class Database implements DatabaseInterface {
     public synchronized boolean userExists(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
-            while (reader.readLine() != null) {
-                String[] parts = reader.readLine().split(",");
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
                 if (parts[2].equals(username)) {
                     System.out.println("User found");
                     return true;

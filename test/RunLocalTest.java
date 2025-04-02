@@ -1,7 +1,4 @@
 package test;
-import junit.framework.TestCase;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -24,13 +21,11 @@ import javax.swing.*;
 import java.io.*;
 
 import java.lang.reflect.Modifier;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Arrays;
 
+//TODO: make sure there is an assert for each method except for accessors and mutators
 /**
  * A framework to run public test cases for the group project.
- * Make sure there's an assert for each method
  *
  *
  * Phase 1
@@ -156,6 +151,56 @@ public class RunLocalTest {
             Assert.assertTrue("Ensure that `Item` implements `ItemInterface`!",
                     Arrays.asList(superinterfaces).contains(ItemInterface.class));
 
+        }
+
+        @Test
+        public void loginTest() {
+            User user = new User("username", "12345");
+
+            boolean loginResult = Database.logIn(user);
+            boolean userExistsInFile = false;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    String[] parts = line.split(",");
+                    if (parts[2].equals(user.getUsername()) && parts[3].equals(user.getPassword())) {
+                        userExistsInFile = true;
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Assert.assertTrue("Ensure you log in users correctly!", loginResult && userExistsInFile);
+        }
+
+        @Test
+        public void signUpTest() {
+            User user = new User("username", "12345");
+
+            boolean signUpResult = Database.signUp(user);
+            boolean userExistsInFile = false;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    String[] parts = line.split(",");
+
+                    if (parts[2].equals(user.getUsername()) && parts[3].equals(user.getPassword())) {
+                        userExistsInFile = true;
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Assert.assertTrue("Ensure you Sign Up users properly!", signUpResult && userExistsInFile);
         }
     }
 }
