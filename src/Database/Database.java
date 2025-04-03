@@ -454,6 +454,10 @@ public class Database implements DatabaseInterface {
 
     public synchronized void addItemDatabase(Item item) {
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
+                true))) {
+            writer.write(item.toString());
+
         File itemDatabaseFile = new File("itemDatabase.txt");
 
         try {
@@ -473,7 +477,6 @@ public class Database implements DatabaseInterface {
     }
 
     public synchronized File itemSearch(String searchTerm) {
-        //
         File searchMatches = new File("SearchMatches.txt");
 
         try {
@@ -489,8 +492,8 @@ public class Database implements DatabaseInterface {
             e.printStackTrace();
 
         }
-        try (BufferedReader bfr = new BufferedReader(new FileReader("itemProfileDatabase.txt"))) {
 
+        try (BufferedReader bfr = new BufferedReader(new FileReader("itemDatabase.txt"))) {
             ArrayList<String> file = new ArrayList<String>();
 
             String line = bfr.readLine();
