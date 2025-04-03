@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface MessagingInterface {
     void sendMessage(String message, String recipient);
-    void receiveMessage(String username);
+    String receiveMessage(String username);
 }

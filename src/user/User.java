@@ -19,6 +19,11 @@ public class User implements UserInterface {
         this.password = password;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User() {
         this.name = "";
         this.email = "";
@@ -78,17 +83,15 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
-    public boolean validUsername(String username) {
-        if (this.username.contains(",") || this.username.contains(";")) {
+    public boolean isValid(User user) {
+        if (user.getUsername().length() > 11 || username.contains(" ")) {
             return false;
-        }
-        return true;
-    }
 
-    public boolean validPassword(String password) {
-        if (this.password.contains(",") || this.password.contains(";")) {
+        }
+        if (user.getPassword().length() > 11) {
             return false;
         }
+
         return true;
     }
 
