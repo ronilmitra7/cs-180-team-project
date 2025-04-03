@@ -341,19 +341,15 @@ public class Database implements DatabaseInterface {
         return false;
     }
     public synchronized void addItemDatabase(Item item) {
-        File itemDatabaseFile = new File("itemProfileDatabase.txt");
-        try {
-            if (!itemDatabaseFile.exists()) {
-                itemDatabaseFile.createNewFile();
-            }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
+                true))) {
+            writer.write(item.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        item.itemToString();
     }
 
     public synchronized File itemSearch(String searchTerm) {
-        //
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {
@@ -362,7 +358,7 @@ public class Database implements DatabaseInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try (BufferedReader bfr = new BufferedReader(new FileReader("itemProfileDatabase.txt"))) {
+        try (BufferedReader bfr = new BufferedReader(new FileReader("itemDatabase.txt"))) {
             ArrayList<String> file = new ArrayList<String>();
             String line = bfr.readLine();
             while (line != null) {
