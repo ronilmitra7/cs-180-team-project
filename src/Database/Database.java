@@ -1,5 +1,6 @@
 package src.Database;
 
+import src.Marketplace.Item;
 import src.user.User;
 
 import java.io.*;
@@ -132,4 +133,48 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
+    public synchronized void addItemDatabase(Item item) {
+        File itemDatabaseFile = new File("itemProfileDatabase.txt");
+        try {
+            if (!itemDatabaseFile.exists()) {
+                itemDatabaseFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        item.itemToString();
+    }
+
+    public synchronized File itemSearch(String searchTerm) {
+        //
+        File searchMatches = new File("SearchMatches.txt");
+        try {
+            if (!searchMatches.exists()) {
+                searchMatches.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedReader bfr = new BufferedReader(new FileReader("itemProfileDatabase.txt"))) {
+            ArrayList<String> file = new ArrayList<String>();
+            String line = bfr.readLine();
+            while (line != null) {
+                file.add(line);
+                line = bfr.readLine();
+            }
+            FileOutputStream fos = new FileOutputStream(searchMatches, true);
+            PrintWriter pw = new PrintWriter(fos);
+
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).contains(searchTerm)) {
+                    pw.println(file.get(i));
+                }
+            }
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchMatches;
+    }
+
 }
