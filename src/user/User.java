@@ -83,12 +83,19 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
-    public boolean isValid(User user) {
-        if (user.getUsername().length() > 11 || username.contains(" ")) {
+    public static boolean isValid(User user) {
+        if (user.getUsername().length() > 11) {
+            System.out.println("Username cannot exceed 11 characters.");
             return false;
-
+        } else if (user.getUsername().contains(" ")) {
+            System.out.println("Username cannot contain spaces.");
+            return false;
         }
         if (user.getPassword().length() > 11) {
+            System.out.println("Password cannot exceed 11 characters.");
+            return false;
+        } else if (user.getPassword().contains(" ")) {
+            System.out.println("Password cannot contain spaces.");
             return false;
         }
 
