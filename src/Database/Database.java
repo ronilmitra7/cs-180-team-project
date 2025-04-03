@@ -430,28 +430,21 @@ public class Database implements DatabaseInterface {
 
     }
 
-    public synchronized void addItemDatabase(Item item) {
+    public static synchronized void addItemDatabase(Item item) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
                 true))) {
             writer.write(item.toString());
-
-            File itemDatabaseFile = new File("itemDatabase.txt");
-
-            if (!itemDatabaseFile.exists()) {
-
-                itemDatabaseFile.createNewFile();
-            }
+            item.toString();
         } catch (IOException e) {
 
             e.printStackTrace();
 
         }
-        item.toString();
 
     }
 
-    public synchronized File itemSearch(String searchTerm) {
+    public static synchronized File itemSearch(String searchTerm) {
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {

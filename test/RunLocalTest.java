@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.io.*;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 //TODO: make sure there is an assert for each method except for accessors and mutators
@@ -202,6 +203,57 @@ public class RunLocalTest {
             }
 
             Assert.assertTrue("Ensure you Sign Up users properly!", signUpResult && userExistsInFile);
+        }
+
+        @Test
+        public void addItemDatabaseTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean itemAdded = false;
+            Database.addItemDatabase(item);
+            try (BufferedReader bfr = new BufferedReader(new FileReader("itemDatabase.txt"))) {
+                ArrayList<String> file = new ArrayList<String>();
+                String line = bfr.readLine();
+                while (line != null) {
+                    file.add(line);
+                    line = bfr.readLine();
+                }
+                for (int i = 0; i < file.size(); i++) {
+                    if (file.get(i).contains(item.toString())) {
+                        itemAdded = true;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue("Ensure you add your items into the database properly!", itemAdded);
+        }
+
+        @Test
+        public void itemSearchTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean itemFound = true;
+            Database.addItemDatabase(item);
+            File searchResults = Database.itemSearch("TestItem");
+            try (BufferedReader bfr = new BufferedReader(new FileReader(searchResults))) {
+                ArrayList<String> file = new ArrayList<String>();
+                String line = bfr.readLine();
+                while (line != null) {
+                    file.add(line);
+                    line = bfr.readLine();
+                }
+                for (int i = 0; i < file.size(); i++) {
+                    if (!file.get(i).contains("TestItem")) {
+                        itemFound = false;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue("Ensure you add your items into the database properly!", itemFound);
         }
 
         @Test
