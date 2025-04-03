@@ -7,29 +7,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Item implements ItemInterface {
-
     private String itemID;
-
     private String name;
-
     private double price;
-
     private User seller;
-
     private boolean forSale;
 
     public Item(String itemID, String name, double price, User seller, boolean forSale) {
-
         this.itemID = itemID;
-
         this.name = name;
-
         this.price = price;
-
         this.seller = seller;
-
         this.forSale = forSale;
-
     }
 
     public String getItemID() {
@@ -73,7 +62,14 @@ public class Item implements ItemInterface {
     }
 
     public String toString() {
-        return String.format("%s,%s,%s,%s", itemID, name, seller, price);
+        String itemString = this.name + "," + this.seller + "," + this.price;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemProfileDatabase.txt",
+                true))) {
+            writer.write(itemString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemString;
     }
 
 }
