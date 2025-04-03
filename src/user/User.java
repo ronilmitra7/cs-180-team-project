@@ -78,6 +78,20 @@ public class User implements UserInterface {
         itemsForSale.add(item);
     }
 
+    public boolean validUsername(String username) {
+        if (this.username.contains(",") || this.username.contains(";")) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validPassword(String password) {
+        if (this.password.contains(",") || this.password.contains(";")) {
+            return false;
+        }
+        return true;
+    }
+
     public String toString() {
         return String.format("%s,%s,%s,%s", name, email, username, password);
     }

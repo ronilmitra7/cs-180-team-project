@@ -58,8 +58,24 @@ public class Database implements DatabaseInterface {
 
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
+            boolean found = false;
             while ((line = reader.readLine()) != null) {
-
+                String[] parts = line.split(",");
+                if (user.getUsername().equals(parts[2])) {
+                    found = true;
+                    if (user.getPassword().equals(parts[3])) {
+                        System.out.println("Successfully logged in!");
+                        return true;
+                    } else {
+                        System.out.println("Incorrect password!");
+                        return false;
+                    }
+                } else {
+                    continue;
+                }
+            }
+            if (!found) {
+                System.out.println("Username not found!");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,11 +85,33 @@ public class Database implements DatabaseInterface {
 
     public static synchronized boolean signUp(User user) {
         Scanner scanner = new Scanner(System.in);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
-                true))) {
 
+        try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+            String line;
+            boolean found = false;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (user.getUsername().equals(parts[2])) {
+                    found = true;
+                    System.out.println("Username is already in use!");
+                } else {
+                    continue;
+                }
+            }
+            if (!found) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
+                        true))) {
+                    writer.write(user.toString());
+                    writer.newLine();
+                    System.out.println("Account successfully created!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return false;
