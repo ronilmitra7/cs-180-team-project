@@ -1,5 +1,6 @@
 package src.Database;
 
+import src.Marketplace.Item;
 import src.user.User;
 
 import src.Marketplace.Item;
@@ -63,8 +64,24 @@ public class Database implements DatabaseInterface {
 
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
+            boolean found = false;
             while ((line = reader.readLine()) != null) {
-
+                String[] parts = line.split(",");
+                if (user.getUsername().equals(parts[2])) {
+                    found = true;
+                    if (user.getPassword().equals(parts[3])) {
+                        System.out.println("Successfully logged in!");
+                        return true;
+                    } else {
+                        System.out.println("Incorrect password!");
+                        return false;
+                    }
+                } else {
+                    continue;
+                }
+            }
+            if (!found) {
+                System.out.println("Username not found!");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,11 +91,33 @@ public class Database implements DatabaseInterface {
 
     public static synchronized boolean signUp(User user) {
         Scanner scanner = new Scanner(System.in);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
-                true))) {
 
+        try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+            String line;
+            boolean found = false;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (user.getUsername().equals(parts[2])) {
+                    found = true;
+                    System.out.println("Username is already in use!");
+                } else {
+                    continue;
+                }
+            }
+            if (!found) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
+                        true))) {
+                    writer.write(user.toString());
+                    writer.newLine();
+                    System.out.println("Account successfully created!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return false;
@@ -301,4 +340,48 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
+    public synchronized void addItemDatabase(Item item) {
+        File itemDatabaseFile = new File("itemProfileDatabase.txt");
+        try {
+            if (!itemDatabaseFile.exists()) {
+                itemDatabaseFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        item.itemToString();
+    }
+
+    public synchronized File itemSearch(String searchTerm) {
+        //
+        File searchMatches = new File("SearchMatches.txt");
+        try {
+            if (!searchMatches.exists()) {
+                searchMatches.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedReader bfr = new BufferedReader(new FileReader("itemProfileDatabase.txt"))) {
+            ArrayList<String> file = new ArrayList<String>();
+            String line = bfr.readLine();
+            while (line != null) {
+                file.add(line);
+                line = bfr.readLine();
+            }
+            FileOutputStream fos = new FileOutputStream(searchMatches, true);
+            PrintWriter pw = new PrintWriter(fos);
+
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).contains(searchTerm)) {
+                    pw.println(file.get(i));
+                }
+            }
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchMatches;
+    }
+
 }
