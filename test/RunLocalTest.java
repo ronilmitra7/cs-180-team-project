@@ -215,5 +215,6 @@ public class RunLocalTest {
             User user = new User("username", "12345");
             User user1 = new User("username1", "12345");
         }
+
     }
 }
