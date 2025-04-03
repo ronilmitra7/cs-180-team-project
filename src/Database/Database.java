@@ -3,11 +3,16 @@ package src.Database;
 import src.Marketplace.Item;
 import src.user.User;
 
+import src.Marketplace.Item;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface {
+
+    public static final Object gateKeeper = new Object();
+
     private User user;
     private boolean menu;
 
@@ -153,6 +158,170 @@ public class Database implements DatabaseInterface {
             e.printStackTrace();
         }
     }
+
+    public boolean ifExists(Item item) {
+
+        String fileSource = "itemProfileDatabase.txt";
+
+        synchronized (gateKeeper) {
+
+            try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
+
+                ArrayList<String> databaseInformation = new ArrayList<>();
+
+                while (true) {
+
+                    String content = bfr.readLine();
+
+                    if (content == null) {
+
+                        break;
+
+                    }
+
+                    databaseInformation.add(content);
+
+                }
+
+                for(String i : databaseInformation) {
+
+                    if (item.toString().equals(i)) {
+
+                        return true;
+
+                    }
+
+                }
+
+            } catch (IOException ioe) {
+
+                ioe.printStackTrace();
+
+            }
+
+            return false;
+
+        }
+
+    }
+
+    public void buyItem(Item item) {
+
+        String fileSource = "itemProfileDatabase.txt";
+
+        synchronized (gateKeeper) {
+
+            try {
+
+                BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
+
+                ArrayList<String> databaseInformation = new ArrayList<>();
+
+                ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
+
+                boolean flag = false;
+
+                while (true) {
+
+                    String content = bfr.readLine();
+
+                    if (content == null) {
+
+                        break;
+
+                    }
+
+                    databaseInformation.add(content);
+
+                }
+
+                for (String i : databaseInformation) {
+
+                    if (item.toString().equals(i)) {
+
+                        flag = true;
+
+                        continue;
+
+                    } else {
+
+                        refreshedDatabaseInformation.add(i);
+
+                    }
+
+                }
+
+                if (flag == false) {
+
+                    System.out.println("Unable to purchase this since the Item you entered does not exist");
+
+                } else {
+
+                    //User behavior to be implemented
+
+                    System.out.println("Successfully purchased the item!");
+
+                    user.setBalance(user.getBalance() - item.getPrice());
+
+
+                }
+
+                BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
+
+                for (String i : refreshedDatabaseInformation) {
+
+                    bfw.write(i + "\n");
+
+                }
+
+                bfr.close();
+
+                bfw.close();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+
+    }
+
+    public void sellItem(Item item) {
+
+        String fileSource = "itemProfileDatabase.txt";
+
+        synchronized (gateKeeper) {
+
+            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
+
+                if (this.ifExists(item) != true) {
+
+                    //User behavior to be implemented
+
+                    bfw.write(item.toString() + "\n");
+
+                    System.out.println("Successfully Added the item");
+
+                    user.setBalance(user.getBalance() + item.getPrice());
+
+                } else {
+
+                    System.out.println("The item already existed ");
+
+                }
+
+            } catch (IOException ioe) {
+
+                ioe.printStackTrace();
+
+            }
+
+        }
+
+    }
+
+
 
     public static synchronized boolean userExists(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {

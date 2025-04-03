@@ -61,7 +61,7 @@ public class Item implements ItemInterface {
         this.forSale = forSale;
     }
 
-    public String itemToString() {
+    public String toString() {
         String itemString = this.name + "," + this.seller + "," + this.price;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemProfileDatabase.txt",
                 true))) {
@@ -71,4 +71,5 @@ public class Item implements ItemInterface {
         }
         return itemString;
     }
+
 }
