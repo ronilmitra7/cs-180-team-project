@@ -2,6 +2,10 @@ package src.Marketplace;
 
 import src.user.User;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Item implements ItemInterface {
     private String itemID;
     private String name;
@@ -55,5 +59,16 @@ public class Item implements ItemInterface {
 
     public void setForSale(boolean forSale) {
         this.forSale = forSale;
+    }
+
+    public String itemToString() {
+        String itemString = this.name + "," + this.seller + "," + this.price;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemProfileDatabase.txt",
+                true))) {
+            writer.write(itemString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemString;
     }
 }
