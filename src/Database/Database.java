@@ -3,23 +3,14 @@ package src.Database;
 import src.Marketplace.Item;
 import src.user.User;
 
-import src.Marketplace.Item;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface {
-
-    public static final Object gateKeeper = new Object();
-
     private User user;
     private boolean menu;
 
-    /*
-    Basic implementation of logging in
-    TODO: make restrictions for username and password in User.java
-     */
     public void introMenu() {
         Scanner scanner = new Scanner(System.in);
         do {
@@ -159,168 +150,155 @@ public class Database implements DatabaseInterface {
         }
     }
 
-    public boolean ifExists(Item item) {
+    public synchronized boolean itemExists(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
 
-        synchronized (gateKeeper) {
 
-            try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
+        try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
 
-                ArrayList<String> databaseInformation = new ArrayList<>();
+            ArrayList<String> databaseInformation = new ArrayList<>();
 
-                while (true) {
+            while (true) {
 
-                    String content = bfr.readLine();
+                String content = bfr.readLine();
 
-                    if (content == null) {
+                if (content == null) {
 
-                        break;
-
-                    }
-
-                    databaseInformation.add(content);
+                    break;
 
                 }
 
-                for(String i : databaseInformation) {
-
-                    if (item.toString().equals(i)) {
-
-                        return true;
-
-                    }
-
-                }
-
-            } catch (IOException ioe) {
-
-                ioe.printStackTrace();
+                databaseInformation.add(content);
 
             }
 
-            return false;
+            for (String i : databaseInformation) {
+
+                if (item.toString().equals(i)) {
+
+                    return true;
+
+                }
+
+            }
+
+        } catch (IOException ioe) {
+
+            ioe.printStackTrace();
 
         }
 
+        return false;
+
     }
 
-    public void buyItem(Item item) {
+    public synchronized void buyItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
+        try {
 
-        synchronized (gateKeeper) {
+            BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
 
-            try {
+            ArrayList<String> databaseInformation = new ArrayList<>();
 
-                BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
+            ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
 
-                ArrayList<String> databaseInformation = new ArrayList<>();
+            boolean flag = false;
 
-                ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
+            while (true) {
 
-                boolean flag = false;
+                String content = bfr.readLine();
 
-                while (true) {
+                if (content == null) {
 
-                    String content = bfr.readLine();
-
-                    if (content == null) {
-
-                        break;
-
-                    }
-
-                    databaseInformation.add(content);
+                    break;
 
                 }
 
-                for (String i : databaseInformation) {
+                databaseInformation.add(content);
 
-                    if (item.toString().equals(i)) {
+            }
 
-                        flag = true;
+            for (String i : databaseInformation) {
 
-                        continue;
+                if (item.toString().equals(i)) {
 
-                    } else {
+                    flag = true;
 
-                        refreshedDatabaseInformation.add(i);
-
-                    }
-
-                }
-
-                if (flag == false) {
-
-                    System.out.println("Unable to purchase this since the Item you entered does not exist");
+                    continue;
 
                 } else {
 
-                    //User behavior to be implemented
-
-                    System.out.println("Successfully purchased the item!");
-
-                    user.setBalance(user.getBalance() - item.getPrice());
-
+                    refreshedDatabaseInformation.add(i);
 
                 }
-
-                BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
-
-                for (String i : refreshedDatabaseInformation) {
-
-                    bfw.write(i + "\n");
-
-                }
-
-                bfr.close();
-
-                bfw.close();
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
 
             }
+
+            if (!flag) {
+
+                System.out.println("Unable to purchase this since the Item you entered does not exist");
+
+            } else {
+
+                //User behavior to be implemented
+
+                System.out.println("Successfully purchased the item!");
+
+                user.setBalance(user.getBalance() - item.getPrice());
+
+
+            }
+
+            BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
+
+            for (String i : refreshedDatabaseInformation) {
+
+                bfw.write(i + "\n");
+
+            }
+
+            bfr.close();
+
+            bfw.close();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
         }
 
     }
 
-    public void sellItem(Item item) {
+    public synchronized void sellItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
 
-        synchronized (gateKeeper) {
+        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource), true))) {
 
-            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
+            if (this.itemExists(item) != true) {
 
-                if (this.ifExists(item) != true) {
+                //User behavior to be implemented
 
-                    //User behavior to be implemented
+                bfw.write(item.toString() + "\n");
 
-                    bfw.write(item.toString() + "\n");
+                System.out.println("Successfully Added the item");
 
-                    System.out.println("Successfully Added the item");
+                user.setBalance(user.getBalance() + item.getPrice());
 
-                    user.setBalance(user.getBalance() + item.getPrice());
+            } else {
 
-                } else {
-
-                    System.out.println("The item already existed ");
-
-                }
-
-            } catch (IOException ioe) {
-
-                ioe.printStackTrace();
+                System.out.println("The item already existed ");
 
             }
 
+        } catch (IOException ioe) {
+
+            ioe.printStackTrace();
+
         }
-
     }
-
 
 
     public static synchronized boolean userExists(String username) {
@@ -340,6 +318,7 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
+
     public synchronized void addItemDatabase(Item item) {
         File itemDatabaseFile = new File("itemProfileDatabase.txt");
         try {
@@ -349,11 +328,10 @@ public class Database implements DatabaseInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        item.itemToString();
+        item.toString();
     }
 
     public synchronized File itemSearch(String searchTerm) {
-        //
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {

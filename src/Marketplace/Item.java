@@ -62,14 +62,7 @@ public class Item implements ItemInterface {
     }
 
     public String toString() {
-        String itemString = this.name + "," + this.seller + "," + this.price;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemProfileDatabase.txt",
-                true))) {
-            writer.write(itemString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return itemString;
+        return String.format("%s,%s,%s,%s", itemID, name, seller, price);
     }
 
 }
