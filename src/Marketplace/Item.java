@@ -73,7 +73,10 @@ public class Item implements ItemInterface {
     }
 
     public String toString() {
-        return String.format("%s,%s,%s,%s", itemID, name, seller, price);
+
+        String itemString = this.itemID + "," + this.name + "," + this.seller + "," + this.price;
+
+        return itemString;
     }
 
 }
