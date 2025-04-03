@@ -436,75 +436,48 @@ public class Database implements DatabaseInterface {
                 true))) {
             writer.write(item.toString());
 
-        File itemDatabaseFile = new File("itemDatabase.txt");
-
-        try {
+            File itemDatabaseFile = new File("itemDatabase.txt");
 
             if (!itemDatabaseFile.exists()) {
 
                 itemDatabaseFile.createNewFile();
             }
-
         } catch (IOException e) {
 
             e.printStackTrace();
 
         }
         item.toString();
+
     }
 
     public synchronized File itemSearch(String searchTerm) {
         File searchMatches = new File("SearchMatches.txt");
-
         try {
-
             if (!searchMatches.exists()) {
-
                 searchMatches.createNewFile();
-
             }
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
-
         try (BufferedReader bfr = new BufferedReader(new FileReader("itemDatabase.txt"))) {
             ArrayList<String> file = new ArrayList<String>();
-
             String line = bfr.readLine();
-
             while (line != null) {
-
                 file.add(line);
-
                 line = bfr.readLine();
-
             }
-
             FileOutputStream fos = new FileOutputStream(searchMatches, true);
-
             PrintWriter pw = new PrintWriter(fos);
-
             for (int i = 0; i < file.size(); i++) {
-
                 if (file.get(i).contains(searchTerm)) {
-
                     pw.println(file.get(i));
                 }
             }
-
             pw.close();
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
-
         return searchMatches;
-
     }
-
 }
