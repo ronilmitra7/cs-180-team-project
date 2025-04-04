@@ -4,7 +4,7 @@ import Marketplace.Item;
 
 import java.util.ArrayList;
 
-public class User implements user.UserInterface {
+public class User implements UserInterface {
     private String username;
     private String email;
     private String name;

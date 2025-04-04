@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Database implements src.Database.DatabaseInterface {
+public class Database implements DatabaseInterface {
 
     public static final Object gateKeeper = new Object();
 
