@@ -328,5 +328,82 @@ public class RunLocalTest {
             User recipient = new User("recipient", "12345");
 
         }
+
+        @Test
+        public void addItemDatabaseTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean itemAdded = false;
+            Database.addItemDatabase(item);
+
+
+            try (BufferedReader bfr = new BufferedReader(new FileReader("itemDatabase.txt"))) {
+                ArrayList<String> file = new ArrayList();
+
+
+                for(String line = bfr.readLine(); line != null; line = bfr.readLine()) {
+                    file.add(line);
+                }
+
+
+                for(int i = 0; i < file.size(); ++i) {
+                    if (((String)file.get(i)).contains(item.toString())) {
+                        itemAdded = true;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Assert.assertTrue("Ensure you add your items into the database properly!", itemAdded);
+        }
+
+
+        @Test
+        public void itemSearchTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean itemFound = true;
+            Database.addItemDatabase(item);
+            File searchResults = Database.itemSearch("TestItem");
+
+
+            try (BufferedReader bfr = new BufferedReader(new FileReader(searchResults))) {
+                ArrayList<String> file = new ArrayList();
+
+
+                for(String line = bfr.readLine(); line != null; line = bfr.readLine()) {
+                    file.add(line);
+                }
+
+
+                for(int i = 0; i < file.size(); ++i) {
+                    if (!((String)file.get(i)).contains("TestItem")) {
+                        itemFound = false;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Assert.assertTrue("Ensure you add your items into the database properly!", itemFound);
+        }
+
+
+        @Test
+        public void itemToStringTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean test = false;
+            if (item.toString().equals(String.format("%s,%s,%s,%s", 123, "TestItem", user, 12.34))) {
+                test = true;
+            }
+            Assert.assertTrue("Ensure your toString method returns the correct result", test);
+        }
     }
 }
