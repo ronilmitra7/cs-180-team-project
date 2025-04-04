@@ -241,21 +241,63 @@ public class RunLocalTest {
                 pw.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Assert.fail("An IOException occurred");
             }
 
             Assert.assertTrue("Ensure userExists returns the correct value!", userExistsResults);
         }
 
         @Test
+        public void deleteUserTest() {
+            //TODO
+        }
+
+        @Test
         public void sendMessageTest() {
-            User user = new User("username", "12345");
-            User user1 = new User("username1", "12345");
+            User sender = new User("sender", "12345");
+            User recipient = new User("recipient", "12345");
+            Messaging messaging = new Messaging(sender);
+            ArrayList<String> contents = new ArrayList<>();
+            boolean found = false;
+
+            messaging.sendMessage("Test", recipient.getUsername());
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                reader.close();
+
+                String[] parts = contents.get(contents.size() - 1).split(",");
+                if (parts[0].equals("Test") && parts[1].equals(recipient.getUsername())
+                        && parts[2].equals(sender.getUsername())) {
+                    found = true;
+                }
+                if (!contents.isEmpty()) {
+                    contents.remove(contents.size() - 1);
+                }
+
+                PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt"));
+                for (String content : contents) {
+                    writer.println(content);
+                }
+
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertTrue("Ensure the message is written to the file!", found);
         }
 
         @Test
         public void receiveMessageTest() {
-            User user = new User("username", "12345");
-            User user1 = new User("username1", "12345");
+            User sender = new User("sender", "12345");
+            User recipient = new User("recipient", "12345");
+
         }
     }
 }
