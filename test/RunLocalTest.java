@@ -258,9 +258,36 @@ public class RunLocalTest {
             User recipient = new User("recipient", "12345");
             Messaging messaging = new Messaging(sender);
             ArrayList<String> contents = new ArrayList<>();
+            ArrayList<String> users = new ArrayList<>();
             boolean found = false;
 
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", true))) {
+               writer.write(recipient.toString());
+               writer.newLine();
+               writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
             messaging.sendMessage("Test", recipient.getUsername());
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    users.add(line);
+                }
+
+                PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true));
+                for (String user : users) {
+                    writer.println(user);
+                }
+
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
 
             try (BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
                 String line;
