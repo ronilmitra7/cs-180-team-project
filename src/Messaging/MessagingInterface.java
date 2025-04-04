@@ -1,6 +1,6 @@
-package src.Messaging;
+package Messaging;
 
-import src.user.User;
+import user.User;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
-package src.Database;
+package Database;
 
-import src.user.User;
+import user.User;
 
 public interface DatabaseInterface {
     void introMenu();
