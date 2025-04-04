@@ -6,7 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Item implements Marketplace.ItemInterface {
+public class Item implements ItemInterface {
     private String itemID;
     private String name;
     private double price;
@@ -62,7 +62,7 @@ public class Item implements Marketplace.ItemInterface {
     }
 
     public String toString() {
-        return itemString;
+        return String.format("%s,%s,%s,%s", itemID, name, price, seller);
     }
 
 }
