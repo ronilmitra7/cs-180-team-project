@@ -1,12 +1,12 @@
-package src.Messaging;
+package Messaging;
 
-import src.Database.Database;
-import src.user.User;
+import Database.Database;
+import user.User;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class Messaging implements MessagingInterface {
+public class Messaging implements src.Messaging.MessagingInterface {
     private final User sender;
 
     public Messaging(User sender) {

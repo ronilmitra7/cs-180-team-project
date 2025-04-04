@@ -1,10 +1,10 @@
-package src.user;
+package user;
 
-import src.Marketplace.Item;
+import Marketplace.Item;
 
 import java.util.ArrayList;
 
-public class User implements UserInterface {
+public class User implements user.UserInterface {
     private String username;
     private String email;
     private String name;

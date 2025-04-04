@@ -1,6 +1,6 @@
-package src.Marketplace;
+package Marketplace;
 
-import src.user.User;
+import user.User;
 
 public interface ItemInterface {
     String getItemID();
