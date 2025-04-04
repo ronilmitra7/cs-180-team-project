@@ -255,6 +255,17 @@ public class RunLocalTest {
             }
             Assert.assertTrue("Ensure you add your items into the database properly!", itemFound);
         }
+        @Test
+        public void itemToStringTest() {
+            User user = new User("name", "email", "username", "password");
+            boolean forSale = false;
+            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            boolean test = false;
+            if (item.toString().equals(String.format("%s,%s,%s,%s", 123, "TestItem", user, 12.34))) {
+                test = true;
+            }
+            Assert.assertTrue("Ensure your toString method returns the correct result", test);
+        }
 
         @Test
         public void sendMessageTest() {
