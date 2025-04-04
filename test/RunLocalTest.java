@@ -16,7 +16,7 @@ import user.User;
 import user.UserInterface;
 import Database.Database;
 
-//I fixed everything. lol
+//I fixed everything.
 
 import javax.swing.*;
 import java.io.*;
