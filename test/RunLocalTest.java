@@ -278,7 +278,9 @@ public class RunLocalTest {
                     users.add(line);
                 }
 
-                PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true));
+                users.remove(users.size() - 1);
+
+                PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt"));
                 for (String user : users) {
                     writer.println(user);
                 }
