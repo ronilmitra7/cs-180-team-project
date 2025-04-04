@@ -264,7 +264,6 @@ public class RunLocalTest {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt", true))) {
                writer.write(recipient.toString());
                writer.newLine();
-               writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 Assert.fail("An IOException occurred");
