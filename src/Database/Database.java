@@ -329,6 +329,7 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
+
     public synchronized void addItem(Item item) {
         File itemDatabaseFile = new File("itemProfileDatabase.txt");
         try {

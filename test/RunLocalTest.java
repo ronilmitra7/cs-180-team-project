@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.io.*;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 //TODO: make sure there is an assert for each method except for accessors and mutators
@@ -202,6 +203,47 @@ public class RunLocalTest {
             }
 
             Assert.assertTrue("Ensure you Sign Up users properly!", signUpResult && userExistsInFile);
+        }
+
+        @Test
+        public void userExistsTest() {
+            User user = new User("username", "12345");
+            Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
+            boolean userExistsResults = false;
+
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
+                        true));
+
+                writer.write(user.toString());
+                writer.close();
+
+                userExistsResults = database.userExists(user.getUsername());
+
+                BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                reader.close();
+
+                if (!contents.isEmpty()) {
+                    contents.remove(contents.size() - 1);
+                }
+                PrintWriter pw = new PrintWriter(new FileWriter("userProfileDatabase.txt"));
+                for (String content : contents) {
+                    pw.println(content);
+                }
+
+                pw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Assert.assertTrue("Ensure userExists returns the correct value!", userExistsResults);
         }
 
         @Test
