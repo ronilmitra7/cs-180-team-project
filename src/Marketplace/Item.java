@@ -52,6 +52,6 @@ public class Item implements ItemInterface {
     }
 
     public String toString() {
-        return String.format("%s,%s,%s,%s", itemID, name, price, seller);
+        return String.format("%s,%s,%s,%s", itemID, name, price, seller.getUsername());
     }
 }
