@@ -401,31 +401,4 @@ public class Database implements DatabaseInterface {
         }
         return searchMatches;
     }
-
-    public static synchronized void addItemDatabase(Item item) {
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
-                true))) {
-            writer.write(item.toString());
-
-            File itemDatabaseFile = new File("itemDatabase.txt");
-
-            try {
-
-                if (!itemDatabaseFile.exists()) {
-
-                    itemDatabaseFile.createNewFile();
-                }
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-
-            }
-
-            item.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
