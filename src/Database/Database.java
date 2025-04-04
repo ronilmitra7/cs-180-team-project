@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//I fixed this too
+
 public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
@@ -369,7 +371,7 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public synchronized File itemSearch(String searchTerm) {
+    public static synchronized File itemSearch(String searchTerm) {
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {
@@ -400,4 +402,30 @@ public class Database implements DatabaseInterface {
         return searchMatches;
     }
 
+    public static synchronized void addItemDatabase(Item item) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
+                true))) {
+            writer.write(item.toString());
+
+            File itemDatabaseFile = new File("itemDatabase.txt");
+
+            try {
+
+                if (!itemDatabaseFile.exists()) {
+
+                    itemDatabaseFile.createNewFile();
+                }
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+
+            item.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
