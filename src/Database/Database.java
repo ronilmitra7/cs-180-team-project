@@ -1,9 +1,7 @@
 package Database;
 
-import src.Marketplace.Item;
-import src.user.User;
-
-import src.Marketplace.Item;
+import Marketplace.Item;
+import user.User;
 
 import java.io.*;
 import java.util.ArrayList;

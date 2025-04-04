@@ -8,11 +8,11 @@ import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 import src.Database.DatabaseInterface;
-import src.Marketplace.Item;
+import Marketplace.Item;
 import src.Marketplace.ItemInterface;
-import src.Messaging.Messaging;
+import Messaging.Messaging;
 import src.Messaging.MessagingInterface;
-import src.user.User;
+import user.User;
 import src.user.UserInterface;
 import Database.Database;
 

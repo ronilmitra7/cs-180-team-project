@@ -1,6 +1,6 @@
-package src.user;
+package user;
 
-import src.Marketplace.Item;
+import Marketplace.Item;
 
 import java.util.ArrayList;
 
