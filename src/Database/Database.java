@@ -172,10 +172,8 @@ public class Database implements DatabaseInterface {
                     e.printStackTrace();
                 }
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return false;
@@ -219,44 +217,20 @@ public class Database implements DatabaseInterface {
     }
 
     public synchronized boolean itemExists(Item item) {
-
-        String fileSource = "itemProfileDatabase.txt";
-        try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
-
-                ArrayList<String> databaseInformation = new ArrayList<>();
-
-                while (true) {
-
-                    String content = bfr.readLine();
-
-                    if (content == null) {
-
-                        break;
-
-                    }
-
-                    databaseInformation.add(content);
-
+        try (BufferedReader reader = new BufferedReader(new FileReader("itemDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(item.toString())) {
+                    System.out.println("Item found");
+                    return true;
                 }
-
-                for(String i : databaseInformation) {
-
-                    if (item.toString().equals(i)) {
-
-                        return true;
-
-                    }
-
-                }
-
-            } catch (IOException ioe) {
-
-                ioe.printStackTrace();
-
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            return false;
-
+        System.out.println("Item not found");
+        return false;
     }
 
     public synchronized void buyItem(Item item) {
@@ -385,18 +359,6 @@ public class Database implements DatabaseInterface {
 
         System.out.println("User not found");
         return false;
-    }
-
-    public synchronized void addItem(Item item) {
-        File itemDatabaseFile = new File("itemProfileDatabase.txt");
-        try {
-            if (!itemDatabaseFile.exists()) {
-                itemDatabaseFile.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public synchronized File itemSearch(String searchTerm) {
