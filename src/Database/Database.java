@@ -161,7 +161,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
-    public synchronized boolean ifExists(Item item) {
+    public synchronized boolean itemExists(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
         try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
@@ -287,7 +287,7 @@ public class Database implements DatabaseInterface {
 
         try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
 
-                if (!this.ifExists(item)) {
+                if (!this.itemExists(item)) {
 
                     //User behavior to be implemented
 
@@ -329,6 +329,7 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
+
     public synchronized void addItem(Item item) {
         File itemDatabaseFile = new File("itemProfileDatabase.txt");
         try {
