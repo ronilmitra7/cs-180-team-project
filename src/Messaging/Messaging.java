@@ -18,18 +18,17 @@ public class Messaging implements MessagingInterface {
 
         if (message.isEmpty()) {
             System.out.println("You can't send an empty message");
-        }
-
-        if (!database.userExists(recipient)) {
+        } else if (!database.userExists(recipient)) {
             System.out.printf("User %s does not exist. Message failed to send.", recipient);
-        }
+        } else {
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt", true))) {
-            writer.printf("%s,%s,%s", message, recipient, sender.getUsername());
-            System.out.printf("Message sent to %s%n", recipient);
+            try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt", true))) {
+                writer.printf("%s,%s,%s", message, recipient, sender.getUsername());
+                System.out.printf("Message sent to %s%n", recipient);
 
-        } catch (IOException e) {
-            System.out.println("Failed to send message");
+            } catch (IOException e) {
+                System.out.println("Failed to send message");
+            }
         }
     }
 
