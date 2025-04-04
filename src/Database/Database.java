@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//I fixed this too
+
 public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
