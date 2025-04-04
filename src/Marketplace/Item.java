@@ -11,14 +11,12 @@ public class Item implements ItemInterface {
     private String name;
     private double price;
     private User seller;
-    private boolean forSale;
 
-    public Item(String itemID, String name, double price, User seller, boolean forSale) {
+    public Item(String itemID, String name, double price, User seller) {
         this.itemID = itemID;
         this.name = name;
         this.price = price;
         this.seller = seller;
-        this.forSale = forSale;
     }
 
     public String getItemID() {
@@ -53,16 +51,7 @@ public class Item implements ItemInterface {
         this.seller = seller;
     }
 
-    public boolean isForSale() {
-        return forSale;
-    }
-
-    public void setForSale(boolean forSale) {
-        this.forSale = forSale;
-    }
-
     public String toString() {
         return String.format("%s,%s,%s,%s", itemID, name, price, seller);
     }
-
 }
