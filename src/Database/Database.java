@@ -10,12 +10,7 @@ import java.util.Scanner;
 public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
-    private boolean loggedIn;
 
-    /*
-    Basic implementation of logging in
-    TODO: make restrictions for username and password in User.java
-     */
     public void introMenu() {
         Scanner scanner = new Scanner(System.in);
         do {
@@ -27,6 +22,7 @@ public class Database implements DatabaseInterface {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            boolean loggedIn;
             if (choice == 1) {
                 System.out.println("Enter your full name");
                 String name = scanner.nextLine();
@@ -105,10 +101,6 @@ public class Database implements DatabaseInterface {
             }
         } while (menu);
     }
-
-    /*
-    TODO: Read through the file, find the user's information, check if it matches
-     */
 
     public synchronized boolean logIn(User user) {
         Scanner scanner = new Scanner(System.in);
@@ -216,12 +208,12 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public synchronized boolean itemExists(Item item) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("itemDatabase.txt"))) {
+    public synchronized boolean itemForSale(Item item) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals(item.toString())) {
-                    System.out.println("Item found");
+                    System.out.println("Item is for sale");
                     return true;
                 }
             }
@@ -229,7 +221,24 @@ public class Database implements DatabaseInterface {
             e.printStackTrace();
         }
 
-        System.out.println("Item not found");
+        System.out.println("Item is not listed");
+        return false;
+    }
+
+    public synchronized boolean itemSold(Item item) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(item.toString())) {
+                    System.out.println("Item was sold");
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Item was not sold");
         return false;
     }
 
@@ -312,13 +321,13 @@ public class Database implements DatabaseInterface {
 
     }
 
-    public synchronized void sellItem(Item item) {
+    public synchronized void listItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
 
         try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
 
-                if (!this.itemExists(item)) {
+                if (!this.itemForSale(item)) {
 
                     //User behavior to be implemented
 

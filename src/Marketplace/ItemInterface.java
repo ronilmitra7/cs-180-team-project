@@ -14,8 +14,4 @@ public interface ItemInterface {
 
     User getSeller();
     void setSeller(User seller);
-
-    boolean isForSale();
-    void setForSale(boolean forSale);
-
 }
