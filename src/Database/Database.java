@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database implements DatabaseInterface {
-
-    public static final Object gateKeeper = new Object();
-
     private User user;
     private boolean menu;
 
@@ -57,7 +54,7 @@ public class Database implements DatabaseInterface {
     TODO: Read through the file, find the user's information, check if it matches
      */
 
-    public static synchronized boolean logIn(User user) {
+    public synchronized boolean logIn(User user) {
         Scanner scanner = new Scanner(System.in);
 
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
@@ -87,7 +84,7 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public static synchronized boolean signUp(User user) {
+    public synchronized boolean signUp(User user) {
         Scanner scanner = new Scanner(System.in);
 
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
@@ -128,7 +125,7 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public static synchronized void deleteUser(User user) {
+    public synchronized void deleteUser(User user) {
         ArrayList<String> users = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"));
@@ -164,13 +161,10 @@ public class Database implements DatabaseInterface {
         }
     }
 
-    public boolean ifExists(Item item) {
+    public synchronized boolean ifExists(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
-
-        synchronized (gateKeeper) {
-
-            try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
+        try (BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)))) {
 
                 ArrayList<String> databaseInformation = new ArrayList<>();
 
@@ -206,17 +200,13 @@ public class Database implements DatabaseInterface {
 
             return false;
 
-        }
-
     }
 
-    public void buyItem(Item item) {
+    public synchronized void buyItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
 
-        synchronized (gateKeeper) {
-
-            try {
+        try {
 
                 BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
 
@@ -256,7 +246,7 @@ public class Database implements DatabaseInterface {
 
                 }
 
-                if (flag == false) {
+                if (!flag) {
 
                     System.out.println("Unable to purchase this since the Item you entered does not exist");
 
@@ -288,19 +278,16 @@ public class Database implements DatabaseInterface {
                 e.printStackTrace();
 
             }
-        }
 
     }
 
-    public void sellItem(Item item) {
+    public synchronized void sellItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
 
-        synchronized (gateKeeper) {
+        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
 
-            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
-
-                if (this.ifExists(item) != true) {
+                if (!this.ifExists(item)) {
 
                     //User behavior to be implemented
 
@@ -321,14 +308,11 @@ public class Database implements DatabaseInterface {
                 ioe.printStackTrace();
 
             }
-
-        }
-
     }
 
 
 
-    public static synchronized boolean userExists(String username) {
+    public synchronized boolean userExists(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -345,7 +329,7 @@ public class Database implements DatabaseInterface {
         System.out.println("User not found");
         return false;
     }
-    public synchronized void addItemDatabase(Item item) {
+    public synchronized void addItem(Item item) {
         File itemDatabaseFile = new File("itemProfileDatabase.txt");
         try {
             if (!itemDatabaseFile.exists()) {
@@ -358,7 +342,6 @@ public class Database implements DatabaseInterface {
     }
 
     public synchronized File itemSearch(String searchTerm) {
-        //
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {
