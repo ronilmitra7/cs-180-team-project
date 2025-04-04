@@ -1,5 +1,3 @@
-package test;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +7,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
-import src.Database.Database;
 import src.Database.DatabaseInterface;
 import src.Marketplace.Item;
 import src.Marketplace.ItemInterface;
@@ -17,6 +14,7 @@ import src.Messaging.Messaging;
 import src.Messaging.MessagingInterface;
 import src.user.User;
 import src.user.UserInterface;
+import Database.Database;
 
 import javax.swing.*;
 import java.io.*;

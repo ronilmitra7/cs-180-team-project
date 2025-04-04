@@ -1,4 +1,4 @@
-package src.Database;
+package Database;
 
 import src.Marketplace.Item;
 import src.user.User;
@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Database implements DatabaseInterface {
+public class Database implements src.Database.DatabaseInterface {
 
     public static final Object gateKeeper = new Object();
 
