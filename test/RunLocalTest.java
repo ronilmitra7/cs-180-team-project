@@ -7,13 +7,13 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
-import src.Database.DatabaseInterface;
+import Database.DatabaseInterface;
 import Marketplace.Item;
-import src.Marketplace.ItemInterface;
+import Marketplace.ItemInterface;
 import Messaging.Messaging;
-import src.Messaging.MessagingInterface;
+import Messaging.MessagingInterface;
 import user.User;
-import src.user.UserInterface;
+import user.UserInterface;
 import Database.Database;
 
 import javax.swing.*;

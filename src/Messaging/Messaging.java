@@ -6,7 +6,7 @@ import user.User;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Messaging implements src.Messaging.MessagingInterface {
+public class Messaging implements MessagingInterface {
     private final User sender;
 
     public Messaging(User sender) {
