@@ -248,76 +248,76 @@ public class Database implements DatabaseInterface {
 
         try {
 
-                BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
+            BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
 
-                ArrayList<String> databaseInformation = new ArrayList<>();
+            ArrayList<String> databaseInformation = new ArrayList<>();
 
-                ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
+            ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
 
-                boolean flag = false;
+            boolean flag = false;
 
-                while (true) {
+            while (true) {
 
-                    String content = bfr.readLine();
+                String content = bfr.readLine();
 
-                    if (content == null) {
+                if (content == null) {
 
-                        break;
-
-                    }
-
-                    databaseInformation.add(content);
+                    break;
 
                 }
 
-                for (String i : databaseInformation) {
+                databaseInformation.add(content);
 
-                    if (item.toString().equals(i)) {
+            }
 
-                        flag = true;
+            for (String i : databaseInformation) {
 
-                        continue;
+                if (item.toString().equals(i)) {
 
-                    } else {
+                    flag = true;
 
-                        refreshedDatabaseInformation.add(i);
-
-                    }
-
-                }
-
-                if (!flag) {
-
-                    System.out.println("Unable to purchase this since the Item you entered does not exist");
+                    continue;
 
                 } else {
 
-                    //User behavior to be implemented
-
-                    System.out.println("Successfully purchased the item!");
-
-                    user.setBalance(user.getBalance() - item.getPrice());
-
+                    refreshedDatabaseInformation.add(i);
 
                 }
-
-                BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
-
-                for (String i : refreshedDatabaseInformation) {
-
-                    bfw.write(i + "\n");
-
-                }
-
-                bfr.close();
-
-                bfw.close();
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
 
             }
+
+            if (!flag) {
+
+                System.out.println("Unable to purchase this since the Item you entered does not exist");
+
+            } else {
+
+                //User behavior to be implemented
+
+                System.out.println("Successfully purchased the item!");
+
+                user.setBalance(user.getBalance() - item.getPrice());
+
+
+            }
+
+            BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
+
+            for (String i : refreshedDatabaseInformation) {
+
+                bfw.write(i + "\n");
+
+            }
+
+            bfr.close();
+
+            bfw.close();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 
@@ -325,31 +325,30 @@ public class Database implements DatabaseInterface {
 
         String fileSource = "itemProfileDatabase.txt";
 
-        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource),true))) {
+        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource), true))) {
 
-                if (!this.itemForSale(item)) {
+            if (!this.itemForSale(item)) {
 
-                    //User behavior to be implemented
+                //User behavior to be implemented
 
-                    bfw.write(item.toString() + "\n");
+                bfw.write(item.toString() + "\n");
 
-                    System.out.println("Successfully Added the item");
+                System.out.println("Successfully Added the item");
 
-                    user.setBalance(user.getBalance() + item.getPrice());
+                user.setBalance(user.getBalance() + item.getPrice());
 
-                } else {
+            } else {
 
-                    System.out.println("The item already existed ");
-
-                }
-
-            } catch (IOException ioe) {
-
-                ioe.printStackTrace();
+                System.out.println("The item already existed ");
 
             }
-    }
 
+        } catch (IOException ioe) {
+
+            ioe.printStackTrace();
+
+        }
+    }
 
 
     public synchronized boolean userExists(String username) {
@@ -370,7 +369,7 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public synchronized File itemSearch(String searchTerm) {
+    public static synchronized File itemSearch(String searchTerm) {
         File searchMatches = new File("SearchMatches.txt");
         try {
             if (!searchMatches.exists()) {
@@ -401,4 +400,30 @@ public class Database implements DatabaseInterface {
         return searchMatches;
     }
 
+    public static synchronized void addItemDatabase(Item item) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemDatabase.txt",
+                true))) {
+            writer.write(item.toString());
+
+            File itemDatabaseFile = new File("itemDatabase.txt");
+
+            try {
+
+                if (!itemDatabaseFile.exists()) {
+
+                    itemDatabaseFile.createNewFile();
+                }
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+
+            item.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
