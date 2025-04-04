@@ -333,7 +333,7 @@ public class RunLocalTest {
         public void addItemDatabaseTest() {
             User user = new User("name", "email", "username", "password");
             boolean forSale = false;
-            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            Item item = new Item("123", "TestItem", 12.34, user);
             boolean itemAdded = false;
             Database.addItemDatabase(item);
 
@@ -365,7 +365,7 @@ public class RunLocalTest {
         public void itemSearchTest() {
             User user = new User("name", "email", "username", "password");
             boolean forSale = false;
-            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            Item item = new Item("123", "TestItem", 12.34, user);
             boolean itemFound = true;
             Database.addItemDatabase(item);
             File searchResults = Database.itemSearch("TestItem");
@@ -398,7 +398,7 @@ public class RunLocalTest {
         public void itemToStringTest() {
             User user = new User("name", "email", "username", "password");
             boolean forSale = false;
-            Item item = new Item("123", "TestItem", 12.34, user, forSale);
+            Item item = new Item("123", "TestItem", 12.34, user);
             boolean test = false;
             if (item.toString().equals(String.format("%s,%s,%s,%s", 123, "TestItem", user, 12.34))) {
                 test = true;
