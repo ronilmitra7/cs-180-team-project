@@ -62,13 +62,6 @@ public class Item implements Marketplace.ItemInterface {
     }
 
     public String toString() {
-        String itemString = this.name + "," + this.seller + "," + this.price;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("itemProfileDatabase.txt",
-                true))) {
-            writer.write(itemString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return itemString;
     }
 
