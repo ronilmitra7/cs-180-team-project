@@ -23,7 +23,7 @@ public class Messaging implements MessagingInterface {
         } else {
 
             try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt", true))) {
-                writer.printf("%s,%s,%s", message, recipient, sender.getUsername());
+                writer.printf("%s,%s,%s%n", message, recipient, sender.getUsername());
                 System.out.printf("Message sent to %s%n", recipient);
 
             } catch (IOException e) {
