@@ -155,8 +155,9 @@ public class RunLocalTest {
         @Test
         public void loginTest() {
             User user = new User("username", "12345");
+            Database database = new Database();
 
-            boolean loginResult = Database.logIn(user);
+            boolean loginResult = database.logIn(user);
             boolean userExistsInFile = false;
 
             try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
@@ -180,8 +181,9 @@ public class RunLocalTest {
         @Test
         public void signUpTest() {
             User user = new User("username", "12345");
+            Database database = new Database();
 
-            boolean signUpResult = Database.signUp(user);
+            boolean signUpResult = database.signUp(user);
             boolean userExistsInFile = false;
 
             try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {

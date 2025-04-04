@@ -14,11 +14,13 @@ public class Messaging implements MessagingInterface {
     }
 
     public void sendMessage(String message, String recipient) {
+        Database database = new Database();
+
         if (message.isEmpty()) {
             System.out.println("You can't send an empty message");
         }
 
-        if (!Database.userExists(recipient)) {
+        if (!database.userExists(recipient)) {
             System.out.printf("User %s does not exist. Message failed to send.", recipient);
         }
 
