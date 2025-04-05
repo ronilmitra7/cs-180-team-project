@@ -22,21 +22,20 @@ public class Marketplace implements MarketplaceInterface {
             System.out.println("That item is not for sale");
         } else {
             try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
-            PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+                PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     contents.add(line);
                     if (item.toString().equals(line)) {
                         String[] parts = line.split(",");
                         double price = Double.parseDouble(parts[2]);
-                        String sellerUsername = parts[3];
+                        User seller = item.getSeller();
 
                         if (user.getBalance() < price) {
                             System.out.println("You do not have enough money to buy this item");
                         } else {
                             user.setBalance(user.getBalance() - price);
                             contents.remove(contents.size() - 1);
-                            User seller = database.searchUser(sellerUsername);
                             seller.setBalance(seller.getBalance() + price);
 
                             PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
