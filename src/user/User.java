@@ -9,8 +9,7 @@ public class User implements UserInterface {
     private String email;
     private String name;
     private String password;
-    private double balance;
-    private ArrayList<Item> itemsForSale;
+    private double balance = 500;
 
     public User(String name, String email, String username, String password) {
         this.name = name;

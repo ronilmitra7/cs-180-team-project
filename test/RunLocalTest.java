@@ -415,7 +415,87 @@ public class RunLocalTest {
 
         @Test
         public void buyItemTest() {
+            User buyer = new User("buyer", "12345");
+            User seller = new User("seller", "12345");
+            Marketplace marketplace = new Marketplace(buyer);
+            Item item = new Item("Item-1", "name", 10.0, seller);
+            ArrayList<String> items = new ArrayList<>();
+            ArrayList<String> users = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true));
+                BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    users.add(line);
+                }
+
+                writer.println(seller.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt", true));
+                BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    items.add(line);
+                }
+                writer.println("Item-1,name,10.00,seller");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            marketplace.buyItem(item);
+
+            boolean foundInListedItems = false;
+            boolean foundInSoldItems = false;
+
+            try (BufferedReader listedItemReader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
+                BufferedReader soldItemReader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
+                String line;
+                while ((line = listedItemReader.readLine()) != null) {
+                    if (line.equals(item.toString())) {
+                        foundInListedItems = true;
+                    }
+                }
+
+                while ((line = soldItemReader.readLine()) != null) {
+                    if (line.equals(item.toString())) {
+                        foundInSoldItems = true;
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt"))) {
+                for (String line : items) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt"))) {
+                for (String user : users) {
+                    writer.println(user);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertFalse("Ensure that the item is not listed after being bought", foundInListedItems);
+            Assert.assertTrue("Ensure that the item is bought", foundInSoldItems);
+            Assert.assertEquals("Ensure that the buyer's balance is updated correctly",
+                    490, buyer.getBalance(), 0.001);
+            Assert.assertEquals("Ensure that the seller's balance is updated correctly",
+                    510, seller.getBalance(), 0.001);
         }
 
         @Test
