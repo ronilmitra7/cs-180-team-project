@@ -6,7 +6,6 @@ import user.User;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Database implements DatabaseInterface {
     private User user;
@@ -278,34 +277,33 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
-    public static synchronized File itemSearch(String searchTerm) {
-        File searchMatches = new File("SearchMatches.txt");
-        try {
-            if (!searchMatches.exists()) {
-                searchMatches.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (BufferedReader bfr = new BufferedReader(new FileReader("itemProfileDatabase.txt"))) {
-            ArrayList<String> file = new ArrayList<String>();
-            String line = bfr.readLine();
-            while (line != null) {
-                file.add(line);
-                line = bfr.readLine();
-            }
-            FileOutputStream fos = new FileOutputStream(searchMatches, true);
-            PrintWriter pw = new PrintWriter(fos);
-
-            for (int i = 0; i < file.size(); i++) {
-                if (file.get(i).contains(searchTerm)) {
-                    pw.println(file.get(i));
+    public static synchronized ArrayList<String> listedItemSearch(String searchTerm) {
+        ArrayList<String> matches = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("listedItemDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(searchTerm)) {
+                    matches.add(line);
                 }
             }
-            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return searchMatches;
+        return matches;
+    }
+
+    public static synchronized ArrayList<String> soldItemSearch(String searchTerm) {
+        ArrayList<String> matches = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("soldItemDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(searchTerm)) {
+                    matches.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return matches;
     }
 }
