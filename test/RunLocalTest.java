@@ -279,7 +279,7 @@ public class RunLocalTest {
         public void deleteUserTest() {
             User user = new User("username", "12345");
             Database database = new Database();
-            boolean deleteUserResult = false;
+            boolean deleteUserResult;
             boolean found = false;
 
             try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true))) {
@@ -376,11 +376,40 @@ public class RunLocalTest {
 
             Assert.assertTrue("Ensure the message is written to the file!", found);
         }
-        //TODO- below
+
         @Test
         public void receiveMessageTest() {
             User sender = new User("sender", "12345");
             User recipient = new User("recipient", "12345");
+            Messaging messaging = new Messaging(recipient);
+            ArrayList<String> contents = new ArrayList<>();
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt", true));
+                BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                writer.printf("%s,%s,%s%n", "Test", recipient.getUsername(), sender.getUsername());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            String message = messaging.receiveMessage(sender.getUsername());
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertEquals("Ensure the correct message is received",
+                    "From sender: Test", message);
 
         }
 

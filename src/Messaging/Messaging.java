@@ -38,7 +38,7 @@ public class Messaging implements MessagingInterface {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[2].equals(username)) {
-                    return String.format("From %s: %s%n", username, parts[0]);
+                    return String.format("From %s: %s", username, parts[0]);
                 }
             }
         } catch (IOException e) {
