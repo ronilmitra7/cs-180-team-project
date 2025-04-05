@@ -6,6 +6,7 @@ import user.User;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Database implements DatabaseInterface {
     private User user;
@@ -212,7 +213,8 @@ public class Database implements DatabaseInterface {
         try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.equals(item.toString())) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(item.getItemID())) {
                     System.out.println("Item is for sale");
                     return true;
                 }
@@ -229,7 +231,8 @@ public class Database implements DatabaseInterface {
         try (BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.equals(item.toString())) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(item.getItemID())) {
                     System.out.println("Item was sold");
                     return true;
                 }
@@ -241,36 +244,6 @@ public class Database implements DatabaseInterface {
         System.out.println("Item was not sold");
         return false;
     }
-
-    public synchronized void listItem(Item item) {
-
-        String fileSource = "itemProfileDatabase.txt";
-
-        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource), true))) {
-
-            if (!this.itemForSale(item)) {
-
-                //User behavior to be implemented
-
-                bfw.write(item.toString() + "\n");
-
-                System.out.println("Successfully Added the item");
-
-                user.setBalance(user.getBalance() + item.getPrice());
-
-            } else {
-
-                System.out.println("The item already existed ");
-
-            }
-
-        } catch (IOException ioe) {
-
-            ioe.printStackTrace();
-
-        }
-    }
-
 
     public synchronized boolean userExists(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
