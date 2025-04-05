@@ -277,7 +277,35 @@ public class RunLocalTest {
 
         @Test
         public void deleteUserTest() {
-            //TODO
+            User user = new User("username", "12345");
+            Database database = new Database();
+            boolean deleteUserResult = false;
+            boolean found = false;
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true))) {
+                writer.println(user.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            deleteUserResult = database.deleteUser(user);
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.equals(user.toString())) {
+                        found = true;
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertTrue("Ensure users are deleted from the file properly!",
+                    deleteUserResult && !found);
         }
 
         @Test
