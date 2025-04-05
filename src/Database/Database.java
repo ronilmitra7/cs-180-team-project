@@ -186,9 +186,11 @@ public class Database implements DatabaseInterface {
                 if (user.toString().equals(users.get(i))) {
                     users.remove(i);
                     System.out.println("User deleted");
-                    return true;
+                    found = true;
                 }
             }
+
+            reader.close();
 
             if (!found) {
                 System.out.println("User not found");
@@ -201,7 +203,7 @@ public class Database implements DatabaseInterface {
             }
 
             writer.close();
-            reader.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
