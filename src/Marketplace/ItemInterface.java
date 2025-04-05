@@ -4,7 +4,6 @@ import user.User;
 
 public interface ItemInterface {
     String getItemID();
-    void setItemID(String itemID);
 
     String getName();
     void setName(String name);
@@ -13,5 +12,6 @@ public interface ItemInterface {
     void setPrice(double price);
 
     User getSeller();
-    void setSeller(User seller);
+
+    String toString();
 }
