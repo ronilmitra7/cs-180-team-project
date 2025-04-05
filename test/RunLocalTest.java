@@ -10,6 +10,8 @@ import org.junit.runner.notification.Failure;
 import Database.DatabaseInterface;
 import Marketplace.Item;
 import Marketplace.ItemInterface;
+import Marketplace.Marketplace;
+import Marketplace.MarketplaceInterface;
 import Messaging.Messaging;
 import Messaging.MessagingInterface;
 import user.User;
@@ -150,6 +152,32 @@ public class RunLocalTest {
                     Object.class, superclass);
             Assert.assertTrue("Ensure that `Item` implements `ItemInterface`!",
                     Arrays.asList(superinterfaces).contains(ItemInterface.class));
+
+        }
+
+        @Test
+        public void MarketplaceClassDeclarationTest() {
+            Class<?> clazz;
+            int modifiers;
+            Class<?> superclass;
+            Class<?>[] superinterfaces;
+
+            clazz = Marketplace.class;
+
+            modifiers = clazz.getModifiers();
+
+            superclass = clazz.getSuperclass();
+
+            superinterfaces = clazz.getInterfaces();
+
+            Assert.assertTrue("Ensure that `Marketplace` is `public`!",
+                    Modifier.isPublic(modifiers));
+            Assert.assertFalse("Ensure that `Marketplace` is NOT `abstract`!",
+                    Modifier.isAbstract(modifiers));
+            Assert.assertEquals("Ensure that `Marketplace` extends `Object`!",
+                    Object.class, superclass);
+            Assert.assertTrue("Ensure that `Marketplace` implements `MarketplaceInterface`!",
+                    Arrays.asList(superinterfaces).contains(MarketplaceInterface.class));
 
         }
 
@@ -320,11 +348,76 @@ public class RunLocalTest {
 
             Assert.assertTrue("Ensure the message is written to the file!", found);
         }
-
+        //TODO- below
         @Test
         public void receiveMessageTest() {
             User sender = new User("sender", "12345");
             User recipient = new User("recipient", "12345");
+
+        }
+
+        @Test
+        public void buyItemTest() {
+
+        }
+
+        @Test
+        public void listItemTest() {
+
+        }
+
+        @Test
+        public void itemForSaleTest() {
+
+        }
+
+        @Test
+        public void itemSoldTest() {
+
+        }
+
+        @Test
+        public void searchUserTest() {
+
+        }
+
+        @Test
+        public void listedItemSearchTest() {
+
+        }
+
+        @Test
+        public void soldItemSearchTest() {
+
+        }
+
+        @Test
+        public void getItemIDTest() {
+
+        }
+
+        @Test
+        public void getItemNameTest() {
+
+        }
+
+        @Test
+        public void setItemNameTest() {
+
+        }
+
+        @Test
+        public void getPriceTest() {
+
+        }
+
+        @Test
+        public void setPriceTest() {
+
+        }
+
+        @Test
+        public void getSellerTest() {
 
         }
 
@@ -338,6 +431,66 @@ public class RunLocalTest {
                 test = true;
             }
             Assert.assertTrue("Ensure your toString method returns the correct result", test);
+        }
+
+        @Test
+        public void getUserNameTest() {
+
+        }
+
+        @Test
+        public void setUserNameTest() {
+
+        }
+
+        @Test
+        public void getEmailTest() {
+
+        }
+
+        @Test
+        public void setEmailTest() {
+
+        }
+
+        @Test
+        public void getUsernameTest() {
+
+        }
+
+        @Test
+        public void setUsernameTest() {
+
+        }
+
+        @Test
+        public void getPasswordTest() {
+
+        }
+
+        @Test
+        public void setPasswordTest() {
+
+        }
+
+        @Test
+        public void getBalanceTest() {
+
+        }
+
+        @Test
+        public void setBalanceTest() {
+
+        }
+
+        @Test
+        public void isValidTest() {
+
+        }
+
+        @Test
+        public void userToStringTest() {
+
         }
     }
 }

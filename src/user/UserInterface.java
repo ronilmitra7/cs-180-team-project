@@ -19,7 +19,4 @@ public interface UserInterface {
 
     double getBalance();
     void setBalance(double balance);
-
-    ArrayList<Item> getItemsForSale();
-    void addItem(Item item);
 }

@@ -7,10 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Item implements ItemInterface {
-    private String itemID;
+    private final String itemID;
     private String name;
     private double price;
-    private User seller;
+    private final User seller;
 
     public Item(String itemID, String name, double price, User seller) {
         this.itemID = itemID;
@@ -21,10 +21,6 @@ public class Item implements ItemInterface {
 
     public String getItemID() {
         return itemID;
-    }
-
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
     }
 
     public String getName() {
@@ -45,10 +41,6 @@ public class Item implements ItemInterface {
 
     public User getSeller() {
         return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
     }
 
     public String toString() {

@@ -71,18 +71,6 @@ public class User implements UserInterface {
         this.balance = balance;
     }
 
-    public ArrayList<Item> getItemsForSale() {
-        return itemsForSale;
-    }
-
-    public void setItemsForSale(ArrayList<Item> items) {
-        this.itemsForSale = items;
-    }
-
-    public void addItem(Item item) {
-        itemsForSale.add(item);
-    }
-
     public static boolean isValid(User user) {
         if (user.getUsername().length() > 11) {
             System.out.println("Username cannot exceed 11 characters.");
