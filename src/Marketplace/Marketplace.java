@@ -5,6 +5,7 @@ import Database.Database;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Marketplace implements MarketplaceInterface {
     private final User user;
@@ -55,7 +56,22 @@ public class Marketplace implements MarketplaceInterface {
         }
     }
 
-    public void listItem(Item item) {
+    public void listItem(String name, double price) {
+        String itemID = UUID.randomUUID().toString();
+        Item item = new Item(itemID, name, price, user);
+        Database database = new Database();
 
+        if (database.itemForSale(item)) {
+            System.out.println("Item is already for sale");
+        } else if (database.itemSold(item)) {
+            System.out.println("Item was already sold");
+        } else {
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt", true))) {
+                writer.println(item.toString());
+                System.out.println("Item has been listed");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
