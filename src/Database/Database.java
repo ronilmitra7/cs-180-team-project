@@ -7,8 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//I fixed this too
-
 public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
@@ -244,85 +242,6 @@ public class Database implements DatabaseInterface {
         return false;
     }
 
-    public synchronized void buyItem(Item item) {
-
-        String fileSource = "itemProfileDatabase.txt";
-
-        try {
-
-            BufferedReader bfr = new BufferedReader(new FileReader(new File(fileSource)));
-
-            ArrayList<String> databaseInformation = new ArrayList<>();
-
-            ArrayList<String> refreshedDatabaseInformation = new ArrayList<>();
-
-            boolean flag = false;
-
-            while (true) {
-
-                String content = bfr.readLine();
-
-                if (content == null) {
-
-                    break;
-
-                }
-
-                databaseInformation.add(content);
-
-            }
-
-            for (String i : databaseInformation) {
-
-                if (item.toString().equals(i)) {
-
-                    flag = true;
-
-                    continue;
-
-                } else {
-
-                    refreshedDatabaseInformation.add(i);
-
-                }
-
-            }
-
-            if (!flag) {
-
-                System.out.println("Unable to purchase this since the Item you entered does not exist");
-
-            } else {
-
-                //User behavior to be implemented
-
-                System.out.println("Successfully purchased the item!");
-
-                user.setBalance(user.getBalance() - item.getPrice());
-
-
-            }
-
-            BufferedWriter bfw = new BufferedWriter(new FileWriter(new File(fileSource)));
-
-            for (String i : refreshedDatabaseInformation) {
-
-                bfw.write(i + "\n");
-
-            }
-
-            bfr.close();
-
-            bfw.close();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-
-    }
-
     public synchronized void listItem(Item item) {
 
         String fileSource = "itemProfileDatabase.txt";
@@ -369,6 +288,21 @@ public class Database implements DatabaseInterface {
 
         System.out.println("User not found");
         return false;
+    }
+
+    public synchronized User searchUser(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[2].equals(username)) {
+                    return new User(parts[0], parts[1], parts[2], parts[3]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static synchronized File itemSearch(String searchTerm) {

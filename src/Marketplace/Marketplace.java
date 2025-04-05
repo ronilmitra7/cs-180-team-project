@@ -28,7 +28,7 @@ public class Marketplace implements MarketplaceInterface {
                     if (item.toString().equals(line)) {
                         String[] parts = line.split(",");
                         int price = Integer.parseInt(parts[2]);
-                        String seller = parts[3];
+                        String sellerUsername = parts[3];
 
                         if (user.getBalance() < price) {
                             System.out.println("You do not have enough money to buy this item");
@@ -36,6 +36,16 @@ public class Marketplace implements MarketplaceInterface {
                             writer.println(item.toString());
                             user.setBalance(user.getBalance() - price);
                             contents.remove(contents.size() - 1);
+                            User seller = database.searchUser(sellerUsername);
+                            seller.setBalance(seller.getBalance() + price);
+
+                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase"));
+                            for (String content : contents) {
+                                pw.println(content);
+                            }
+                            pw.close();
+
+                            writer.println(item.toString());
                         }
                     }
                 }
