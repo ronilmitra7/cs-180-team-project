@@ -6,6 +6,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Creates class Item that implements ItemInterface
+ * Contains all the getters and setters for each
+ *
+ * Phase 1
+ * @version April 6, 2025
+ */
+
 public class Item implements ItemInterface {
     private final String itemID;
     private String name;

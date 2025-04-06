@@ -7,6 +7,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Creates class Marketplace that implements MarketplaceInterface
+ * Contains methods for buying items and listing items for sale
+ *
+ * Phase 1
+ * @version April 6, 2025
+ */
+
 public class Marketplace implements MarketplaceInterface {
     private final User user;
 
