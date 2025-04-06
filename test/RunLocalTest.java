@@ -776,7 +776,10 @@ public class RunLocalTest {
 
         @Test
         public void setItemNameTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            item.setName("Name");
+            Assert.assertEquals("Ensure setName() sets the field correctly!", "Name", item.getName());
         }
 
         @Test
@@ -789,7 +792,11 @@ public class RunLocalTest {
 
         @Test
         public void setPriceTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            item.setPrice(20.0);
+            Assert.assertEquals("Ensure setPrice() sets the field variable correctly!",
+                    20.0, item.getPrice(), 0.001);
         }
 
         @Test
@@ -811,62 +818,94 @@ public class RunLocalTest {
 
         @Test
         public void getUserNameTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure getName() returns the correct result!", "name", user.getName());
         }
 
         @Test
         public void setUserNameTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            user.setName("TestName");
+            Assert.assertEquals("Ensure setName() sets the field variable correctly!",
+                    "TestName", user.getName());
         }
 
         @Test
         public void getEmailTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure getEmail() returns the correct result!", "email", user.getEmail());
         }
 
         @Test
         public void setEmailTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            user.setEmail("TestEmail");
+            Assert.assertEquals("Ensure setEmail() sets the field variable correctly!",
+                    "TestEmail", user.getEmail());
         }
 
         @Test
         public void getUsernameTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure getUsername() returns the correct result!", "username", user.getUsername());
         }
 
         @Test
         public void setUsernameTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            user.setUsername("TestUsername");
+            Assert.assertEquals("Ensure setUsername() sets the field variable correctly!",
+                    "TestUsername", user.getUsername());
         }
 
         @Test
         public void getPasswordTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure getPassword() returns the correct result!", "12345", user.getPassword());
         }
 
         @Test
         public void setPasswordTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            user.setPassword("TestPassword");
+            Assert.assertEquals("Ensure setPassword() sets the field variable correctly!",
+                    "TestPassword", user.getPassword());
         }
 
         @Test
         public void getBalanceTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure getBalance() returns the correct result!",
+                    500.0, user.getBalance(), 0.001);
         }
 
         @Test
         public void setBalanceTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            user.setBalance(100.0);
+            Assert.assertEquals("Ensure setBalance() sets the balance correctly!", 100.0, user.getBalance(), 0.001);
         }
 
         @Test
         public void isValidTest() {
+            User user = new User("username", "12345");
+            User user1 = new User("user name", "12345");
+            User user2 = new User("abcdefghijkl", "12345");
+            User user3 = new User("username", "1234567891011");
+            User user4 = new User("username", "12 345");
 
+            Assert.assertTrue("Ensure isValid() returns the correct result!", User.isValid(user));
+            Assert.assertFalse("Ensure isValid() returns the correct result!", User.isValid(user1));
+            Assert.assertFalse("Ensure isValid() returns the correct result!", User.isValid(user2));
+            Assert.assertFalse("Ensure isValid() returns the correct result!", User.isValid(user3));
+            Assert.assertFalse("Ensure isValid() returns the correct result!", User.isValid(user4));
         }
 
         @Test
         public void userToStringTest() {
-
+            User user = new User("name", "email", "username", "12345");
+            Assert.assertEquals("Ensure toString() returns the correct value!",
+                    "name,email,username,12345", user.toString());
         }
     }
 }
