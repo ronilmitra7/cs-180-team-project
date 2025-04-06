@@ -662,12 +662,100 @@ public class RunLocalTest {
 
         @Test
         public void listedItemSearchTest() {
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item1", 10.0, user);
+            Item item2 = new Item("Item-2", "Item2", 10.0, user);
+            Item item3 = new Item("Item-3", "Item3", 10.0, user);
+            Item testItem = new Item("test", "test", 10.0, user);
+            ArrayList<String> contents = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt", true));
+                BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                writer.println(item.toString());
+                writer.println(item2.toString());
+                writer.println(item3.toString());
+                writer.println(testItem.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            ArrayList<String> searchResults = Database.listedItemSearch("Item");
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            boolean correctResult = searchResults.contains(item.toString()) && searchResults.contains(item2.toString())
+                    && searchResults.contains(item3.toString());
+            boolean incorrectResult = searchResults.contains(testItem.toString());
+
+
+            Assert.assertEquals("Ensure listedItemSearch() returns the correct number of matching items!",
+                    3, searchResults.size());
+            Assert.assertTrue("Ensure listedItemSearch() returns the correct all the matching items!",
+                    correctResult);
+            Assert.assertFalse("Ensure listedItemSearch() returns the correct all the matching items!",
+                    incorrectResult);
         }
 
         @Test
         public void soldItemSearchTest() {
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item1", 10.0, user);
+            Item item2 = new Item("Item-2", "Item2", 10.0, user);
+            Item item3 = new Item("Item-3", "Item3", 10.0, user);
+            Item testItem = new Item("test", "test", 10.0, user);
+            ArrayList<String> contents = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true));
+                 BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                writer.println(item.toString());
+                writer.println(item2.toString());
+                writer.println(item3.toString());
+                writer.println(testItem.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            ArrayList<String> searchResults = Database.soldItemSearch("Item");
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            boolean correctResult = searchResults.contains(item.toString()) && searchResults.contains(item2.toString())
+                    && searchResults.contains(item3.toString());
+            boolean incorrectResult = searchResults.contains(testItem.toString());
+
+
+            Assert.assertEquals("Ensure soldItemSearch() returns the correct number of matching items!",
+                    3, searchResults.size());
+            Assert.assertTrue("Ensure soldItemSearch() returns the correct all the matching items!",
+                    correctResult);
+            Assert.assertFalse("Ensure soldItemSearch() returns the correct all the matching items!",
+                    incorrectResult);
         }
 
         @Test

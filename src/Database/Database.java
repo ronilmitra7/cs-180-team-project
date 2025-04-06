@@ -284,7 +284,7 @@ public class Database implements DatabaseInterface {
         try (BufferedReader reader = new BufferedReader(new FileReader("listedItemDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains(searchTerm)) {
+                if (line.toLowerCase().contains(searchTerm.toLowerCase())) {
                     matches.add(line);
                 }
             }
@@ -299,7 +299,7 @@ public class Database implements DatabaseInterface {
         try (BufferedReader reader = new BufferedReader(new FileReader("soldItemDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains(searchTerm)) {
+                if (line.toLowerCase().contains(searchTerm.toLowerCase())) {
                     matches.add(line);
                 }
             }
