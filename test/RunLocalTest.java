@@ -500,7 +500,43 @@ public class RunLocalTest {
 
         @Test
         public void listItemTest() {
+            User user = new User("username", "12345");
+            Marketplace marketplace = new Marketplace(user);
+            ArrayList<String> contents = new ArrayList<>();
+            boolean found = false;
 
+            marketplace.listItem("Item", 10.0);
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                    String[] parts = line.split(",");
+                    String itemName = parts[1];
+                    double price = Double.parseDouble(parts[2]);
+                    String username = parts[3];
+                    if (itemName.equals("Item") && price == 10.0 && username.equals("username")) {
+                        found = true;
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            contents.remove(contents.size() - 1);
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertTrue("Ensure the item is listed correctly", found);
         }
 
         @Test
