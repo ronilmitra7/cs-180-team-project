@@ -13,15 +13,16 @@ import java.util.Scanner;
  * Contains methods for logging in, signing up, and other methods that store and access data
  *
  * Phase 1
+ * @author Ronil Mitra, Himashree Routhu
  * @version April 6, 2025
  */
 
 public class Database implements DatabaseInterface {
-    private User user;
     private boolean menu;
 
     public void introMenu() {
         Scanner scanner = new Scanner(System.in);
+        User user;
         do {
             System.out.println("Welcome to the Market Place!");
             System.out.println("1. Sign up");

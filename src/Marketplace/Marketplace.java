@@ -12,6 +12,7 @@ import java.util.UUID;
  * Contains methods for buying items and listing items for sale
  *
  * Phase 1
+ * @author Ronil Mitra
  * @version April 6, 2025
  */
 

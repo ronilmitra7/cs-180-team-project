@@ -11,6 +11,7 @@ import java.io.IOException;
  * Contains all the getters and setters for each
  *
  * Phase 1
+ * @author Ronil Mitra
  * @version April 6, 2025
  */
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Contains a method to check is a user is valid
  *
  * Phase 1
+ * @author Ronil Mitra
  * @version April 6, 2025
  */
 

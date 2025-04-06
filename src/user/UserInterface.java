@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Implemented by the User class
  *
  * Phase 1
+ * @author Ronil Mitra
  * @version April 6, 2025
  */
 
