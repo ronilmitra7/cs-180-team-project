@@ -113,15 +113,11 @@ public class Database implements DatabaseInterface {
     }
 
     public synchronized boolean logIn(User user) {
-        Scanner scanner = new Scanner(System.in);
-
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
-            boolean found = false;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (user.getUsername().equals(parts[2])) {
-                    found = true;
                     if (user.getPassword().equals(parts[3])) {
                         System.out.println("Successfully logged in!");
                         return true;
@@ -129,13 +125,9 @@ public class Database implements DatabaseInterface {
                         System.out.println("Incorrect password!");
                         return false;
                     }
-                } else {
-                    continue;
                 }
             }
-            if (!found) {
-                System.out.println("Username not found!");
-            }
+            System.out.println("Username not found!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,8 +135,6 @@ public class Database implements DatabaseInterface {
     }
 
     public synchronized boolean signUp(User user) {
-        Scanner scanner = new Scanner(System.in);
-
         try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
             String line;
             boolean found = false;
@@ -160,13 +150,11 @@ public class Database implements DatabaseInterface {
             if (!found) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
                         true))) {
-
-                    User.isValid(user);
-
                     if (User.isValid(user)) {
                         writer.write(user.toString());
                         writer.newLine();
                         System.out.println("Account successfully created!");
+                        return true;
                     } else {
                         System.out.println("Account unable to be created.");
                     }
@@ -291,7 +279,7 @@ public class Database implements DatabaseInterface {
 
     public static synchronized ArrayList<String> listedItemSearch(String searchTerm) {
         ArrayList<String> matches = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("listedItemDatabase.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.toLowerCase().contains(searchTerm.toLowerCase())) {
@@ -306,7 +294,7 @@ public class Database implements DatabaseInterface {
 
     public static synchronized ArrayList<String> soldItemSearch(String searchTerm) {
         ArrayList<String> matches = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("soldItemDatabase.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.toLowerCase().contains(searchTerm.toLowerCase())) {
