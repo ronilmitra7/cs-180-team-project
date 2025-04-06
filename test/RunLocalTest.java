@@ -184,14 +184,23 @@ public class RunLocalTest {
         public void loginTest() {
             User user = new User("username", "12345");
             Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
+            boolean userExistsInFile = false;
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true))) {
+                writer.println(user.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
 
             boolean loginResult = database.logIn(user);
-            boolean userExistsInFile = false;
 
             try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
+                    contents.add(line);
                     line = line.trim();
                     String[] parts = line.split(",");
                     if (parts[2].equals(user.getUsername()) && parts[3].equals(user.getPassword())) {
@@ -201,6 +210,18 @@ public class RunLocalTest {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            contents.remove(contents.size() - 1);
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
             }
 
             Assert.assertTrue("Ensure you log in users correctly!", loginResult && userExistsInFile);
@@ -210,6 +231,7 @@ public class RunLocalTest {
         public void signUpTest() {
             User user = new User("username", "12345");
             Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
 
             boolean signUpResult = database.signUp(user);
             boolean userExistsInFile = false;
@@ -217,6 +239,7 @@ public class RunLocalTest {
             try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    contents.add(line);
                     line = line.trim();
                     String[] parts = line.split(",");
 
@@ -227,6 +250,17 @@ public class RunLocalTest {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            contents.remove(contents.size() - 1);
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
             }
 
             Assert.assertTrue("Ensure you Sign Up users properly!", signUpResult && userExistsInFile);
