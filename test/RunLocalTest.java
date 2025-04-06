@@ -539,7 +539,7 @@ public class RunLocalTest {
         }
 
         @Test
-        public void itemForSaleTest() throws IOException {
+        public void itemForSaleTest() {
             User user = new User("username", "12345");
             Item item = new Item("Item-1", "name", 10.0, user);
             Item item2 = new Item("Item-2", "name", 10.0, user);
@@ -626,7 +626,38 @@ public class RunLocalTest {
 
         @Test
         public void searchUserTest() {
+            User user = new User("username", "12345");
+            Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt", true));
+                BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+                writer.println(user.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            User testUser = database.searchUser("username");
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userProfileDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertEquals("Ensure searchUser returns the correct value!",
+                    user.toString(), testUser.toString());
+            Assert.assertNull("Ensure unknown usernames return null!",
+                    database.searchUser("username1"));
         }
 
         @Test
