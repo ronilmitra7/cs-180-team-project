@@ -18,7 +18,6 @@ import user.User;
 import user.UserInterface;
 import Database.Database;
 
-import javax.swing.*;
 import java.io.*;
 
 import java.lang.reflect.Modifier;
@@ -540,13 +539,89 @@ public class RunLocalTest {
         }
 
         @Test
-        public void itemForSaleTest() {
+        public void itemForSaleTest() throws IOException {
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "name", 10.0, user);
+            Item item2 = new Item("Item-2", "name", 10.0, user);
+            Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt", true))) {
+                writer.println(item.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            boolean itemListed = database.itemForSale(item);
+            boolean itemTwoListed = database.itemForSale(item2);
+
+            contents.remove(contents.size() - 1);
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("listedItemsDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertTrue("Ensure the item is correctly listed for sale", itemListed);
+            Assert.assertFalse("Ensure the item is correctly listed for sale", itemTwoListed);
         }
 
         @Test
         public void itemSoldTest() {
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "name", 10.0, user);
+            Item item2 = new Item("Item-2", "name", 10.0, user);
+            Database database = new Database();
+            ArrayList<String> contents = new ArrayList<>();
 
+            try (PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+                writer.println(item.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("soldItemsDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            boolean itemSold = database.itemSold(item);
+            boolean itemTwoSold = database.itemSold(item2);
+
+            contents.remove(contents.size() - 1);
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            Assert.assertTrue("Ensure the item is correctly marked as sold", itemSold);
+            Assert.assertFalse("Ensure the item is correctly marked as sold", itemTwoSold);
         }
 
         @Test
