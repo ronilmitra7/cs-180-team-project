@@ -4,6 +4,15 @@ import Marketplace.Item;
 
 import java.util.ArrayList;
 
+/**
+ * Creates class User that implements UserInterface
+ * Contains all the getters and setters for each
+ * Contains a method to check is a user is valid
+ *
+ * Phase 1
+ * @version April 6, 2025
+ */
+
 public class User implements UserInterface {
     private String username;
     private String email;

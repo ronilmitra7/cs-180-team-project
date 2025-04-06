@@ -6,6 +6,14 @@ import user.User;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Creates class Messaging that implements MessagingInterface
+ * Contains methods for sending and receiving messages
+ *
+ * Phase 1
+ * @version April 6, 2025
+ */
+
 public class Messaging implements MessagingInterface {
     private final User sender;
 

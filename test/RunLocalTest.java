@@ -24,13 +24,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: make sure there is an assert for each method except for accessors and mutators
 /**
  * A framework to run public test cases for the group project.
  *
  *
  * Phase 1
- * @version Nov 2, 2024
+ * @version April 6, 2025
  */
 
 @RunWith(Enclosed.class)

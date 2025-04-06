@@ -7,6 +7,15 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Creates class Database that implements DatabaseInterface
+ * Contains an introMenu() method for users to log in and sign up
+ * Contains methods for logging in, signing up, and other methods that store and access data
+ *
+ * Phase 1
+ * @version April 6, 2025
+ */
+
 public class Database implements DatabaseInterface {
     private User user;
     private boolean menu;
