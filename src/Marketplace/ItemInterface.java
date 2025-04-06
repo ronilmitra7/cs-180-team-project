@@ -7,6 +7,7 @@ import user.User;
  * Implemented by the Item
  *
  * Phase 1
+ * @author Ronil Mitra
  * @version April 6, 2025
  */
 
