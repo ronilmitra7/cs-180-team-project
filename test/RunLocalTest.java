@@ -760,12 +760,18 @@ public class RunLocalTest {
 
         @Test
         public void getItemIDTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            Assert.assertEquals("Ensure getItemID() returns the correct result!",
+                    "Item-1", item.getItemID());
         }
 
         @Test
         public void getItemNameTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            Assert.assertEquals("Ensure getName() returns the correct result!",
+                    "Item", item.getName());
         }
 
         @Test
@@ -775,7 +781,10 @@ public class RunLocalTest {
 
         @Test
         public void getPriceTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            Assert.assertEquals("Ensure getPrice() returns the correct result!",
+                    10.0, item.getPrice(), 0.001);
         }
 
         @Test
@@ -785,19 +794,19 @@ public class RunLocalTest {
 
         @Test
         public void getSellerTest() {
-
+            User user = new User("username", "12345");
+            Item item = new Item("Item-1", "Item", 10.0, user);
+            Assert.assertEquals("Ensure getSeller() returns the correct result!",
+                    user.toString(), item.getSeller().toString());
         }
 
         @Test
         public void itemToStringTest() {
             User user = new User("name", "email", "username", "password");
-            boolean forSale = false;
             Item item = new Item("123", "TestItem", 12.34, user);
-            boolean test = false;
-            if (item.toString().equals(String.format("%s,%s,%s,%s", 123, "TestItem", user, 12.34))) {
-                test = true;
-            }
-            Assert.assertTrue("Ensure your toString method returns the correct result", test);
+
+            Assert.assertEquals("Ensure your toString() method returns the correct result",
+                    "123,TestItem,12.34,username", item.toString());
         }
 
         @Test
