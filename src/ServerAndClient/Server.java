@@ -8,8 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Database implements Runnable, ServerInterface {
-    ServerSocket ss;
-    Socket socket;
+    private ServerSocket ss;
+    private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
