@@ -1,3 +1,7 @@
+import ServerAndClient.Client;
+import ServerAndClient.ClientInterface;
+import ServerAndClient.Server;
+import ServerAndClient.ServerInterface;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -177,6 +181,62 @@ public class RunLocalTest {
                     Object.class, superclass);
             Assert.assertTrue("Ensure that `Marketplace` implements `MarketplaceInterface`!",
                     Arrays.asList(superinterfaces).contains(MarketplaceInterface.class));
+
+        }
+
+        @Test
+        public void ServerClassDeclarationTest() {
+            Class<?> clazz;
+            int modifiers;
+            Class<?> superclass;
+            Class<?>[] superinterfaces;
+
+            clazz = Server.class;
+
+            modifiers = clazz.getModifiers();
+
+            superclass = clazz.getSuperclass();
+
+            superinterfaces = clazz.getInterfaces();
+
+            Assert.assertTrue("Ensure that `Server` is `public`!",
+                    Modifier.isPublic(modifiers));
+            Assert.assertFalse("Ensure that `Server` is NOT `abstract`!",
+                    Modifier.isAbstract(modifiers));
+            Assert.assertEquals("Ensure that `Server` extends `Database`!",
+                    Database.class, superclass);
+            Assert.assertTrue("Ensure that `Server` implements `ServerInterface`!",
+                    Arrays.asList(superinterfaces).contains(ServerInterface.class));
+            Assert.assertTrue("Ensure that `Server` implements `Runnable`!",
+                    Arrays.asList(superinterfaces).contains(Runnable.class));
+
+        }
+
+        @Test
+        public void ClientClassDeclarationTest() {
+            Class<?> clazz;
+            int modifiers;
+            Class<?> superclass;
+            Class<?>[] superinterfaces;
+
+            clazz = Client.class;
+
+            modifiers = clazz.getModifiers();
+
+            superclass = clazz.getSuperclass();
+
+            superinterfaces = clazz.getInterfaces();
+
+            Assert.assertTrue("Ensure that `Client` is `public`!",
+                    Modifier.isPublic(modifiers));
+            Assert.assertFalse("Ensure that `Client` is NOT `abstract`!",
+                    Modifier.isAbstract(modifiers));
+            Assert.assertEquals("Ensure that `Client` extends `Database`!",
+                    Database.class, superclass);
+            Assert.assertTrue("Ensure that `Client` implements `ClientInterface`!",
+                    Arrays.asList(superinterfaces).contains(ClientInterface.class));
+            Assert.assertTrue("Ensure that `Client` implements `Runnable`!",
+                    Arrays.asList(superinterfaces).contains(Runnable.class));
 
         }
 
