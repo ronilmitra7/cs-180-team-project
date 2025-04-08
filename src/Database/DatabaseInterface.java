@@ -12,5 +12,5 @@ import user.User;
  */
 
 public interface DatabaseInterface {
-    void introMenu();
+    User introMenu();
 }

@@ -19,15 +19,15 @@ import java.util.Scanner;
 
 public class Database implements DatabaseInterface {
     private boolean menu;
+    User user;
 
-    public void introMenu() {
+    public User introMenu() {
         Scanner scanner = new Scanner(System.in);
-        User user;
         do {
             System.out.println("Welcome to the Market Place!");
             System.out.println("1. Sign up");
             System.out.println("2. Log in");
-            System.out.println("3. Delete account");
+            //System.out.println("3. Delete account");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -88,7 +88,7 @@ public class Database implements DatabaseInterface {
                     menu = true;
                     loggedIn = false;
                 }
-            } else if (choice == 3) {
+            } /*else if (choice == 3) {
                 System.out.println("Enter your full name");
                 String name = scanner.nextLine();
 
@@ -106,10 +106,12 @@ public class Database implements DatabaseInterface {
                 } else {
                     menu = true;
                 }
-            } else {
+            } */else {
                 System.out.println("Invalid choice! Please try again");
             }
         } while (menu);
+
+        return user;
     }
 
     public synchronized boolean logIn(User user) {
