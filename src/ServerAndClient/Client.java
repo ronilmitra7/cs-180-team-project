@@ -43,6 +43,39 @@ public class Client extends Database implements Runnable, ClientInterface {
             System.out.println("5. Delete your Account");
 
             String choice = scanner.nextLine();
+
+            try {
+                oos.writeObject(choice);
+                oos.flush();
+
+                switch (choice) {
+                    case "1":
+                        //search user
+                        break;
+
+                    case "2":
+                        //buy item
+                        break;
+
+                    case "3":
+                        //sell item
+                        break;
+
+                    case "4":
+                        //message user
+                        break;
+
+                    case "5":
+                        //delete account
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice");
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } while (true);
         
     }
