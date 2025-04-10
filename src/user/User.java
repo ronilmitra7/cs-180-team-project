@@ -87,6 +87,8 @@ public class User implements UserInterface {
         } else if (user.getUsername().contains(" ")) {
             System.out.println("Username cannot contain spaces.");
             return false;
+        } else if (user.getUsername().contains(",")) {
+            System.out.println("Username cannot contain commas.");
         }
         if (user.getPassword().length() > 11) {
             System.out.println("Password cannot exceed 11 characters.");

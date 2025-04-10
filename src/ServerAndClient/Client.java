@@ -89,6 +89,29 @@ public class Client extends Database implements Runnable, ClientInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            System.out.println("Do you want to perform another action?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            String selection = scanner.nextLine();
+            try {
+                oos.writeObject(selection);
+                oos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if (selection.equals("1")) {
+                continue;
+            } else if (selection.equals("2")) {
+                break;
+            } else {
+                System.out.println("Invalid choice");
+            }
+
+
         } while (true);
         
     }
