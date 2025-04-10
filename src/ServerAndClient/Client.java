@@ -52,6 +52,17 @@ public class Client extends Database implements Runnable, ClientInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        try {
+                            String enterSearchTerm = (String) ois.readObject();
+                            System.out.println(enterSearchTerm);
+                            oos.writeObject(scanner.nextLine());
+                            oos.flush();
+                            System.out.println((String) ois.readObject());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException c) {
+                            c.printStackTrace();
+                        }
                         break;
 
                     case "2":

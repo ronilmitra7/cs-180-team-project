@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server extends Database implements Runnable, ServerInterface {
     private Socket socket;
@@ -33,6 +34,23 @@ public class Server extends Database implements Runnable, ServerInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        oos.writeObject("Please enter the exact username of the user you'd like to search for.");
+                        oos.flush();
+                        String searchedName = (String) ois.readObject();
+                        User searchedUser = database.searchUser(searchedName);
+                        String username = searchedUser.getUsername();
+                        ArrayList<String> itemUserSells = listedItemSearch(username);
+                        String response = "";
+                        response.concat(String.format("You have found the user: %s\n", username));
+                        response.concat("This user is selling: \n");
+
+                        for (int i = 0; i < itemUserSells.size(); i++) {
+                            response.concat(String.format("%s\n", itemUserSells.get(i)));
+                        }
+                        oos.writeObject(response);
+                        oos.flush();
+
+
                         break;
 
                     case "2":
