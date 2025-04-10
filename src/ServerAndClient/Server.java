@@ -68,7 +68,9 @@ public class Server extends Database implements Runnable, ServerInterface {
             ServerSocket ss = new ServerSocket(4242);
 
             while (true) {
+                System.out.println("Waiting for connection...");
                 Socket socket = ss.accept();
+                System.out.println("Connection accepted");
 
                 Thread thread = new Thread(new Server(socket));
                 thread.start();
