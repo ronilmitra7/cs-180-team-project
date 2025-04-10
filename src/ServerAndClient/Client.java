@@ -106,6 +106,7 @@ public class Client extends Database implements Runnable, ClientInterface {
             if (selection.equals("1")) {
                 continue;
             } else if (selection.equals("2")) {
+                System.out.print("Goodbye!");
                 break;
             } else {
                 System.out.println("Invalid choice");
