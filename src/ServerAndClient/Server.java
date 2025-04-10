@@ -48,6 +48,10 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "5":
+                        //check balance
+                        break;
+
+                    case "6":
                         //delete account
                         break;
 

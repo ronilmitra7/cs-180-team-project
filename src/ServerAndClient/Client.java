@@ -40,7 +40,8 @@ public class Client extends Database implements Runnable, ClientInterface {
             System.out.println("2. Buy Item");
             System.out.println("3. Sell Item");
             System.out.println("4. Message User");
-            System.out.println("5. Delete your Account");
+            System.out.println("5. Check Balance");
+            System.out.println("6. Delete your Account");
 
             String choice = scanner.nextLine();
 
@@ -66,7 +67,10 @@ public class Client extends Database implements Runnable, ClientInterface {
                         break;
 
                     case "5":
-                        //delete account
+                        //check balance
+                        break;
+                    case "6":
+                        //delete your account
                         break;
 
                     default:
