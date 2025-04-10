@@ -69,7 +69,20 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
                 }
 
+                String selection;
+
+                try {
+                    selection = (String) ois.readObject();
+                    if (selection.equals("2")) {
+                        break;
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             } while (true);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
