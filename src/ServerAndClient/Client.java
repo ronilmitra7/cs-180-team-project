@@ -63,7 +63,16 @@ public class Client extends Database implements Runnable, ClientInterface {
                         break;
 
                     case "4":
-                        //message user
+                        System.out.println("Enter the user you want to message:");
+                        String username = scanner.nextLine();
+                        oos.writeObject(username);
+                        oos.flush();
+
+                        System.out.println("Enter the message content:");
+                        String message = scanner.nextLine();
+                        oos.writeObject(message);
+                        oos.flush();
+
                         break;
 
                     case "5":

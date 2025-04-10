@@ -44,7 +44,17 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "4":
-                        //message user
+                        String username;
+                        String message;
+
+                        try {
+                            username = (String) ois.readObject();
+                            message = (String) ois.readObject();
+                            messaging.sendMessage(message, username);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         break;
 
                     case "5":
