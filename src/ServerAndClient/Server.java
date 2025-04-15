@@ -59,10 +59,40 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                     case "5":
                         //check balance
+                        double balance = user.getBalance();
+                        oos.writeObject(balance);
+                        oos.flush();
                         break;
 
                     case "6":
                         //delete account
+
+                        String username = (String) ois.readObject();
+
+                        System.out.println(username);
+
+                        if (user.getUsername().equals(username)) {
+                            boolean deleteSuccess = deleteUser(user);
+                            if (deleteSuccess) {
+
+                                String response = "Account successfully deleted";
+
+                                oos.writeObject(response);
+
+                                oos.flush();
+
+                                System.out.println("Write: " + response);
+                            } else {
+                                oos.writeObject("Failed to delete account");
+                                oos.flush();
+                            }
+                        }
+                        else {
+                            String message = "Incorrect username";
+                            oos.writeObject(message);
+                        }
+
+                        oos.flush();
                         break;
 
                     default:
