@@ -63,7 +63,16 @@ public class Client extends Database implements Runnable, ClientInterface {
                         break;
 
                     case "4":
-                        //message user
+                        System.out.println("Enter the user you want to message:");
+                        String username = scanner.nextLine();
+                        oos.writeObject(username);
+                        oos.flush();
+
+                        System.out.println("Enter the message content:");
+                        String message = scanner.nextLine();
+                        oos.writeObject(message);
+                        oos.flush();
+
                         break;
 
                     case "5":
@@ -95,6 +104,30 @@ public class Client extends Database implements Runnable, ClientInterface {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+
+            System.out.println("Do you want to perform another action?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            String selection = scanner.nextLine();
+            try {
+                oos.writeObject(selection);
+                oos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if (selection.equals("1")) {
+                continue;
+            } else if (selection.equals("2")) {
+                System.out.print("Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid choice");
+            }
+
+
         } while (true);
         
     }

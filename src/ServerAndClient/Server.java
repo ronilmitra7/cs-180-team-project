@@ -44,7 +44,17 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "4":
-                        //message user
+                        String username;
+                        String message;
+
+                        try {
+                            username = (String) ois.readObject();
+                            message = (String) ois.readObject();
+                            messaging.sendMessage(message, username);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         break;
 
                     case "5":
@@ -89,7 +99,20 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
                 }
 
+                String selection;
+
+                try {
+                    selection = (String) ois.readObject();
+                    if (selection.equals("2")) {
+                        break;
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             } while (true);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
