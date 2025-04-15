@@ -68,9 +68,22 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                     case "5":
                         //check balance
+                        Double balance = (Double) ois.readObject();
+                        System.out.println("Your current balance is " + balance);
                         break;
                     case "6":
                         //delete your account
+
+                        System.out.println("Enter username if you are sure you want to delete your account");
+                        String username = scanner.nextLine();
+                        oos.writeObject(username);
+                        oos.flush();
+
+                        System.out.println("test 1");
+                        String response;
+                        response = (String) ois.readObject();
+                        System.out.println(response);
+
                         break;
 
                     default:
@@ -79,6 +92,8 @@ public class Client extends Database implements Runnable, ClientInterface {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         } while (true);
         
