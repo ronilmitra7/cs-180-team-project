@@ -9,7 +9,6 @@ import java.io.*;//Imported IO
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;//Imported Random
 
 public class Server extends Database implements Runnable, ServerInterface {
 
@@ -33,9 +32,9 @@ public class Server extends Database implements Runnable, ServerInterface {
 
             ois = new ObjectInputStream(socket.getInputStream());
 
-            Random random = new Random();//Defined Random object
-
             User user = (User)ois.readObject();
+
+            //user.setBalance(0);
 
             System.out.println("Read: " + user);
 
@@ -102,13 +101,13 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         String[] itemReturnedList = itemReturned.split(",");
 
-                        String confirmMessage = market.buyItem(new Item(itemReturnedList[0], itemReturnedList[1], Double.parseDouble(itemReturnedList[2].trim()), new User(itemReturnedList[3],"123")));
+                        market.buyItem(new Item(itemReturnedList[0], itemReturnedList[1], Double.parseDouble(itemReturnedList[2].trim()), new User(itemReturnedList[3],"123")));
 
-                        oos.writeObject(confirmMessage);
-
-                        oos.flush();
-
-                        System.out.println("Write:" + confirmMessage);
+//                        oos.writeObject(confirmMessage);
+//
+//                        oos.flush();
+//
+//                        System.out.println("Write:" + confirmMessage);
 
                         double modifiedBalance = user.getBalance();
 
@@ -124,7 +123,7 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                     case "3":
 
-                        BufferedWriter bfr = new BufferedWriter(new FileWriter(new File("listedItemsDatabase.txt"),true));
+                        Marketplace marketSell = new Marketplace(user);
 
                         String name = (String) ois.readObject();
 
@@ -134,40 +133,14 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         System.out.println("Read: " + price);
 
-                        String itemID = "";
-
-                        boolean flag = true;
-
-                        do {
-
-                            flag = false;
-
-                            itemID = user.getName() + name + random.nextInt(1000);
-
-                            if (listedItemSearch(itemID).size() > 0) {
-
-                                flag = true;
-
-                            }
-
-                        } while (flag == true);
-
-                        Item itemForSale = new Item(itemID, name, price, user);
-
-                        synchronized (gateKeeper) {
-
-                            bfr.write(itemForSale.toString() + "\n");
-
-                        }
+                        marketSell.listItem(name, price);
 
                         String finalResponse = "Transaction Success";
 
                         oos.writeObject(finalResponse);
 
                         oos.flush();
-
-                        bfr.close();
-
+                        
                         //sell item
                         break;
 

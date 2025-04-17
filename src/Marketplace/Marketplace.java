@@ -65,9 +65,7 @@ public class Marketplace implements MarketplaceInterface {
 //    }
 
 
-    public String buyItem(Item item) {//Changed the return type of buyItem
-
-        //Database database = new Database();
+    public void buyItem(Item item) {
 
         Database database = new Database();
 
@@ -75,7 +73,7 @@ public class Marketplace implements MarketplaceInterface {
 
         if (!database.itemForSale(item)) {
 
-            return "That item is not for sale";
+            System.out.println("That item is not for sale");
 
         } else {
 
@@ -94,36 +92,34 @@ public class Marketplace implements MarketplaceInterface {
 
                         double price = Double.parseDouble(parts[2]);
 
-                        User seller = database.searchUser(item.getSeller().getUsername()); //I changed this line of code
-
-                        //
-                        //is to avoid the user purchasing the item that was set by himself
+                        User seller = database.searchUser(item.getSeller().getUsername());
 
                         if (user.getBalance() < price) {
 
-                            return "You do not have enough money to buy this item";
+                            System.out.println("You do not have enough money to buy this item");
 
                         } else {
 
                             user.setBalance(user.getBalance() - price);
 
-                            contents.remove(contents.size() - 1);
+                            contents.remove(contents.size() - 1);//clears the content
 
                             seller.setBalance(seller.getBalance() + price);
 
-                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
-
-                            for (String content : contents) {
-
-                                pw.println(content);
-
-                            }
-
-                            pw.close();
-
                         }
                     }
+
                 }
+
+                PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
+
+                for (String content : contents) {//contents = 0
+
+                    pw.println(content);
+
+                }
+
+                pw.close();
 
                 writer.println(item.toString());
 
@@ -133,8 +129,6 @@ public class Marketplace implements MarketplaceInterface {
 
             }
         }
-
-        return "Successfully Purchased";
     }
 
     public void listItem(String name, double price) {

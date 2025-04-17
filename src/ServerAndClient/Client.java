@@ -180,9 +180,9 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                         try {
 
-                            String confirmMessage = (String) ois.readObject();
-
-                            System.out.println(confirmMessage);
+//                            String confirmMessage = (String) ois.readObject();
+//
+//                            System.out.println(confirmMessage);
 
                             double modifiedBalance = (double) ois.readObject();
 
