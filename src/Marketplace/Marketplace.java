@@ -23,35 +23,104 @@ public class Marketplace implements MarketplaceInterface {
         this.user = user;
     }
 
-    public void buyItem(Item item) {
+//    public void buyItem(Item item) {
+//        Database database = new Database();
+//        ArrayList<String> contents = new ArrayList<>();
+//
+//        if (!database.itemForSale(item)) {
+//            System.out.println("That item is not for sale");
+//        } else {
+//            try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
+//                PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    contents.add(line);
+//                    if (item.toString().equals(line)) {
+//                        String[] parts = line.split(",");
+//                        double price = Double.parseDouble(parts[2]);
+//                        User seller = item.getSeller();
+//
+//                        if (user.getBalance() < price) {
+//                            System.out.println("You do not have enough money to buy this item");
+//                        } else {
+//                            user.setBalance(user.getBalance() - price);
+//                            contents.remove(contents.size() - 1);
+//                            seller.setBalance(seller.getBalance() + price);
+//
+//                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
+//                            for (String content : contents) {
+//                                pw.println(content);
+//                            }
+//                            pw.close();
+//                        }
+//                    }
+//                }
+//
+//                writer.println(item.toString());
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+
+    public String buyItem(Item item) {//Changed the return type of buyItem
+
+        //Database database = new Database();
+
         Database database = new Database();
+
         ArrayList<String> contents = new ArrayList<>();
 
         if (!database.itemForSale(item)) {
-            System.out.println("That item is not for sale");
+
+            return "That item is not for sale";
+
         } else {
+
             try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
-                PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+                 PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+
                 String line;
+
                 while ((line = reader.readLine()) != null) {
+
                     contents.add(line);
+
                     if (item.toString().equals(line)) {
+
                         String[] parts = line.split(",");
+
                         double price = Double.parseDouble(parts[2]);
-                        User seller = item.getSeller();
+
+                        User seller = database.searchUser(item.getSeller().getUsername()); //I changed this line of code
+
+                        //
+                        //is to avoid the user purchasing the item that was set by himself
 
                         if (user.getBalance() < price) {
-                            System.out.println("You do not have enough money to buy this item");
+
+                            return "You do not have enough money to buy this item";
+
                         } else {
+
                             user.setBalance(user.getBalance() - price);
+
                             contents.remove(contents.size() - 1);
+
                             seller.setBalance(seller.getBalance() + price);
 
                             PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
+
                             for (String content : contents) {
+
                                 pw.println(content);
+
                             }
+
                             pw.close();
+
                         }
                     }
                 }
@@ -59,9 +128,13 @@ public class Marketplace implements MarketplaceInterface {
                 writer.println(item.toString());
 
             } catch (IOException e) {
+
                 e.printStackTrace();
+
             }
         }
+
+        return "Successfully Purchased";
     }
 
     public void listItem(String name, double price) {

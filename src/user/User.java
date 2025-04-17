@@ -2,6 +2,7 @@ package user;
 
 import Marketplace.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @version April 6, 2025
  */
 
-public class User implements UserInterface {
+public class User implements UserInterface, Serializable {
     private String username;
     private String email;
     private String name;
