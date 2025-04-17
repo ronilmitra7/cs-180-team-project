@@ -23,18 +23,6 @@ public class Database implements DatabaseInterface {
 
     private User user;
 
-    public void setUser(User user) { //added setUser
-
-        this.user = user;
-
-    }
-
-    public User getUser() { //added getUser
-
-        return this.user;
-
-    }
-
     public User introMenu() {
         Scanner scanner = new Scanner(System.in);
         do {
