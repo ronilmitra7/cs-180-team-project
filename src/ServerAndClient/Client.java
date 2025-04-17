@@ -84,8 +84,8 @@ public class Client extends Database implements Runnable, ClientInterface {
                         //delete your account
 
                         System.out.println("Enter username if you are sure you want to delete your account");
-                        String username = scanner.nextLine();
-                        oos.writeObject(username);
+                        String username1 = scanner.nextLine();
+                        oos.writeObject(username1);
                         oos.flush();
 
                         System.out.println("test 1");
