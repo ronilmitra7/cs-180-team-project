@@ -51,7 +51,33 @@ public class Server extends Database implements Runnable, ServerInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        String searchedName = (String) ois.readObject();
+                        System.out.println(searchedName);
+                        User searchedUser = database.searchUser(searchedName);
+                        System.out.println(searchedUser);
+                        String response = "";
+                        if (searchedUser != null) {
+                            String username = searchedUser.getUsername();
+                            ArrayList<String> itemUserSells = listedItemSearch(username);
+                            response += "You have found the user: " + username + "\n";
+                            response += "This user is selling: \n";
+                            //response.concat(String.format("You have found the user: %s\n", username));
+                            //response.concat("This user is selling: \n");
+                            if (itemUserSells.isEmpty()) {
+                                response += "nothing \n";
+                            } else {
+                                for (int i = 0; i < itemUserSells.size(); i++) {
+                                    response += itemUserSells.get(i) + "\n";
+                                    //response.concat(String.format("%s\n", itemUserSells.get(i)));
+                                }
+                            }
+                        } else {
+                            response = "Can't find the user.";
+                        }
+                        oos.writeObject(response);
+                        oos.flush();
                         break;
+
 
                     case "2":
 
@@ -168,14 +194,55 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                     case "5":
                         //check balance
+                        double balance = user.getBalance();
+                        oos.writeObject(balance);
+                        oos.flush();
                         break;
 
                     case "6":
                         //delete account
+
+                        String username = (String) ois.readObject();
+
+                        System.out.println(username);
+
+                        if (user.getUsername().equals(username)) {
+                            boolean deleteSuccess = deleteUser(user);
+                            if (deleteSuccess) {
+
+                                String response = "Account successfully deleted";
+
+                                oos.writeObject(response);
+
+                                oos.flush();
+
+                                System.out.println("Write: " + response);
+                            } else {
+                                oos.writeObject("Failed to delete account");
+                                oos.flush();
+                            }
+                        }
+                        else {
+                            String message = "Incorrect username";
+                            oos.writeObject(message);
+                        }
+
+                        oos.flush();
                         break;
 
                     default:
                         break;
+                }
+
+                String selection;
+
+                try {
+                    selection = (String) ois.readObject();
+                    if (selection.equals("2")) {
+                        break;
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
 
             } while (true);

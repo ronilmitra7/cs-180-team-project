@@ -87,6 +87,18 @@ public class Client extends Database implements Runnable, ClientInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        try {
+                            System.out.println("Please enter the exact username of the user you'd like to search for.");
+                            String enterSearchTerm = scanner.nextLine();
+                            System.out.println(enterSearchTerm);
+                            oos.writeObject(enterSearchTerm);
+                            oos.flush();
+                            System.out.println((String) ois.readObject());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException c) {
+                            c.printStackTrace();
+                        }
                         break;
 
                     case "2":
@@ -265,9 +277,22 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                     case "5":
                         //check balance
+                        Double balance = (Double) ois.readObject();
+                        System.out.println("Your current balance is " + balance);
                         break;
                     case "6":
                         //delete your account
+
+                        System.out.println("Enter username if you are sure you want to delete your account");
+                        String username1 = scanner.nextLine();
+                        oos.writeObject(username1);
+                        oos.flush();
+
+                        System.out.println("test 1");
+                        String response;
+                        response = (String) ois.readObject();
+                        System.out.println(response);
+
                         break;
 
                     default:
@@ -276,7 +301,33 @@ public class Client extends Database implements Runnable, ClientInterface {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
+
+            System.out.println("Do you want to perform another action?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            String selection = scanner.nextLine();
+            try {
+                oos.writeObject(selection);
+                oos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if (selection.equals("1")) {
+                continue;
+            } else if (selection.equals("2")) {
+                System.out.print("Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid choice");
+            }
+
+
         } while (true);
         
     }
