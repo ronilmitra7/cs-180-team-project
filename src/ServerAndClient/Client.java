@@ -3,7 +3,6 @@ import Database.Database;
 import Marketplace.Item;
 import user.User;
 
-import java.awt.image.RasterOp;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -76,9 +75,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                 oos.writeObject(choice);
 
                 oos.flush();
-
-                System.out.println("Write: " + choice);
-
+                
                 switch (choice) {
                     case "1":
                         //search user
@@ -105,8 +102,6 @@ public class Client extends Database implements Runnable, ClientInterface {
                         oos.writeObject(itemSelected);
 
                         oos.flush();
-
-                        System.out.println("Write: " + itemSelected);
 
                         System.out.println("Here is the result for your searching:");
 
