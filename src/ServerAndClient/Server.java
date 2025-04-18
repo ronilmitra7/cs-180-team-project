@@ -5,7 +5,7 @@ import Messaging.Messaging;
 import Marketplace.Marketplace;
 import Marketplace.Item;
 
-import java.io.*;//Imported IO
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -153,9 +153,6 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "4":
-
-                        String username;
-
                         String message;
 
                         try {
@@ -184,15 +181,14 @@ public class Server extends Database implements Runnable, ServerInterface {
                     case "6":
                         //delete account
 
-                        String usernameForDel = (String) ois.readObject();
+                        username = (String) ois.readObject();
 
                         System.out.println(usernameForDel);
 
                         if (user.getUsername().equals(usernameForDel)) {
                             boolean deleteSuccess = deleteUser(user);
                             if (deleteSuccess) {
-
-                                String responseForDel = "Account successfully deleted";
+                                response = "Account successfully deleted";
 
                                 oos.writeObject(responseForDel);
 
@@ -204,8 +200,8 @@ public class Server extends Database implements Runnable, ServerInterface {
                             }
                         }
                         else {
-                            String messageForDel = "Incorrect username";
-                            oos.writeObject(messageForDel);
+                            message = "Incorrect username";
+                            oos.writeObject(message);
                         }
 
                         oos.flush();
@@ -246,12 +242,7 @@ public class Server extends Database implements Runnable, ServerInterface {
             ServerSocket ss = new ServerSocket(4242);
 
             while (true) {
-
-                System.out.println("Waiting for connection...");
-
                 Socket socket = ss.accept();
-
-                System.out.println("Connection accepted");
 
                 Thread thread = new Thread(new Server(socket));
 
