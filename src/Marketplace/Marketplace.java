@@ -23,43 +23,110 @@ public class Marketplace implements MarketplaceInterface {
         this.user = user;
     }
 
+//    public void buyItem(Item item) {
+//        Database database = new Database();
+//        ArrayList<String> contents = new ArrayList<>();
+//
+//        if (!database.itemForSale(item)) {
+//            System.out.println("That item is not for sale");
+//        } else {
+//            try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
+//                PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    contents.add(line);
+//                    if (item.toString().equals(line)) {
+//                        String[] parts = line.split(",");
+//                        double price = Double.parseDouble(parts[2]);
+//                        User seller = item.getSeller();
+//
+//                        if (user.getBalance() < price) {
+//                            System.out.println("You do not have enough money to buy this item");
+//                        } else {
+//                            user.setBalance(user.getBalance() - price);
+//                            contents.remove(contents.size() - 1);
+//                            seller.setBalance(seller.getBalance() + price);
+//
+//                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
+//                            for (String content : contents) {
+//                                pw.println(content);
+//                            }
+//                            pw.close();
+//                        }
+//                    }
+//                }
+//
+//                writer.println(item.toString());
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+
     public void buyItem(Item item) {
+
         Database database = new Database();
+
         ArrayList<String> contents = new ArrayList<>();
 
         if (!database.itemForSale(item)) {
+
             System.out.println("That item is not for sale");
+
         } else {
+
             try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
-                PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+                 PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
+
                 String line;
+
                 while ((line = reader.readLine()) != null) {
+
                     contents.add(line);
+
                     if (item.toString().equals(line)) {
+
                         String[] parts = line.split(",");
+
                         double price = Double.parseDouble(parts[2]);
-                        User seller = item.getSeller();
+
+                        User seller = database.searchUser(item.getSeller().getUsername());
 
                         if (user.getBalance() < price) {
+
                             System.out.println("You do not have enough money to buy this item");
+
                         } else {
+
                             user.setBalance(user.getBalance() - price);
-                            contents.remove(contents.size() - 1);
+
+                            contents.remove(contents.size() - 1);//clears the content
+
                             seller.setBalance(seller.getBalance() + price);
 
-                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
-                            for (String content : contents) {
-                                pw.println(content);
-                            }
-                            pw.close();
                         }
                     }
+
                 }
+
+                PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
+
+                for (String content : contents) {//contents = 0
+
+                    pw.println(content);
+
+                }
+
+                pw.close();
 
                 writer.println(item.toString());
 
             } catch (IOException e) {
+
                 e.printStackTrace();
+
             }
         }
     }
