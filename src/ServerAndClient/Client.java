@@ -126,8 +126,6 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                             itemSelectedListSize = itemSelectedList.size();
 
-                            System.out.println("Read: " + itemSelectedList);
-
                             if (itemSelectedList.isEmpty()) {
 
                                 System.out.println("There no matched result");
@@ -188,8 +186,6 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                         oos.flush();
 
-                        System.out.println("Write: " + itemPurchased);
-
                         try {
 
 //                            String confirmMessage = (String) ois.readObject();
@@ -242,13 +238,9 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                         oos.flush();
 
-                        System.out.println("Write: " + name);
-
                         oos.writeObject(price);
 
                         oos.flush();
-
-                        System.out.println("Write: " + price);
 
                         try {
 
