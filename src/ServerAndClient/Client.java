@@ -53,9 +53,10 @@ public class Client extends Database implements Runnable, ClientInterface {
                     case "1":
                         //search user
                         try {
-                            String enterSearchTerm = (String) ois.readObject();
+                            System.out.println("Please enter the exact username of the user you'd like to search for.");
+                            String enterSearchTerm = scanner.nextLine();
                             System.out.println(enterSearchTerm);
-                            oos.writeObject(scanner.nextLine());
+                            oos.writeObject(enterSearchTerm);
                             oos.flush();
                             System.out.println((String) ois.readObject());
                         } catch (IOException e) {
