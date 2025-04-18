@@ -36,8 +36,6 @@ public class Server extends Database implements Runnable, ServerInterface {
 
             //user.setBalance(0);
 
-            System.out.println("Read: " + user);
-
             Database database = new Database();
 
             Messaging messaging = new Messaging(user);
@@ -45,8 +43,6 @@ public class Server extends Database implements Runnable, ServerInterface {
             do {
 
                 String choice = (String) ois.readObject();
-
-                System.out.println("Read: " + choice);
 
                 switch (choice) {
                     case "1":
@@ -85,8 +81,6 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         String itemSelected = (String) ois.readObject();
 
-                        System.out.println("Read: " + itemSelected);
-
                         ArrayList<String> itemSelectedListtemp = listedItemSearch(itemSelected);
 
                         ArrayList<String> itemSelectedList = new ArrayList<>();
@@ -117,11 +111,7 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         oos.flush();
 
-                        System.out.println("Write:" + itemSelectedList);
-
                         int itemPurchased =  (Integer) ois.readObject();
-
-                        System.out.println("Read:" + itemPurchased);
 
                         String itemReturned = itemSelectedList.get(itemPurchased);
 
@@ -129,19 +119,11 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         market.buyItem(new Item(itemReturnedList[0], itemReturnedList[1], Double.parseDouble(itemReturnedList[2].trim()), new User(itemReturnedList[3],"123")));
 
-//                        oos.writeObject(confirmMessage);
-//
-//                        oos.flush();
-//
-//                        System.out.println("Write:" + confirmMessage);
-
                         double modifiedBalance = user.getBalance();
 
                         oos.writeObject(modifiedBalance);
 
                         oos.flush();
-
-                        System.out.println("Write:" + modifiedBalance);
 
                         oos.flush();
 
@@ -153,11 +135,7 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         String name = (String) ois.readObject();
 
-                        System.out.println("Read: " + name);
-
                         double price = (double) ois.readObject();
-
-                        System.out.println("Read: " + price);
 
                         marketSell.listItem(name, price);
 
@@ -202,29 +180,28 @@ public class Server extends Database implements Runnable, ServerInterface {
                     case "6":
                         //delete account
 
-                        String username = (String) ois.readObject();
+                        String usernameForDel = (String) ois.readObject();
 
-                        System.out.println(username);
+                        System.out.println(usernameForDel);
 
-                        if (user.getUsername().equals(username)) {
+                        if (user.getUsername().equals(usernameForDel)) {
                             boolean deleteSuccess = deleteUser(user);
                             if (deleteSuccess) {
 
-                                String response = "Account successfully deleted";
+                                String responseForDel = "Account successfully deleted";
 
-                                oos.writeObject(response);
+                                oos.writeObject(responseForDel);
 
                                 oos.flush();
 
-                                System.out.println("Write: " + response);
                             } else {
                                 oos.writeObject("Failed to delete account");
                                 oos.flush();
                             }
                         }
                         else {
-                            String message = "Incorrect username";
-                            oos.writeObject(message);
+                            String messageForDel = "Incorrect username";
+                            oos.writeObject(messageForDel);
                         }
 
                         oos.flush();
