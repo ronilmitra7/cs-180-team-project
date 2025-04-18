@@ -10,6 +10,8 @@ package Marketplace;
  */
 
 public interface MarketplaceInterface {
-    void buyItem(Item item);
+
+    void buyItem(Item item); //Changed the return type of buyItem
+
     void listItem(String name, double price);
 }

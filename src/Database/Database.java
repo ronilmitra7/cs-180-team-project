@@ -18,8 +18,10 @@ import java.util.Scanner;
  */
 
 public class Database implements DatabaseInterface {
+
     private boolean menu;
-    User user;
+
+    private User user;
 
     public User introMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -72,14 +74,19 @@ public class Database implements DatabaseInterface {
                     try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
+
                             String[] parts = line.split(",");
+
                             if (parts[2].equals(username)) {
+
                                 name = parts[0];
+
                                 email = parts[1];
                             }
                         }
 
                         user = new User(name, email, username, password);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
