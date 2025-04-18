@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server extends Database implements Runnable, ServerInterface {
     private Socket socket;
@@ -33,7 +34,33 @@ public class Server extends Database implements Runnable, ServerInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        String searchedName = (String) ois.readObject();
+                        System.out.println(searchedName);
+                        User searchedUser = database.searchUser(searchedName);
+                        System.out.println(searchedUser);
+                        String response = "";
+                        if (searchedUser != null) {
+                            String username = searchedUser.getUsername();
+                            ArrayList<String> itemUserSells = listedItemSearch(username);
+                            response += "You have found the user: " + username + "\n";
+                            response += "This user is selling: \n";
+                            //response.concat(String.format("You have found the user: %s\n", username));
+                            //response.concat("This user is selling: \n");
+                            if (itemUserSells.isEmpty()) {
+                                response += "nothing \n";
+                            } else {
+                                for (int i = 0; i < itemUserSells.size(); i++) {
+                                    response += itemUserSells.get(i) + "\n";
+                                    //response.concat(String.format("%s\n", itemUserSells.get(i)));
+                                }
+                            }
+                        } else {
+                            response = "Can't find the user.";
+                        }
+                        oos.writeObject(response);
+                        oos.flush();
                         break;
+
 
                     case "2":
                         //buy item
