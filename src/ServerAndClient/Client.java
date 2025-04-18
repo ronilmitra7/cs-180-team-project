@@ -181,6 +181,7 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                         } while (flag == true);
 
+                        double tempBalance = (double) ois.readObject();
 
                         oos.writeObject(itemPurchased);
 
@@ -194,7 +195,15 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                             double modifiedBalance = (double) ois.readObject();
 
-                            System.out.println("Your current balance: " + modifiedBalance);
+                            if (tempBalance == modifiedBalance) {
+
+                                System.out.println("Transaction Failed! Your balance is not enough!");
+
+                            } else {
+
+                                System.out.println("Transaction succeed! Your current balance: " + modifiedBalance);
+
+                            }
 
                         } catch (ClassNotFoundException cne) {
 

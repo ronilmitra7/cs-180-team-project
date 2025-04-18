@@ -111,6 +111,12 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                         oos.flush();
 
+                        double originalBalance = user.getBalance();
+
+                        oos.writeObject(originalBalance);
+
+                        oos.flush();
+
                         int itemPurchased =  (Integer) ois.readObject();
 
                         String itemReturned = itemSelectedList.get(itemPurchased);
@@ -122,8 +128,6 @@ public class Server extends Database implements Runnable, ServerInterface {
                         double modifiedBalance = user.getBalance();
 
                         oos.writeObject(modifiedBalance);
-
-                        oos.flush();
 
                         oos.flush();
 
