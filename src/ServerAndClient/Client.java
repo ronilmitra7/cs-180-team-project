@@ -17,9 +17,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            System.out.println("Client connecting");
             socket = new Socket("localhost", 4242);
-            System.out.println("Client connected");
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -52,6 +50,15 @@ public class Client extends Database implements Runnable, ClientInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        try {
+                            String enterSearchTerm = (String) ois.readObject();
+                            System.out.println(enterSearchTerm);
+                            oos.writeObject(scanner.nextLine());
+                            oos.flush();
+                            System.out.println((String) ois.readObject());
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         break;
 
                     case "2":

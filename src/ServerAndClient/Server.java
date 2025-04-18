@@ -6,8 +6,11 @@ import Messaging.Messaging;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server extends Database implements Runnable, ServerInterface {
     private Socket socket;
@@ -33,6 +36,23 @@ public class Server extends Database implements Runnable, ServerInterface {
                 switch (choice) {
                     case "1":
                         //search user
+                        oos.writeObject("Please enter the exact username of the user you'd like to search for.");
+                        oos.flush();
+                        String searchedName = (String) ois.readObject();
+                        User searchedUser = database.searchUser(searchedName);
+                        String username = searchedUser.getUsername();
+                        ArrayList<String> itemUserSells = listedItemSearch(username);
+                        String response = "";
+                        response = response.concat(String.format("You have found the user: %s\n", username));
+                        response = response.concat("This user is selling: \n");
+
+                        for (int i = 0; i < itemUserSells.size(); i++) {
+                            response = response.concat(String.format("%s\n", itemUserSells.get(i)));
+                        }
+                        oos.writeObject(response);
+                        oos.flush();
+
+
                         break;
 
                     case "2":
@@ -44,7 +64,6 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "4":
-                        String username;
                         String message;
 
                         try {
@@ -67,7 +86,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                     case "6":
                         //delete account
 
-                        String username = (String) ois.readObject();
+                        username = (String) ois.readObject();
 
                         System.out.println(username);
 
@@ -75,7 +94,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                             boolean deleteSuccess = deleteUser(user);
                             if (deleteSuccess) {
 
-                                String response = "Account successfully deleted";
+                                response = "Account successfully deleted";
 
                                 oos.writeObject(response);
 
@@ -88,7 +107,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                             }
                         }
                         else {
-                            String message = "Incorrect username";
+                            message = "Incorrect username";
                             oos.writeObject(message);
                         }
 
@@ -125,9 +144,7 @@ public class Server extends Database implements Runnable, ServerInterface {
             ServerSocket ss = new ServerSocket(4242);
 
             while (true) {
-                System.out.println("Waiting for connection...");
                 Socket socket = ss.accept();
-                System.out.println("Connection accepted");
 
                 Thread thread = new Thread(new Server(socket));
                 thread.start();

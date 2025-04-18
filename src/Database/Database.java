@@ -153,8 +153,7 @@ public class Database implements DatabaseInterface {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
                         true))) {
                     if (User.isValid(user)) {
-                        writer.write(user.toString());
-                        writer.newLine();
+                        writer.write(user.toString() + "\n");
                         System.out.println("Account successfully created!");
                         return true;
                     } else {
