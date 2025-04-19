@@ -1,197 +1,143 @@
 package ServerAndClient;
 import Database.Database;
+import Marketplace.Item;
 import user.User;
 import Messaging.Messaging;
 import Marketplace.Marketplace;
-import Marketplace.Item;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * This is the server class where we establish where the user needs to go
+ *
+ *
+ * Phase 2
+ * @version April 19, 2025
+ */
+
 public class Server extends Database implements Runnable, ServerInterface {
-
     private Socket socket;
-
     private ObjectOutputStream oos;
-
     private ObjectInputStream ois;
-
-    public static final Object gateKeeper = new Object(); //Added a gateKeeper
 
     public Server(Socket socket) {
         this.socket = socket;
     }
 
     public void run() {
-
         try {
-
             oos = new ObjectOutputStream(socket.getOutputStream());
-
             ois = new ObjectInputStream(socket.getInputStream());
 
-            User user = (User)ois.readObject();
-
-            //user.setBalance(0);
-
+            User user = (User) ois.readObject();
             Database database = new Database();
-
             Messaging messaging = new Messaging(user);
 
             do {
-
                 String choice = (String) ois.readObject();
 
                 switch (choice) {
                     case "1":
-                        //search user
                         String searchedName = (String) ois.readObject();
-                        System.out.println(searchedName);
                         User searchedUser = database.searchUser(searchedName);
-                        System.out.println(searchedUser);
                         String response = "";
                         if (searchedUser != null) {
                             String username = searchedUser.getUsername();
-                            ArrayList<String> itemUserSells = listedItemSearch(username);
+                            ArrayList<String> userItems = listedItemSearch(username);
                             response += "You have found the user: " + username + "\n";
-                            response += "This user is selling: \n";
-                            //response.concat(String.format("You have found the user: %s\n", username));
-                            //response.concat("This user is selling: \n");
-                            if (itemUserSells.isEmpty()) {
-                                response += "nothing \n";
+
+                            if (userItems.isEmpty()) {
+                                response += "This user isn't selling anything \n";
                             } else {
-                                for (int i = 0; i < itemUserSells.size(); i++) {
-                                    response += itemUserSells.get(i) + "\n";
-                                    //response.concat(String.format("%s\n", itemUserSells.get(i)));
+                                response += "This user is selling: \n";
+                                for (int i = 0; i < userItems.size(); i++) {
+                                    response += userItems.get(i) + "\n";
                                 }
                             }
                         } else {
-                            response = "Can't find the user.";
+                            response = "User not found";
                         }
                         oos.writeObject(response);
                         oos.flush();
                         break;
 
-
                     case "2":
+                        Marketplace marketplace = new Marketplace(user);
+                        String item = (String) ois.readObject();
 
-                        Marketplace market = new Marketplace(user);
+                        ArrayList<String> tempItemList = listedItemSearch(item);
+                        ArrayList<String> itemList = new ArrayList<>();
 
-                        String itemSelected = (String) ois.readObject();
-
-                        ArrayList<String> itemSelectedListtemp = listedItemSearch(itemSelected);
-
-                        ArrayList<String> itemSelectedList = new ArrayList<>();
-
-                        for (String i : itemSelectedListtemp) {
-
+                        for (String i : tempItemList) {
                             if (!i.split(",")[3].equals(user.getUsername())) {
-
-                                itemSelectedList.add(i);
-
+                                itemList.add(i);
                             }
-
                         }
 
-                        if(itemSelectedList.isEmpty()) {
-
-                            oos.writeObject(itemSelectedList);
-
-                            oos.flush();
-
-                            System.out.println("There no matched result");
-
-                            break;
-
-                        }
-
-                        oos.writeObject(itemSelectedList);
-
+                        oos.writeObject(itemList);
                         oos.flush();
 
                         double originalBalance = user.getBalance();
 
                         oos.writeObject(originalBalance);
-
                         oos.flush();
 
-                        int itemPurchased =  (Integer) ois.readObject();
+                        int itemPurchasedIndex = (Integer) ois.readObject();
+                        String itemPurchased = itemList.get(itemPurchasedIndex);
+                        String[] parts = itemPurchased.split(",");
 
-                        String itemReturned = itemSelectedList.get(itemPurchased);
+                        User seller = database.searchUser(parts[3]);
+                        String itemID = parts[0];
+                        String itemName = parts[1];
+                        double price = Double.parseDouble(parts[2]);
 
-                        String[] itemReturnedList = itemReturned.split(",");
-
-                        market.buyItem(new Item(itemReturnedList[0], itemReturnedList[1], Double.parseDouble(itemReturnedList[2].trim()), new User(itemReturnedList[3],"123")));
+                        marketplace.buyItem(new Item(itemID, itemName, price, seller));
 
                         double modifiedBalance = user.getBalance();
-
                         oos.writeObject(modifiedBalance);
-
                         oos.flush();
 
                         break;
 
                     case "3":
-
-                        Marketplace marketSell = new Marketplace(user);
+                        Marketplace mp = new Marketplace(user);
 
                         String name = (String) ois.readObject();
+                        price = (double) ois.readObject();
 
-                        double price = (double) ois.readObject();
+                        mp.listItem(name, price);
 
-                        marketSell.listItem(name, price);
-
-                        String finalResponse = "Transaction Success";
-
-                        oos.writeObject(finalResponse);
-
-                        oos.flush();
-                        
-                        //sell item
                         break;
 
                     case "4":
+                        String username;
                         String message;
 
-                        try {
-
-                            username = (String) ois.readObject();
-
-                            message = (String) ois.readObject();
-
-                            messaging.sendMessage(message, username);
-
-                        } catch (IOException e) {
-
-                            e.printStackTrace();
-
-                        }
+                        username = (String) ois.readObject();
+                        message = (String) ois.readObject();
+                        messaging.sendMessage(message, username);
 
                         break;
 
                     case "5":
-                        //check balance
                         double balance = user.getBalance();
                         oos.writeObject(balance);
                         oos.flush();
                         break;
 
                     case "6":
-                        //delete account
+                        String password = (String) ois.readObject();
 
-                        username = (String) ois.readObject();
-
-                        System.out.println(usernameForDel);
-
-                        if (user.getUsername().equals(usernameForDel)) {
+                        if (user.getPassword().equals(password)) {
                             boolean deleteSuccess = deleteUser(user);
                             if (deleteSuccess) {
                                 response = "Account successfully deleted";
-
-                                oos.writeObject(responseForDel);
-
+                                oos.writeObject(response);
                                 oos.flush();
 
                             } else {
@@ -200,7 +146,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                             }
                         }
                         else {
-                            message = "Incorrect username";
+                            message = "Incorrect password";
                             oos.writeObject(message);
                         }
 
@@ -224,36 +170,26 @@ public class Server extends Database implements Runnable, ServerInterface {
 
             } while (true);
 
+
         } catch (IOException e) {
-
             e.printStackTrace();
-
         } catch (ClassNotFoundException e) {
-
             throw new RuntimeException(e);
-
         }
     }
 
     public static void main(String[] args) {
-
         try {
-
             ServerSocket ss = new ServerSocket(4242);
 
             while (true) {
                 Socket socket = ss.accept();
 
                 Thread thread = new Thread(new Server(socket));
-
                 thread.start();
-
             }
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
     }
 }
