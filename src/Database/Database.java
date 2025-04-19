@@ -95,25 +95,7 @@ public class Database implements DatabaseInterface {
                     menu = true;
                     loggedIn = false;
                 }
-            } /*else if (choice == 3) {
-                System.out.println("Enter your full name");
-                String name = scanner.nextLine();
-
-                System.out.println("Enter your email");
-                String email = scanner.nextLine();
-
-                System.out.println("Enter your username");
-                String username = scanner.nextLine();
-
-                System.out.println("Enter your password");
-                String password = scanner.nextLine();
-
-                if (deleteUser(new User(name, email, username, password))) {
-                    menu = false;
-                } else {
-                    menu = true;
-                }
-            } */else {
+            } else {
                 System.out.println("Invalid choice! Please try again");
             }
         } while (menu);
@@ -160,7 +142,8 @@ public class Database implements DatabaseInterface {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
                         true))) {
                     if (User.isValid(user)) {
-                        writer.write(user.toString() + "\n");
+                        writer.write(user.toString());
+                        writer.newLine();
                         System.out.println("Account successfully created!");
                         return true;
                     } else {

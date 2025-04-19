@@ -1,9 +1,7 @@
 package ServerAndClient;
 import Database.Database;
-import Marketplace.Item;
 import user.User;
 
-import java.awt.image.RasterOp;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,277 +9,204 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This is the client class that gets the host and sets up the menu for what the user would like to do
+ *
+ *
+ * Phase 2
+ * @version April 19, 2025
+ */
+
 public class Client extends Database implements Runnable, ClientInterface {
-
     private Socket socket;
-
     private ObjectOutputStream oos;
-
     private ObjectInputStream ois;
 
     public void run() {
-
         Scanner scanner = new Scanner(System.in);
 
         try {
             socket = new Socket("localhost", 4242);
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
-
-            oos.flush();
-
-            ois = new ObjectInputStream(socket.getInputStream());
-
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
-        
+
         User user = introMenu();
-
         try {
-
             oos.writeObject(user);
-
             oos.flush();
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
 
         do {
-
             System.out.println("What would you like to do?");
-
             System.out.println("1. Search User");
-
             System.out.println("2. Buy Item");
-
-            System.out.println("3. Sell Item");
-
+            System.out.println("3. List Item");
             System.out.println("4. Message User");
-
             System.out.println("5. Check Balance");
-
             System.out.println("6. Delete your Account");
 
             String choice = scanner.nextLine();
 
             try {
-
                 oos.writeObject(choice);
-
                 oos.flush();
-
-                System.out.println("Write: " + choice);
 
                 switch (choice) {
                     case "1":
-                        //search user
-                        try {
-                            String enterSearchTerm = (String) ois.readObject();
-                            System.out.println(enterSearchTerm);
-                            oos.writeObject(scanner.nextLine());
-                            oos.flush();
-                            System.out.println((String) ois.readObject());
-                        } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("Enter the username you want to search for:");
+
+                        String searchedUser = scanner.nextLine();
+                        oos.writeObject(searchedUser);
+                        oos.flush();
+
+                        String result = (String) ois.readObject();
+                        System.out.println(result);
+
                         break;
 
                     case "2":
-                        //buy item
-
                         boolean flag = true;
 
                         System.out.println("Type the name of the item you want to purchase: ");
-
-                        String itemSelected = scanner.nextLine();
-
-                        oos.writeObject(itemSelected);
-
+                        String item = scanner.nextLine();
+                        oos.writeObject(item);
                         oos.flush();
 
-                        System.out.println("Write: " + itemSelected);
+                        System.out.println("Here are the items that match your search:");
+                        int itemListSize = 0;
+                        ArrayList<String> itemList = (ArrayList<String>) ois.readObject();
+                        itemListSize = itemList.size();
 
-                        System.out.println("Here is the result for your searching:");
-
-                        int itemSelectedListSize = 0;
-
-                        try {
-
-                            ArrayList<String> itemSelectedList = (ArrayList<String>) ois.readObject();
-
-                            itemSelectedListSize = itemSelectedList.size();
-
-                            if (itemSelectedList.isEmpty()) {
-
-                                System.out.println("There no matched result");
-
-                                break;
-
-                            }
-
-                            for (int i = 0; i < itemSelectedList.size(); i++) {
-
-                                System.out.println((i + 1) + "|" + itemSelectedList.get(i).split(",")[1] + " "
-                                        + itemSelectedList.get(i).split(",")[2] + " "
-                                        + itemSelectedList.get(i).split(",")[3]);
-
-                            }
-
-                        } catch (ClassNotFoundException cne) {
-
-
-                            System.out.println("Read: NONE| Exception Happened");
-
-                            cne.printStackTrace();
-
+                        if (itemList.isEmpty()) {
+                            System.out.println("No matching items found");
+                            break;
                         }
 
-                        int itemPurchased = 0;
+                        System.out.printf("%-5s %-20s %-10s %-15s%n", "No.", "Item Name", "Price", "Seller");
+                        System.out.println("-------------------------------------------------------------");
+
+                        for (int i = 0; i < itemList.size(); i++) {
+                            String[] parts = itemList.get(i).split(",");
+
+                            String itemName = parts[1];
+                            String price = parts[2];
+                            String seller = parts[3];
+
+                            System.out.printf("%-5d %-20s %-10s %-15s%n", i + 1, itemName, price, seller);
+                        }
+
+                        int itemNumber;
 
                         do {
+                            flag = false;
 
-                            try {
+                            System.out.println("Enter the number for the item you want to buy");
+                            itemNumber = scanner.nextInt() - 1;
+                            scanner.nextLine();
 
-                                flag = false;
-
-                                System.out.println("Which One would you prefer? (Select the index)");
-
-                                itemPurchased = Integer.parseInt(scanner.nextLine()) - 1;
-
-                                if (itemPurchased > itemSelectedListSize - 1 || itemPurchased < 0) {
-
-                                    System.out.println("Invalid Input!");
-
-                                    flag = true;
-
-                                }
-
-                            } catch (NumberFormatException nfe) {
-
+                            if (itemNumber > itemListSize - 1 || itemNumber < 0) {
                                 System.out.println("Invalid Input!");
-
                                 flag = true;
-
                             }
 
-                        } while (flag == true);
+                        } while (flag);
 
                         double tempBalance = (double) ois.readObject();
 
-                        oos.writeObject(itemPurchased);
-
+                        oos.writeObject(itemNumber);
                         oos.flush();
 
-                        try {
+                        double modifiedBalance = (double) ois.readObject();
 
-//                            String confirmMessage = (String) ois.readObject();
-//
-//                            System.out.println(confirmMessage);
+                        if (tempBalance == modifiedBalance) {
+                            System.out.println("Transaction Failed! Your balance is not enough!");
 
-                            double modifiedBalance = (double) ois.readObject();
-
-                            if (tempBalance == modifiedBalance) {
-
-                                System.out.println("Transaction Failed! Your balance is not enough!");
-
-                            } else {
-
-                                System.out.println("Transaction succeed! Your current balance: " + modifiedBalance);
-
-                            }
-
-                        } catch (ClassNotFoundException cne) {
-
-                            cne.printStackTrace();
-
+                        } else {
+                            System.out.printf("Transaction successful! Your current balance: %s%n", modifiedBalance);
                         }
 
                         break;
 
                     case "3":
-
-                        System.out.println("Enter the name of the Item: ");
-
+                        System.out.println("Enter the name of the item: ");
                         String name = scanner.nextLine();
 
-                        boolean verify = true;
-
-                        double price = 0;
-
-                        do {
-
-                            verify = false;
-
+                        double price;
+                        while (true) {
+                            System.out.print("Enter the price of the item: ");
                             try {
-
-                                System.out.println("Enter the price of the Item: ");
-
                                 price = Double.parseDouble(scanner.nextLine());
-
-                            } catch (NumberFormatException nfe) {
-
-                                System.out.println("Please enter a valid price!");
-
-                                verify = true;
-
+                                if (price <= 0) {
+                                    System.out.println("Price must be greater than zero.");
+                                } else {
+                                    break;
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid input. Please enter a number.");
                             }
-
-                        } while (verify == true);
+                        }
 
                         oos.writeObject(name);
-
                         oos.flush();
-
                         oos.writeObject(price);
-
                         oos.flush();
 
-                        try {
-
-                            System.out.println((String) ois.readObject());
-
-                        } catch (ClassNotFoundException cnfe) {
-
-                            cnfe.printStackTrace();
-
-                        }
+                        System.out.println("Item was listed");
 
                         break;
 
                     case "4":
-                        System.out.println("Enter the user you want to message:");
-                        String username = scanner.nextLine();
-                        oos.writeObject(username);
+                        Database database = new Database();
+                        String recipient;
+                        while (true) {
+                            System.out.println("Enter the user you want to message:");
+                            recipient = scanner.nextLine();
+
+                            if (!database.userExists(recipient)) {
+                                System.out.printf("User %s does not exist.%n", recipient);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        oos.writeObject(recipient);
                         oos.flush();
 
-                        System.out.println("Enter the message content:");
-                        String message = scanner.nextLine();
+                        String message;
+                        while (true) {
+                            System.out.println("Enter the message content:");
+                            message = scanner.nextLine();
+
+                            if (message.isEmpty()) {
+                                System.out.println("You can't send an empty message");
+                            } else {
+                                break;
+                            }
+                        }
+
                         oos.writeObject(message);
                         oos.flush();
+
+                        System.out.printf("Message sent to %s%n", recipient);
 
                         break;
 
                     case "5":
-                        //check balance
                         Double balance = (Double) ois.readObject();
                         System.out.println("Your current balance is " + balance);
                         break;
-                    case "6":
-                        //delete your account
 
-                        System.out.println("Enter username if you are sure you want to delete your account");
-                        String username1 = scanner.nextLine();
-                        oos.writeObject(username1);
+                    case "6":
+                        System.out.println("Enter your password if you are sure you want to delete your account");
+                        String password = scanner.nextLine();
+                        oos.writeObject(password);
                         oos.flush();
 
-                        System.out.println("test 1");
                         String response;
                         response = (String) ois.readObject();
                         System.out.println(response);
@@ -292,10 +217,8 @@ public class Client extends Database implements Runnable, ClientInterface {
                         System.out.println("Invalid choice");
                         break;
                 }
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
 
             System.out.println("Do you want to perform another action?");
@@ -322,17 +245,12 @@ public class Client extends Database implements Runnable, ClientInterface {
 
 
         } while (true);
-        
+
     }
 
     public static void main(String[] args) {
-
         Client client = new Client();
-
         Thread thread = new Thread(client);
-
         thread.start();
-
-
     }
 }
