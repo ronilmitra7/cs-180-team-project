@@ -40,3 +40,17 @@ Phase 1 submitted by Ronil Mitra
 - **ClientInterface.java**: this interface creates the run method implemented in Client.java.
 
 - **RunLocalTest.java**: this framework runs public test cases. Contains test cases for each method of each class, and additionally contains class declaration tests. 
+
+- **ClientTest.java**: this framework runs public test cases for the client class. Contains the class declaration test for client.
+
+- **DatabaseTest.java**: this framework runs public test cases for the database class. Contains test cases for each method, and additionally contains the class declaration test.
+
+- **ItemTest.java**: this framework runs public test cases for the item class. Contains test cases for each method, and additionally contains the class declaration test.
+
+- **MarketplaceTest.java**: this framework runs public test cases for the marketplace class. Contains test cases for each method, and additionally contains the class declaration test.
+
+- **MessagingTest.java**: this framework runs public test cases for the messaging class. Contains test cases for each method, and additionally contains the class declaration test.
+
+- **ServerTest.java**: this framework runs public test cases for the server class. Contains the class declaration test for server.
+
+- **UserTest.java**: this framework runs public test cases for the user class. Contains test cases for each method, and additionally contains the class declaration test.
