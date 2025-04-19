@@ -2,7 +2,7 @@
 
 ### Instructions
 
-You can compile each class using the terminal and you can run the local test cases to test the functionality of each class. 
+You can compile each class using the terminal and you can run the local test cases to test the functionality of each class. For the Server and Client, run Server.java first and then run Client.java and then complete the intro panel, where you either log in or sign up. After that, it will give you choices and you can test the different operations on the menu. After running the Server and Client successfully, server console should print whether the user's action is successful or not.
 
 ### Submissions
 Phase 1 submitted by Ronil Mitra
@@ -29,6 +29,14 @@ Phase 1 submitted by Ronil Mitra
 
 - **Item.java**: this class implements ItemInterface. It has field variables for the item ID, item name, price, and seller. Both the field variables for ID and seller are final variables. The constructor takes in an item ID, name, price, and seller as parameters and initializes the field variables to their respective parameters. This class contains getters for all field variables, and setters for methods that aren't final. 
 
-- **ItemInterface.java**: this interface creates the accessor and mutator methods in Item.java.  
+- **ItemInterface.java**: this interface creates the accessor and mutator methods in Item.java.
+  
+- **Server.java**: this class extends Database and implements Runnable, and is thread safe. There is a constructor for this class, which takes in a Socket socket as a parameter and initializes the field variable to the respective parameter. There are two methods, a run method and the main method, both returning nothing. The run method establishes a connection with the client and handles user input. It initializes a ServerSocket, waits for client connection, reads the initial user selection and processes client requests based on their choice, and includes a switch statement to handle different user commands. The main method creates an instance of of the Server and runs the server logic using the start() method. 
+
+- **ServerInterface.java**: this interface creates the run method implemented in Server.java. 
+
+- **Client.java**: this class implements Runnable and connects to a server over a network and allows the user to perform many different actions, including searching for users, buying/listing items, messaging, viewing your balance, and deleting your account. There are no constructors in this class, and there are two methods, the run method and the main method, both of which return nothing. The run method prompts the user with a many of various different actions, and establishes a Socket to connect to localhost at port 4242. It reads the user's choice and sends the request to the server. All the menu logic is inside a loop so that the user can perform multiple operations unless they choose to exit. The main method creates a Client object and runs the client logic using the start() method. 
+
+- **ClientInterface.java**: this interface creates the run method implemented in Client.java.
 
 - **RunLocalTest.java**: this framework runs public test cases. Contains test cases for each method of each class, and additionally contains class declaration tests. 
