@@ -76,7 +76,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                         String item = scanner.nextLine();
                         oos.writeObject(item);
                         oos.flush();
-
+                    
                         System.out.println("Here are the items that match your search:");
                         int itemListSize = 0;
                         ArrayList<String> itemList = (ArrayList<String>) ois.readObject();
