@@ -2,6 +2,8 @@ package ServerAndClient;
 import Database.Database;
 import user.User;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,6 +23,33 @@ public class Client extends Database implements Runnable, ClientInterface {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+
+    private void showWelcomePage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setSize(800, 600);
+
+        JPanel welcomePanel = new JPanel();
+
+        JPanel loginPanel = new JPanel();
+
+        JPanel signupPanel = new JPanel();
+    }
+
+    private void showSignupPage(JFrame frame) {
+
+    }
+
+    private void showLoginPage(JFrame frame) {
+
+    }
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
