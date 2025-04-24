@@ -4,6 +4,8 @@ import user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,21 +35,61 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
-        panel.setLayout(null);
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
 
         JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BorderLayout());
+        welcomePanel.setBounds(50, 50, 700, 450);
+        welcomePanel.setBackground(new Color(0, 72, 255, 255));
 
-        JPanel loginPanel = new JPanel();
 
-        JPanel signupPanel = new JPanel();
+        JLabel welcomeLabel = new JLabel("Welcome to the Marketplace!");
+        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
+        welcomeLabel.setForeground(Color.WHITE);
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        welcomePanel.add(welcomeLabel, BorderLayout.CENTER);
+        panel.add(welcomePanel);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(0, 72, 255, 255));
+        menuBar.setLayout(new FlowLayout());
+
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBackground(new Color(0, 72, 255, 255));
+        menuBar.add(loginButton);
+
+        JButton signupButton = new JButton("Signup");
+        signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        signupButton.setForeground(Color.WHITE);
+        signupButton.setBackground(new Color(0, 72, 255, 255));
+        menuBar.add(signupButton);
+
+        panel.add(menuBar, BorderLayout.NORTH);
+        frame.getContentPane().add(panel);
+
+        signupButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                signupPage(frame);
+            }
+        });
+
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loginPage(frame);
+            }
+        });
+
     }
 
-    private void showSignupPage(JFrame frame) {
+    private void signupPage(JFrame frame) {
 
     }
 
-    private void showLoginPage(JFrame frame) {
+    private void loginPage(JFrame frame) {
 
     }
 
@@ -61,6 +103,9 @@ public class Client extends Database implements Runnable, ClientInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        JFrame frame = new JFrame("Marketplace");
+        showWelcomePage(frame);
 
         User user = introMenu();
         try {
