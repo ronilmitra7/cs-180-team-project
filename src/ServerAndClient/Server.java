@@ -1,13 +1,24 @@
 package ServerAndClient;
 import Database.Database;
+import Marketplace.Item;
 import user.User;
 import Messaging.Messaging;
+import Marketplace.Marketplace;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+
+/**
+ * This is the server class where we establish where the user needs to go
+ *
+ *
+ * Phase 2
+ * @version April 19, 2025
+ */
 
 public class Server extends Database implements Runnable, ServerInterface {
     private Socket socket;
@@ -32,34 +43,134 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                 switch (choice) {
                     case "1":
-                        //search user
+                        String searchedName = (String) ois.readObject();
+                        User searchedUser = database.searchUser(searchedName);
+                        String response = "";
+                        if (searchedUser != null) {
+                            String username = searchedUser.getUsername();
+                            ArrayList<String> userItems = listedItemSearch(username);
+                            response += "You have found the user: " + username + "\n";
+
+                            if (userItems.isEmpty()) {
+                                response += "This user isn't selling anything \n";
+                            } else {
+                                response += "This user is selling: \n";
+                                for (int i = 0; i < userItems.size(); i++) {
+                                    response += userItems.get(i) + "\n";
+                                }
+                            }
+                        } else {
+                            response = "User not found";
+                        }
+                        oos.writeObject(response);
+                        oos.flush();
                         break;
 
                     case "2":
-                        //buy item
+                        Marketplace marketplace = new Marketplace(user);
+                        String item = (String) ois.readObject();
+
+                        ArrayList<String> tempItemList = listedItemSearch(item);
+                        ArrayList<String> itemList = new ArrayList<>();
+
+                        for (String i : tempItemList) {
+                            if (!i.split(",")[3].equals(user.getUsername())) {
+                                itemList.add(i);
+                            }
+                        }
+
+                        oos.writeObject(itemList);
+                        oos.flush();
+
+                        double originalBalance = user.getBalance();
+
+                        oos.writeObject(originalBalance);
+                        oos.flush();
+
+                        int itemPurchasedIndex = (Integer) ois.readObject();
+                        String itemPurchased = itemList.get(itemPurchasedIndex);
+                        String[] parts = itemPurchased.split(",");
+
+                        User seller = database.searchUser(parts[3]);
+                        String itemID = parts[0];
+                        String itemName = parts[1];
+                        double price = Double.parseDouble(parts[2]);
+
+                        marketplace.buyItem(new Item(itemID, itemName, price, seller));
+
+                        double modifiedBalance = user.getBalance();
+                        oos.writeObject(modifiedBalance);
+                        oos.flush();
+
                         break;
 
                     case "3":
-                        //sell item
+                        Marketplace mp = new Marketplace(user);
+
+                        String name = (String) ois.readObject();
+                        price = (double) ois.readObject();
+
+                        mp.listItem(name, price);
+
                         break;
 
                     case "4":
-                        //message user
+                        String username;
+                        String message;
+
+                        username = (String) ois.readObject();
+                        message = (String) ois.readObject();
+                        messaging.sendMessage(message, username);
+
                         break;
 
                     case "5":
-                        //check balance
+                        double balance = user.getBalance();
+                        oos.writeObject(balance);
+                        oos.flush();
                         break;
 
                     case "6":
-                        //delete account
+                        String password = (String) ois.readObject();
+
+                        if (user.getPassword().equals(password)) {
+                            boolean deleteSuccess = deleteUser(user);
+                            if (deleteSuccess) {
+                                response = "Account successfully deleted";
+                                oos.writeObject(response);
+                                oos.flush();
+
+                            } else {
+                                oos.writeObject("Failed to delete account");
+                                oos.flush();
+                            }
+                        }
+                        else {
+                            message = "Incorrect password";
+                            oos.writeObject(message);
+                        }
+
+                        oos.flush();
                         break;
 
                     default:
                         break;
                 }
 
+                String selection;
+
+                try {
+                    selection = (String) ois.readObject();
+                    if (selection.equals("2")) {
+                        break;
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             } while (true);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -72,9 +183,7 @@ public class Server extends Database implements Runnable, ServerInterface {
             ServerSocket ss = new ServerSocket(4242);
 
             while (true) {
-                System.out.println("Waiting for connection...");
                 Socket socket = ss.accept();
-                System.out.println("Connection accepted");
 
                 Thread thread = new Thread(new Server(socket));
                 thread.start();

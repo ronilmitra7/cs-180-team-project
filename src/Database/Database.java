@@ -18,8 +18,10 @@ import java.util.Scanner;
  */
 
 public class Database implements DatabaseInterface {
+
     private boolean menu;
-    User user;
+
+    private User user;
 
     public User introMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -72,14 +74,19 @@ public class Database implements DatabaseInterface {
                     try (BufferedReader reader = new BufferedReader(new FileReader("userProfileDatabase.txt"))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
+
                             String[] parts = line.split(",");
+
                             if (parts[2].equals(username)) {
+
                                 name = parts[0];
+
                                 email = parts[1];
                             }
                         }
 
                         user = new User(name, email, username, password);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -88,25 +95,7 @@ public class Database implements DatabaseInterface {
                     menu = true;
                     loggedIn = false;
                 }
-            } /*else if (choice == 3) {
-                System.out.println("Enter your full name");
-                String name = scanner.nextLine();
-
-                System.out.println("Enter your email");
-                String email = scanner.nextLine();
-
-                System.out.println("Enter your username");
-                String username = scanner.nextLine();
-
-                System.out.println("Enter your password");
-                String password = scanner.nextLine();
-
-                if (deleteUser(new User(name, email, username, password))) {
-                    menu = false;
-                } else {
-                    menu = true;
-                }
-            } */else {
+            } else {
                 System.out.println("Invalid choice! Please try again");
             }
         } while (menu);

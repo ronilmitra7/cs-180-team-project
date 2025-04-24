@@ -38,7 +38,7 @@ public class Marketplace implements MarketplaceInterface {
                     if (item.toString().equals(line)) {
                         String[] parts = line.split(",");
                         double price = Double.parseDouble(parts[2]);
-                        User seller = item.getSeller();
+                        User seller = database.searchUser(item.getSeller().getUsername());
 
                         if (user.getBalance() < price) {
                             System.out.println("You do not have enough money to buy this item");
