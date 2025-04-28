@@ -110,6 +110,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JButton buyButton = new JButton("Buy Item");
         JButton listButton = new JButton("List Item");
         JButton messageButton = new JButton("Message User");
+        JButton checkMessageButton = new JButton("Check Messages");
         JButton balanceButton = new JButton("Check Balance");
         JButton deleteButton = new JButton("Delete your Account");
 
@@ -117,6 +118,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         panel.add(buyButton);
         panel.add(listButton);
         panel.add(messageButton);
+        panel.add(checkMessageButton);
         panel.add(balanceButton);
         panel.add(deleteButton);
 
@@ -138,7 +140,31 @@ public class Client extends Database implements Runnable, ClientInterface {
     }
 
     private void messageUserPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+    }
+
+    private void receiveMessagePage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
     }
 
     private void balancePage(JFrame frame) {
