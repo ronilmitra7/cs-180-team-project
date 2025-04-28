@@ -93,6 +93,62 @@ public class Client extends Database implements Runnable, ClientInterface {
 
     }
 
+    private void menuPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JButton searchButton = new JButton("Search User");
+        JButton buyButton = new JButton("Buy Item");
+        JButton listButton = new JButton("List Item");
+        JButton messageButton = new JButton("Message User");
+        JButton balanceButton = new JButton("Check Balance");
+        JButton deleteButton = new JButton("Delete your Account");
+
+        panel.add(searchButton);
+        panel.add(buyButton);
+        panel.add(listButton);
+        panel.add(messageButton);
+        panel.add(balanceButton);
+        panel.add(deleteButton);
+
+        frame.getContentPane().add(panel);
+        panel.setVisible(true);
+        frame.setVisible(true);
+    }
+
+    private void searchUserPage(JFrame frame) {
+
+    }
+
+    private void buyItemPage(JFrame frame) {
+
+    }
+
+    private void listItemPage(JFrame frame) {
+
+    }
+
+    private void messageUserPage(JFrame frame) {
+
+    }
+
+    private void balancePage(JFrame frame) {
+
+    }
+
+    private void deletePage(JFrame frame) {
+
+    }
+
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
