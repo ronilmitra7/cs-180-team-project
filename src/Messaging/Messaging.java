@@ -42,12 +42,13 @@ public class Messaging implements MessagingInterface {
     }
 
     public String receiveMessage(String username) {
+        ArrayList<String> messages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[2].equals(username)) {
-                    return String.format("From %s: %s", username, parts[0]);
+                    messages.add(parts[0]);
                 }
             }
         } catch (IOException e) {

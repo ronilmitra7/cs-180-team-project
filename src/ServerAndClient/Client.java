@@ -1,6 +1,7 @@
 package ServerAndClient;
 import Database.Database;
 import user.User;
+import Messaging.Messaging;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class Client extends Database implements Runnable, ClientInterface {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private User user;
 
     private void showWelcomePage(JFrame frame) {
         frame.getContentPane().removeAll();
@@ -122,6 +124,18 @@ public class Client extends Database implements Runnable, ClientInterface {
         panel.add(balanceButton);
         panel.add(deleteButton);
 
+        messageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                messageUserPage(frame);
+            }
+        });
+
+        checkMessageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                receiveMessagePage(frame);
+            }
+        });
+
         frame.getContentPane().add(panel);
         panel.setVisible(true);
         frame.setVisible(true);
@@ -191,7 +205,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     String error = String.format("User %s doesn't exist", username);
-                    JOptionPane.showMessageDialog(frame, message, null, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, error, null, JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -207,12 +221,37 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JButton checkMessagesButton = new JButton("Check Messages");
+        checkMessagesButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        checkMessagesButton.setBounds(300, 400, 200, 40);
+        panel.add(checkMessagesButton);
+
+        checkMessagesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+
+                Database database = new Database();
+                Messaging messaging = new Messaging(user);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
     }
 
     private void balancePage(JFrame frame) {
@@ -237,7 +276,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JFrame frame = new JFrame("Marketplace");
         showWelcomePage(frame);
 
-        User user = introMenu();
+        user = introMenu();
         try {
             oos.writeObject(user);
             oos.flush();
