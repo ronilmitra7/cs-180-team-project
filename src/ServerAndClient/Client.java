@@ -145,12 +145,60 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JLabel messageLabel = new JLabel("Message: ");
+        messageLabel.setBounds(100, 120, 500, 200);
+        messageLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(messageLabel);
+
+        JTextField messageField = new JTextField();
+        messageField.setBounds(100, 250, 300, 45);
+        panel.add(messageField);
+
+        JButton sendButton = new JButton("Send Message");
+        sendButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        sendButton.setBounds(300, 400, 200, 40);
+        panel.add(sendButton);
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String message = messageField.getText();
+                Database database = new Database();
+
+                if (message.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                if (database.userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "Message Sent", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String error = String.format("User %s doesn't exist", username);
+                    JOptionPane.showMessageDialog(frame, message, null, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+
     }
 
     private void receiveMessagePage(JFrame frame) {
