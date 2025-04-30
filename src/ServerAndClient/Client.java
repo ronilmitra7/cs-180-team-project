@@ -134,12 +134,12 @@ public class Client extends Database implements Runnable, ClientInterface {
         panel.add(passwordField);
 
         JButton signUpButton = new JButton("Sign Up");
-        signUpButton.setFont(new Font("Oscar Oboe", Font.BOLD, 20));
+        signUpButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
         signUpButton.setBounds(300, 450, 200, 40);
         panel.add(signUpButton);
 
         JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Oscar Oboe", Font.BOLD, 20));
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
         backButton.setBounds(300, 450, 200, 40);
         panel.add(backButton);
 
@@ -179,10 +179,63 @@ public class Client extends Database implements Runnable, ClientInterface {
                 welcomePage(frame);
             }
         });
+
+        frame.add(panel);
+        frame.setVisible(true);
     }
 
     private void loginPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
 
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(0, 72, 255, 255));
+
+        JLabel usernameLabel = new JLabel("Enter your username");
+        usernameLabel.setBounds(100, 150, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(370, 150, 300, 45);
+        panel.add(usernameField);
+
+        JLabel passwordLabel = new JLabel("Enter your password");
+        passwordLabel.setBounds(100, 150, 500, 50);
+        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(passwordLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(370, 150, 300, 45);
+        panel.add(passwordField);
+
+        JButton logInButton = new JButton("Log In");
+        logInButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        logInButton.setBounds(300, 450, 200, 40);
+        panel.add(logInButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        backButton.setBounds(300, 450, 200, 40);
+        panel.add(backButton);
+
+        logInButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                welcomePage(frame);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
     }
 
     private void menuPage(JFrame frame) {
