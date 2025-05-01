@@ -224,7 +224,19 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         logInButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+                Database database = new Database();
 
+                user = new User(username, password);
+
+                if (database.logIn(user)) {
+                    menuPage(frame);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Make sure you enter in your username and password correctly",
+                            null, JOptionPane.ERROR_MESSAGE);
+                    user = null;
+                }
             }
         });
 
@@ -321,6 +333,10 @@ public class Client extends Database implements Runnable, ClientInterface {
                 //Todo: do smth with searchTerm ^
             }
         });
+
+        content.add(searchButton, BorderLayout.SOUTH);
+        frame.add(content);
+        frame.setVisible(true);
 
     }
 
