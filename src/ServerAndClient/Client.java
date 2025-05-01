@@ -320,6 +320,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.getContentPane().removeAll();
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
