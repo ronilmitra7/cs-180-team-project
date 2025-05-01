@@ -325,7 +325,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setLocationRelativeTo(null);
 
         JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new BorderLayout());
+        searchPanel.setLayout(new FlowLayout());
         searchPanel.setBackground(new Color(0, 72, 255, 255));
         searchPanel.setSize(800, 45);
         content.add(searchPanel, BorderLayout.NORTH);
