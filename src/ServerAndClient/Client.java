@@ -335,8 +335,27 @@ public class Client extends Database implements Runnable, ClientInterface {
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
-                displaySearches.setText("");
-                //Todo: do smth with searchTerm ^
+                Database database = new Database();
+
+                User searchedUser = database.searchUser(searchTerm);
+                String response = "";
+                if (searchedUser != null) {
+                    String username = searchedUser.getUsername();
+                    ArrayList<String> userItems = listedItemSearch(username);
+                    response += "You have found the user: " + username + "\n";
+
+                    if (userItems.isEmpty()) {
+                        response += "This user isn't selling anything \n";
+                    } else {
+                        response += "This user is selling: \n";
+                        for (int i = 0; i < userItems.size(); i++) {
+                            response += userItems.get(i) + "\n";
+                        }
+                    }
+                } else {
+                    response = "User not found";
+                }
+                displaySearches.setText(response);
             }
         });
 
