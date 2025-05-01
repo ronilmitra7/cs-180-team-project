@@ -454,7 +454,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         priceLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(priceLabel);
 
-        JTextField priceField = new JPasswordField();
+        JTextField priceField = new JTextField();
         priceField.setBounds(370, 210, 300, 30);
         panel.add(priceField);
 
