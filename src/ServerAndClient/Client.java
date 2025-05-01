@@ -487,8 +487,11 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                 try {
                     oos.writeObject("3");
+                    oos.flush();
                     oos.writeObject(name);
+                    oos.flush();
                     oos.writeObject(price);
+                    oos.flush();
 
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -565,7 +568,6 @@ public class Client extends Database implements Runnable, ClientInterface {
                 String username = usernameField.getText();
                 String message = messageArea.getText();
                 Database database = new Database();
-                Messaging messaging = new Messaging(user);
 
                 if (message.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
@@ -573,13 +575,25 @@ public class Client extends Database implements Runnable, ClientInterface {
                     return;
                 }
 
-                if (database.userExists(username)) {
-                    messaging.sendMessage(message, username);
-                    JOptionPane.showMessageDialog(frame, "Message Sent", null,
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
+                if (!database.userExists(username)) {
                     String error = String.format("User %s doesn't exist", username);
                     JOptionPane.showMessageDialog(frame, error, null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    oos.writeObject("4");
+                    oos.flush();
+                    oos.writeObject(username);
+                    oos.flush();
+                    oos.writeObject(message);
+                    oos.flush();
+
+                    JOptionPane.showMessageDialog(frame, "Message Sent", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
