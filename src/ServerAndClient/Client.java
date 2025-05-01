@@ -168,6 +168,13 @@ public class Client extends Database implements Runnable, ClientInterface {
                 } else {
                     user = new User(name, email, username, password);
                     database.signUp(user);
+
+                    try {
+                        oos.writeObject(user);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
                     menuPage(frame);
                 }
             }
@@ -231,6 +238,12 @@ public class Client extends Database implements Runnable, ClientInterface {
                 user = new User(username, password);
 
                 if (database.logIn(user)) {
+                    try {
+                        oos.writeObject(user);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
                     menuPage(frame);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Make sure you enter in your username and password correctly",
@@ -457,7 +470,31 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         listItemButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String name = itemNameField.getText();
+                double price;
 
+                try {
+                    price = Double.parseDouble(priceField.getText());
+
+                    if (price <= 0) {
+                        JOptionPane.showMessageDialog(frame, "Price can't be 0 or lower", null, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Please enter a valid price", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    oos.writeObject("3");
+                    oos.writeObject(name);
+                    oos.writeObject(price);
+
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                JOptionPane.showMessageDialog(frame, "Item Listed", null, JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
