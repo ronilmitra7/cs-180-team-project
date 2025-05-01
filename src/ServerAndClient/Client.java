@@ -339,9 +339,9 @@ public class Client extends Database implements Runnable, ClientInterface {
         searchLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(searchLabel);
 
-        JTextPane displaySearches = new JTextPane();
-        displaySearches.setSize(800, 400);
-        content.add(displaySearches, BorderLayout.CENTER);
+        JTextField searchField = new JTextField();
+        searchField.setBounds(200, 50, 400, 30);
+        panel.add(searchField);
 
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(500, 0, 100, 45);
