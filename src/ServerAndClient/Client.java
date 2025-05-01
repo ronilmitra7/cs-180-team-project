@@ -339,7 +339,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         content.add(displaySearches, BorderLayout.CENTER);
 
         JButton searchButton = new JButton("Search");
-        searchButton.setBounds(300, 45, 300, 45);
+        searchButton.setBounds(500, 0, 100, 45);
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
