@@ -392,28 +392,26 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String searchTerm = searchField.getText();
-                Database database = new Database();
+                String username = searchField.getText();
 
-                User searchedUser = database.searchUser(searchTerm);
-                String response = "";
-                if (searchedUser != null) {
-                    String username = searchedUser.getUsername();
-                    ArrayList<String> userItems = listedItemSearch(username);
-                    response += "You have found the user: " + username + "\n";
-
-                    if (userItems.isEmpty()) {
-                        response += "This user isn't selling anything \n";
-                    } else {
-                        response += "This user is selling: \n";
-                        for (int i = 0; i < userItems.size(); i++) {
-                            response += userItems.get(i) + "\n";
-                        }
-                    }
-                } else {
-                    response = "User not found";
+                if (!userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "User not found", null, JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-                searchResult.setText(response);
+
+                try {
+                    oos.writeObject("1");
+                    oos.flush();
+                    oos.writeObject(username);
+                    oos.flush();
+
+                    String results = (String) ois.readObject();
+                    searchResult.setText(results);
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
 
@@ -472,6 +470,11 @@ public class Client extends Database implements Runnable, ClientInterface {
             public void actionPerformed(ActionEvent e) {
                 String name = itemNameField.getText();
                 double price;
+
+                if (name.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Item name can't be empty", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 try {
                     price = Double.parseDouble(priceField.getText());
@@ -661,8 +664,17 @@ public class Client extends Database implements Runnable, ClientInterface {
 
                 if (!database.userExists(username)) {
                     JOptionPane.showMessageDialog(frame, "User not found", null, JOptionPane.ERROR_MESSAGE);
-                } else {
-                    ArrayList<String> messages = messaging.receiveMessage(username);
+                    return;
+                }
+
+                try {
+                    oos.writeObject("5");
+                    oos.flush();
+                    oos.writeObject(username);
+                    oos.flush();
+
+                    ArrayList<String> messages = (ArrayList<String>) ois.readObject();
+
                     if (messages.isEmpty()) {
                         messageArea.setText("No messages found");
                     } else {
@@ -670,6 +682,9 @@ public class Client extends Database implements Runnable, ClientInterface {
                             messageArea.append(message + "\n");
                         }
                     }
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
