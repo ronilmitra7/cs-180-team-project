@@ -276,6 +276,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JButton checkMessageButton = new JButton("Check Messages");
         JButton balanceButton = new JButton("Check Balance");
         JButton deleteButton = new JButton("Delete your Account");
+        JButton logoutButton = new JButton("Log Out");
 
         panel.add(searchButton);
         panel.add(buyButton);
@@ -284,6 +285,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         panel.add(checkMessageButton);
         panel.add(balanceButton);
         panel.add(deleteButton);
+        panel.add(logoutButton);
 
         messageButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -300,6 +302,12 @@ public class Client extends Database implements Runnable, ClientInterface {
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 searchUserPage(frame);
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                welcomePage(frame);
             }
         });
 
@@ -362,38 +370,48 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        panel.setLayout(null);
         panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
 
         JLabel usernameLabel = new JLabel("Username: ");
-        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setBounds(100, 50, 120, 30);
+        usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
-        usernameField.setBounds(100, 250, 300, 45);
+        usernameField.setBounds(200, 50, 480, 30);
         panel.add(usernameField);
 
         JLabel messageLabel = new JLabel("Message: ");
-        messageLabel.setBounds(100, 120, 500, 200);
+        messageLabel.setBounds(100, 100, 100, 30);
+        messageLabel.setForeground(Color.WHITE);
         messageLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(messageLabel);
 
-        JTextField messageField = new JTextField();
-        messageField.setBounds(100, 250, 300, 45);
-        panel.add(messageField);
+        JTextArea messageArea = new JTextArea();
+        messageArea.setLineWrap(true);
+        messageArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        scrollPane.setBounds(200, 100, 480, 250);
+        panel.add(scrollPane);
 
-        JButton sendButton = new JButton("Send Message");
+        JButton sendButton = new JButton("Send");
         sendButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
-        sendButton.setBounds(300, 400, 200, 40);
+        sendButton.setBounds(250, 400, 130, 40);
         panel.add(sendButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        backButton.setBounds(420, 400, 130, 40);
+        panel.add(backButton);
 
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-                String message = messageField.getText();
+                String message = messageArea.getText();
                 Database database = new Database();
 
                 if (message.isEmpty()) {
@@ -408,6 +426,12 @@ public class Client extends Database implements Runnable, ClientInterface {
                     String error = String.format("User %s doesn't exist", username);
                     JOptionPane.showMessageDialog(frame, error, null, JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
             }
         });
 
