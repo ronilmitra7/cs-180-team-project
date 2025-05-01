@@ -535,7 +535,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                         messageArea.setText("No messages found");
                     } else {
                         for (String message : messages) {
-                            messageArea.append(message);
+                            messageArea.append(message + "\n");
                         }
                     }
                 }
