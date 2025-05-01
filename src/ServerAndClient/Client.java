@@ -60,14 +60,10 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         JButton loginButton = new JButton("Log in");
         loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(loginButton);
 
         JButton signupButton = new JButton("Sign up");
         signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        signupButton.setForeground(Color.WHITE);
-        signupButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(signupButton);
 
         signupButton.addActionListener(new ActionListener() {
@@ -476,13 +472,16 @@ public class Client extends Database implements Runnable, ClientInterface {
                 String username = usernameField.getText();
                 String message = messageArea.getText();
                 Database database = new Database();
+                Messaging messaging = new Messaging(user);
 
                 if (message.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
                             JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 if (database.userExists(username)) {
+                    messaging.sendMessage(message, username);
                     JOptionPane.showMessageDialog(frame, "Message Sent", null,
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
