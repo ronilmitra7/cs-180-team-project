@@ -127,12 +127,20 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "5":
+                        username = (String) ois.readObject();
+
+                        ArrayList<String> messages = messaging.receiveMessage(username);
+                        oos.writeObject(messages);
+                        oos.flush();
+                        break;
+
+                    case "6":
                         double balance = user.getBalance();
                         oos.writeObject(balance);
                         oos.flush();
                         break;
 
-                    case "6":
+                    case "7":
                         String password = (String) ois.readObject();
 
                         if (user.getPassword().equals(password)) {

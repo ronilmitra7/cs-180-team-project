@@ -722,8 +722,9 @@ public class Client extends Database implements Runnable, ClientInterface {
             System.out.println("2. Buy Item");
             System.out.println("3. List Item");
             System.out.println("4. Message User");
-            System.out.println("5. Check Balance");
-            System.out.println("6. Delete your Account");
+            System.out.println("5. Check Messages");
+            System.out.println("6. Check Balance");
+            System.out.println("7. Delete your Account");
 
             String choice = scanner.nextLine();
 
@@ -872,11 +873,41 @@ public class Client extends Database implements Runnable, ClientInterface {
                         break;
 
                     case "5":
+                        Database db = new Database();
+                        String username;
+
+                        while (true) {
+                            System.out.println("Enter the user you want to check messages from:");
+                            username = scanner.nextLine();
+
+                            if (!db.userExists(username)) {
+                                System.out.printf("User %s does not exist.%n", username);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        oos.writeObject(username);
+                        oos.flush();
+
+                        ArrayList<String> messages = (ArrayList<String>) ois.readObject();
+
+                        if (messages.isEmpty()) {
+                            System.out.println("No messages found");
+                        } else {
+                            for (String line : messages) {
+                                System.out.println(line);
+                            }
+                        }
+
+                        break;
+
+                    case "6":
                         Double balance = (Double) ois.readObject();
                         System.out.println("Your current balance is " + balance);
                         break;
 
-                    case "6":
+                    case "7":
                         System.out.println("Enter your password if you are sure you want to delete your account");
                         String password = scanner.nextLine();
                         oos.writeObject(password);
