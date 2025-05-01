@@ -31,7 +31,7 @@ public class Client extends Database implements Runnable, ClientInterface {
     private void welcomePage(JFrame frame) {
         frame.getContentPane().removeAll();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setBackground(new Color(0, 72, 255));
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -58,20 +58,17 @@ public class Client extends Database implements Runnable, ClientInterface {
         menuBar.setBackground(new Color(0, 72, 255, 255));
         menuBar.setLayout(new FlowLayout());
 
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Log in");
         loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(loginButton);
 
-        JButton signupButton = new JButton("Signup");
+        JButton signupButton = new JButton("Sign up");
         signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
         signupButton.setForeground(Color.WHITE);
         signupButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(signupButton);
-
-        panel.add(menuBar, BorderLayout.NORTH);
-        frame.getContentPane().add(panel);
 
         signupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -85,6 +82,10 @@ public class Client extends Database implements Runnable, ClientInterface {
             }
         });
 
+        panel.add(menuBar, BorderLayout.NORTH);
+        frame.getContentPane().add(panel);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void signupPage(JFrame frame) {
@@ -96,51 +97,52 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setLayout(null);
 
         JLabel nameLabel = new JLabel("Enter your full name");
-        nameLabel.setBounds(100, 150, 500, 50);
+        nameLabel.setBounds(100, 100, 250, 30);
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(nameLabel);
 
         JTextField nameField = new JTextField();
-        nameField.setBounds(370, 150, 300, 45);
+        nameField.setBounds(370, 100, 300, 30);
         panel.add(nameField);
 
         JLabel emailLabel = new JLabel("Enter your email");
-        emailLabel.setBounds(100, 150, 500, 50);
+        emailLabel.setBounds(100, 160, 300, 30);
         emailLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(emailLabel);
 
         JTextField emailField = new JTextField();
-        emailField.setBounds(370, 150, 300, 45);
+        emailField.setBounds(370, 160, 300, 30);
         panel.add(emailField);
 
         JLabel usernameLabel = new JLabel("Enter your username");
-        usernameLabel.setBounds(100, 150, 500, 50);
+        usernameLabel.setBounds(100, 220, 250, 30);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
-        usernameField.setBounds(370, 150, 300, 45);
+        usernameField.setBounds(370, 220, 300, 30);
         panel.add(usernameField);
 
         JLabel passwordLabel = new JLabel("Enter your password");
-        passwordLabel.setBounds(100, 150, 500, 50);
+        passwordLabel.setBounds(100, 280, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(370, 150, 300, 45);
+        passwordField.setBounds(370, 280, 300, 30);
         panel.add(passwordField);
 
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        signUpButton.setBounds(300, 450, 200, 40);
+        signUpButton.setBounds(230, 360, 150, 40);
         panel.add(signUpButton);
 
         JButton backButton = new JButton("Back");
         backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        backButton.setBounds(300, 450, 200, 40);
+        backButton.setBounds(410, 360, 150, 40);
         panel.add(backButton);
 
         signUpButton.addActionListener(new ActionListener() {
@@ -164,11 +166,12 @@ public class Client extends Database implements Runnable, ClientInterface {
                 } else if (password.contains(" ")) {
                     JOptionPane.showMessageDialog(frame, "Password can't contain spaces", null,
                             JOptionPane.ERROR_MESSAGE);
-                } else if (password.length() < 11) {
+                } else if (password.length() > 11) {
                     JOptionPane.showMessageDialog(frame, "Password cannot exceed 11 characters", null,
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     user = new User(name, email, username, password);
+                    database.signUp(user);
                     menuPage(frame);
                 }
             }
@@ -193,33 +196,34 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setLayout(null);
 
         JLabel usernameLabel = new JLabel("Enter your username");
-        usernameLabel.setBounds(100, 150, 500, 50);
+        usernameLabel.setBounds(100, 150, 250, 30);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
-        usernameField.setBounds(370, 150, 300, 45);
+        usernameField.setBounds(370, 150, 300, 30);
         panel.add(usernameField);
 
         JLabel passwordLabel = new JLabel("Enter your password");
-        passwordLabel.setBounds(100, 150, 500, 50);
+        passwordLabel.setBounds(100, 210, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(370, 150, 300, 45);
+        passwordField.setBounds(370, 210, 300, 30);
         panel.add(passwordField);
 
         JButton logInButton = new JButton("Log In");
         logInButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        logInButton.setBounds(300, 450, 200, 40);
+        logInButton.setBounds(230, 300, 150, 40);
         panel.add(logInButton);
 
         JButton backButton = new JButton("Back");
         backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        backButton.setBounds(300, 450, 200, 40);
+        backButton.setBounds(410, 300, 150, 40);
         panel.add(backButton);
 
         logInButton.addActionListener(new ActionListener() {
@@ -248,6 +252,8 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         frame.add(panel);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void menuPage(JFrame frame) {
