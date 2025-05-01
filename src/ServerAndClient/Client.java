@@ -324,22 +324,47 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
 
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout());
-        searchPanel.setBackground(new Color(0, 72, 255, 255));
-        searchPanel.setSize(800, 45);
-        content.add(searchPanel, BorderLayout.NORTH);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
 
-        JTextField searchField = new JTextField("Search a User...");
-        searchField.setBounds(0, 0, 500, 45);
-        searchPanel.add(searchField);
+        JLabel searchLabel = new JLabel("Search: ");
+        searchLabel.setBounds(70, 50, 120, 30);
+        searchLabel.setForeground(Color.WHITE);
+        searchLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(searchLabel);
 
-        JTextPane displaySearches = new JTextPane();
-        displaySearches.setSize(800, 400);
-        content.add(displaySearches, BorderLayout.CENTER);
+        JTextField searchField = new JTextField();
+        searchField.setBounds(200, 50, 400, 30);
+        panel.add(searchField);
 
         JButton searchButton = new JButton("Search");
-        searchButton.setBounds(500, 0, 100, 45);
+        searchButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        searchButton.setBounds(320, 100, 160, 35);
+        panel.add(searchButton);
+
+        JTextArea searchResult = new JTextArea();
+        searchResult.setEditable(false);
+        searchResult.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        searchResult.setLineWrap(true);
+        searchResult.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(searchResult);
+        scrollPane.setBounds(200, 150, 400, 250);
+        panel.add(scrollPane);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        backButton.setBounds(320, 420, 160, 35);
+        panel.add(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
+            }
+        });
+
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
