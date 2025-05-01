@@ -1,9 +1,12 @@
 package ServerAndClient;
 import Database.Database;
 import user.User;
+import Messaging.Messaging;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,8 +26,9 @@ public class Client extends Database implements Runnable, ClientInterface {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private User user;
 
-    private void showWelcomePage(JFrame frame) {
+    private void welcomePage(JFrame frame) {
         frame.getContentPane().removeAll();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(new Color(0, 72, 255, 255));
@@ -33,21 +37,371 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
-        panel.setLayout(null);
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
 
         JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BorderLayout());
+        welcomePanel.setBounds(50, 50, 700, 450);
+        welcomePanel.setBackground(new Color(0, 72, 255, 255));
 
-        JPanel loginPanel = new JPanel();
 
-        JPanel signupPanel = new JPanel();
+        JLabel welcomeLabel = new JLabel("Welcome to the Marketplace!");
+        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 40));
+        welcomeLabel.setForeground(Color.WHITE);
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        welcomePanel.add(welcomeLabel, BorderLayout.CENTER);
+        panel.add(welcomePanel);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(0, 72, 255, 255));
+        menuBar.setLayout(new FlowLayout());
+
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBackground(new Color(0, 72, 255, 255));
+        menuBar.add(loginButton);
+
+        JButton signupButton = new JButton("Signup");
+        signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        signupButton.setForeground(Color.WHITE);
+        signupButton.setBackground(new Color(0, 72, 255, 255));
+        menuBar.add(signupButton);
+
+        panel.add(menuBar, BorderLayout.NORTH);
+        frame.getContentPane().add(panel);
+
+        signupButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                signupPage(frame);
+            }
+        });
+
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loginPage(frame);
+            }
+        });
+
     }
 
-    private void showSignupPage(JFrame frame) {
+    private void signupPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(0, 72, 255, 255));
+
+        JLabel nameLabel = new JLabel("Enter your full name");
+        nameLabel.setBounds(100, 150, 500, 50);
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(nameLabel);
+
+        JTextField nameField = new JTextField();
+        nameField.setBounds(370, 150, 300, 45);
+        panel.add(nameField);
+
+        JLabel emailLabel = new JLabel("Enter your email");
+        emailLabel.setBounds(100, 150, 500, 50);
+        emailLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(emailLabel);
+
+        JTextField emailField = new JTextField();
+        emailField.setBounds(370, 150, 300, 45);
+        panel.add(emailField);
+
+        JLabel usernameLabel = new JLabel("Enter your username");
+        usernameLabel.setBounds(100, 150, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(370, 150, 300, 45);
+        panel.add(usernameField);
+
+        JLabel passwordLabel = new JLabel("Enter your password");
+        passwordLabel.setBounds(100, 150, 500, 50);
+        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(passwordLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(370, 150, 300, 45);
+        panel.add(passwordField);
+
+        JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        signUpButton.setBounds(300, 450, 200, 40);
+        panel.add(signUpButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        backButton.setBounds(300, 450, 200, 40);
+        panel.add(backButton);
+
+        signUpButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String email = emailField.getText();
+                String username = usernameField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+
+                Database database = new Database();
+
+                if (database.userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "Username already in use", null,
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (username.contains(",") || username.contains(" ")) {
+                    JOptionPane.showMessageDialog(frame, "Username can't contain commas or spaces", null,
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (username.length() > 11) {
+                    JOptionPane.showMessageDialog(frame, "Username cannot exceed 11 characters", null,
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (password.contains(" ")) {
+                    JOptionPane.showMessageDialog(frame, "Password can't contain spaces", null,
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (password.length() < 11) {
+                    JOptionPane.showMessageDialog(frame, "Password cannot exceed 11 characters", null,
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    user = new User(name, email, username, password);
+                    menuPage(frame);
+                }
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                welcomePage(frame);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    private void loginPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(0, 72, 255, 255));
+
+        JLabel usernameLabel = new JLabel("Enter your username");
+        usernameLabel.setBounds(100, 150, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(370, 150, 300, 45);
+        panel.add(usernameField);
+
+        JLabel passwordLabel = new JLabel("Enter your password");
+        passwordLabel.setBounds(100, 150, 500, 50);
+        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(passwordLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(370, 150, 300, 45);
+        panel.add(passwordField);
+
+        JButton logInButton = new JButton("Log In");
+        logInButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        logInButton.setBounds(300, 450, 200, 40);
+        panel.add(logInButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        backButton.setBounds(300, 450, 200, 40);
+        panel.add(backButton);
+
+        logInButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                welcomePage(frame);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    private void menuPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JButton searchButton = new JButton("Search User");
+        JButton buyButton = new JButton("Buy Item");
+        JButton listButton = new JButton("List Item");
+        JButton messageButton = new JButton("Message User");
+        JButton checkMessageButton = new JButton("Check Messages");
+        JButton balanceButton = new JButton("Check Balance");
+        JButton deleteButton = new JButton("Delete your Account");
+
+        panel.add(searchButton);
+        panel.add(buyButton);
+        panel.add(listButton);
+        panel.add(messageButton);
+        panel.add(checkMessageButton);
+        panel.add(balanceButton);
+        panel.add(deleteButton);
+
+        messageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                messageUserPage(frame);
+            }
+        });
+
+        checkMessageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                receiveMessagePage(frame);
+            }
+        });
+
+        frame.getContentPane().add(panel);
+        panel.setVisible(true);
+        frame.setVisible(true);
+    }
+
+    private void searchUserPage(JFrame frame) {
 
     }
 
-    private void showLoginPage(JFrame frame) {
+    private void buyItemPage(JFrame frame) {
+
+    }
+
+    private void listItemPage(JFrame frame) {
+
+    }
+
+    private void messageUserPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JLabel messageLabel = new JLabel("Message: ");
+        messageLabel.setBounds(100, 120, 500, 200);
+        messageLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(messageLabel);
+
+        JTextField messageField = new JTextField();
+        messageField.setBounds(100, 250, 300, 45);
+        panel.add(messageField);
+
+        JButton sendButton = new JButton("Send Message");
+        sendButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        sendButton.setBounds(300, 400, 200, 40);
+        panel.add(sendButton);
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String message = messageField.getText();
+                Database database = new Database();
+
+                if (message.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                if (database.userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "Message Sent", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String error = String.format("User %s doesn't exist", username);
+                    JOptionPane.showMessageDialog(frame, error, null, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+
+    }
+
+    private void receiveMessagePage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JButton checkMessagesButton = new JButton("Check Messages");
+        checkMessagesButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        checkMessagesButton.setBounds(300, 400, 200, 40);
+        panel.add(checkMessagesButton);
+
+        checkMessagesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+
+                Database database = new Database();
+                Messaging messaging = new Messaging(user);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    private void balancePage(JFrame frame) {
+
+    }
+
+    private void deletePage(JFrame frame) {
 
     }
 
@@ -62,7 +416,10 @@ public class Client extends Database implements Runnable, ClientInterface {
             e.printStackTrace();
         }
 
-        User user = introMenu();
+        JFrame frame = new JFrame("Marketplace");
+        welcomePage(frame);
+
+        user = introMenu();
         try {
             oos.writeObject(user);
             oos.flush();
