@@ -410,9 +410,10 @@ public class Client extends Database implements Runnable, ClientInterface {
         panel.setSize(800, 600);
 
         JLabel usernameLabel = new JLabel("Username: ");
-        usernameLabel.setBounds(100, 50, 120, 30);
+        usernameLabel.setBounds(80, 50, 120, 30);
         usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
@@ -423,6 +424,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         messageLabel.setBounds(100, 100, 100, 30);
         messageLabel.setForeground(Color.WHITE);
         messageLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        messageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(messageLabel);
 
         JTextArea messageArea = new JTextArea();
