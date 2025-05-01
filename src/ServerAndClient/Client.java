@@ -301,6 +301,18 @@ public class Client extends Database implements Runnable, ClientInterface {
             }
         });
 
+        buyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buyItemPage(frame);
+            }
+        });
+
+        listButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                listItemPage(frame);
+            }
+        });
+
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 welcomePage(frame);
@@ -404,6 +416,61 @@ public class Client extends Database implements Runnable, ClientInterface {
     }
 
     private void listItemPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel itemNameLabel = new JLabel("Enter Item Name: ");
+        itemNameLabel.setBounds(100, 150, 250, 30);
+        itemNameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(itemNameLabel);
+
+        JTextField itemNameField = new JTextField();
+        itemNameField.setBounds(370, 150, 300, 30);
+        panel.add(itemNameField);
+
+        JLabel priceLabel = new JLabel("Enter Item Price: ");
+        priceLabel.setBounds(100, 210, 250, 30);
+        priceLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(priceLabel);
+
+        JTextField priceField = new JPasswordField();
+        priceField.setBounds(370, 210, 300, 30);
+        panel.add(priceField);
+
+        JButton listItemButton = new JButton("List Item");
+        listItemButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        listItemButton.setBounds(230, 300, 150, 40);
+        panel.add(listItemButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        backButton.setBounds(410, 300, 150, 40);
+        panel.add(backButton);
+
+        listItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
 
     }
 

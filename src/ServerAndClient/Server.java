@@ -1,4 +1,5 @@
 package ServerAndClient;
+
 import Database.Database;
 import Marketplace.Item;
 import user.User;
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 
 /**
  * This is the server class where we establish where the user needs to go
- *
- *
+ * <p>
+ * <p>
  * Phase 2
+ *
  * @version April 19, 2025
  */
 
@@ -144,8 +146,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                                 oos.writeObject("Failed to delete account");
                                 oos.flush();
                             }
-                        }
-                        else {
+                        } else {
                             message = "Incorrect password";
                             oos.writeObject(message);
                         }
