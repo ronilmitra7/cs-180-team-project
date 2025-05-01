@@ -328,11 +328,10 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
 
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout());
-        searchPanel.setBackground(new Color(0, 72, 255, 255));
-        searchPanel.setSize(800, 45);
-        content.add(searchPanel, BorderLayout.NORTH);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
 
         JTextField searchField = new JTextField("Search a User...");
         searchField.setBounds(0, 0, 500, 45);
