@@ -314,6 +314,8 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.getContentPane().add(panel);
         panel.setVisible(true);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void searchUserPage(JFrame frame) {
@@ -351,6 +353,8 @@ public class Client extends Database implements Runnable, ClientInterface {
         content.add(searchButton, BorderLayout.SOUTH);
         frame.add(content);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
 
     }
 
@@ -393,6 +397,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JTextArea messageArea = new JTextArea();
         messageArea.setLineWrap(true);
         messageArea.setWrapStyleWord(true);
+
         JScrollPane scrollPane = new JScrollPane(messageArea);
         scrollPane.setBounds(200, 100, 480, 250);
         panel.add(scrollPane);
@@ -437,6 +442,8 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         frame.add(panel);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
 
     }
 
@@ -448,35 +455,65 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        panel.setLayout(null);
         panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
 
         JLabel usernameLabel = new JLabel("Username: ");
-        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setBounds(70, 50, 120, 30);
+        usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
-        usernameField.setBounds(100, 250, 300, 45);
+        usernameField.setBounds(200, 50, 400, 30);
         panel.add(usernameField);
 
-        JButton checkMessagesButton = new JButton("Check Messages");
+        JButton checkMessagesButton = new JButton("Check");
         checkMessagesButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
-        checkMessagesButton.setBounds(300, 400, 200, 40);
+        checkMessagesButton.setBounds(320, 100, 160, 35);
         panel.add(checkMessagesButton);
+
+        JTextArea messageArea = new JTextArea();
+        messageArea.setEditable(false);
+        messageArea.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        messageArea.setLineWrap(true);
+        messageArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        scrollPane.setBounds(200, 150, 400, 250);
+        panel.add(scrollPane);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        backButton.setBounds(320, 420, 160, 35);
+        panel.add(backButton);
 
         checkMessagesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-
                 Database database = new Database();
                 Messaging messaging = new Messaging(user);
+
+                if (!database.userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "User not found", null, JOptionPane.ERROR_MESSAGE);
+                } else {
+                    ArrayList<String> messages = messaging.receiveMessage(username);
+                    if (messages.isEmpty()) {
+                        messageArea.setText("No messages found");
+                    } else {
+                        for (String message : messages) {
+                            messageArea.append(message);
+                        }
+                    }
+                }
             }
         });
 
         frame.add(panel);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void balancePage(JFrame frame) {

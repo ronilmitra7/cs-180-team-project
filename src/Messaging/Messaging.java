@@ -41,20 +41,20 @@ public class Messaging implements MessagingInterface {
         }
     }
 
-    public String receiveMessage(String username) {
+    public ArrayList<String> receiveMessage(String username) {
         ArrayList<String> messages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[2].equals(username)) {
-                    messages.add(parts[0]);
+                    messages.add(String.format("From %s: %s%n", parts[2], parts[0]));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "Message not found";
+        return messages;
     }
 }

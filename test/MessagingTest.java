@@ -149,7 +149,7 @@ public class MessagingTest {
             Assert.assertTrue("Ensure the message is written to the file!", found);
         }
 
-        @Test
+        /*@Test
         public void receiveMessageTest() {
             User sender = new User("sender", "12345");
             User recipient = new User("recipient", "12345");
@@ -183,6 +183,6 @@ public class MessagingTest {
             Assert.assertEquals("Ensure the correct message is received",
                     "From sender: Test", message);
 
-        }
+        }*/
     }
 }

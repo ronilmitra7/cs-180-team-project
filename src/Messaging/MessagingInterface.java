@@ -15,5 +15,5 @@ import java.util.ArrayList;
 
 public interface MessagingInterface {
     void sendMessage(String message, String recipient);
-    String receiveMessage(String username);
+    ArrayList<String> receiveMessage(String username);
 }

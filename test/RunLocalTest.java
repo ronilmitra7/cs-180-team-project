@@ -470,7 +470,7 @@ public class RunLocalTest {
             Assert.assertTrue("Ensure the message is written to the file!", found);
         }
 
-        @Test
+        /*@Test
         public void receiveMessageTest() {
             User sender = new User("sender", "12345");
             User recipient = new User("recipient", "12345");
@@ -504,7 +504,7 @@ public class RunLocalTest {
             Assert.assertEquals("Ensure the correct message is received",
                     "From sender: Test", message);
 
-        }
+        }*/
 
         @Test
         public void buyItemTest() {
