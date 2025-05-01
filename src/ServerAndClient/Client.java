@@ -285,6 +285,36 @@ public class Client extends Database implements Runnable, ClientInterface {
     }
 
     private void searchUserPage(JFrame frame) {
+        Container content = frame.getContentPane();
+        content.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BorderLayout());
+        searchPanel.setBackground(new Color(0, 72, 255, 255));
+        searchPanel.setSize(800, 45);
+        content.add(searchPanel, BorderLayout.NORTH);
+
+        JTextField searchField = new JTextField("Search a User");
+        searchField.setBounds(0, 0, 300, 45);
+        searchPanel.add(searchField);
+
+        JTextPane displaySearches = new JTextPane();
+        displaySearches.setSize(800, 555);
+        content.add(displaySearches, BorderLayout.CENTER);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(300, 45, 300, 45);
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String searchTerm = searchField.getText();
+                displaySearches.setText("");
+                //Todo: do smth with searchTerm ^
+            }
+        });
 
     }
 
