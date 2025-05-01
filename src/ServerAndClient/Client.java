@@ -367,8 +367,18 @@ public class Client extends Database implements Runnable, ClientInterface {
             }
         });
 
-        content.add(searchButton, BorderLayout.SOUTH);
-        frame.add(content);
+        searchPanel.add(searchButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(410, 300, 150, 40);
+        content.add(backButton, BorderLayout.SOUTH);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
+            }
+        });
+
         frame.setVisible(true);
 
     }
