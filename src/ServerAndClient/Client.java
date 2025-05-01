@@ -335,7 +335,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         searchPanel.add(searchField);
 
         JTextPane displaySearches = new JTextPane();
-        displaySearches.setSize(800, 555);
+        displaySearches.setSize(800, 400);
         content.add(displaySearches, BorderLayout.CENTER);
 
         JButton searchButton = new JButton("Search");
