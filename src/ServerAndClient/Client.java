@@ -447,13 +447,16 @@ public class Client extends Database implements Runnable, ClientInterface {
                 String username = usernameField.getText();
                 String message = messageArea.getText();
                 Database database = new Database();
+                Messaging messaging = new Messaging(user);
 
                 if (message.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
                             JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 if (database.userExists(username)) {
+                    messaging.sendMessage(message, username);
                     JOptionPane.showMessageDialog(frame, "Message Sent", null,
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
