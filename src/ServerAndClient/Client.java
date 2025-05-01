@@ -60,14 +60,10 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         JButton loginButton = new JButton("Log in");
         loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(loginButton);
 
         JButton signupButton = new JButton("Sign up");
         signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        signupButton.setForeground(Color.WHITE);
-        signupButton.setBackground(new Color(0, 72, 255, 255));
         menuBar.add(signupButton);
 
         signupButton.addActionListener(new ActionListener() {
