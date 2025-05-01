@@ -388,7 +388,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                 } else {
                     response = "User not found";
                 }
-                displaySearches.setText(response);
+                searchResult.setText(response);
             }
         });
 
