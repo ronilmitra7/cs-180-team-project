@@ -279,6 +279,12 @@ public class Client extends Database implements Runnable, ClientInterface {
             }
         });
 
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                searchUserPage(frame);
+            }
+        });
+
         frame.getContentPane().add(panel);
         panel.setVisible(true);
         frame.setVisible(true);
