@@ -2,13 +2,14 @@
 
 ### Instructions
 
-You can compile each class using the terminal and you can run the local test cases to test the functionality of each class. For the Server and Client, run Server.java first and then run Client.java and then complete the intro panel, where you either log in or sign up. After that, it will give you choices and you can test the different operations on the menu. After running the Server and Client successfully, server console should print whether the user's action is successful or not.
+You can compile each class using the terminal and you can run the local test cases to test the functionality of each class. For the Server and Client, run Server.java first and then run Client.java. This will open up a welcome page, where you can either log in or sign up. Once you successfully log in or sign up, it will redirect you to a menu page, where you can do actions like search for a user, buy or list an item, message a user, receive a message from another user, check your balance, or delete your account. 
 
 ### Submissions
 Phase 1 submitted by Ronil Mitra
 
 Phase 2 submitted by Ronil Mitra
 
+Phase 3 submitted by Ronil Mitra
 
 
 ### Class Descriptions
@@ -37,7 +38,7 @@ Phase 2 submitted by Ronil Mitra
 
 - **ServerInterface.java**: this interface creates the run method implemented in Server.java. 
 
-- **Client.java**: this class implements Runnable and connects to a server over a network and allows the user to perform many different actions, including searching for users, buying/listing items, messaging, viewing your balance, and deleting your account. There are no constructors in this class, and there are two methods, the run method and the main method, both of which return nothing. The run method prompts the user with a many of various different actions, and establishes a Socket to connect to localhost at port 4242. It reads the user's choice and sends the request to the server. All the menu logic is inside a loop so that the user can perform multiple operations unless they choose to exit. The main method creates a Client object and runs the client logic using the start() method. 
+- **Client.java**: this class implements Runnable and connects to a server over a network and allows the user to perform many different actions, including searching for users, buying/listing items, messaging, viewing your balance, and deleting your account. There are no constructors in this class, and there are two methods, the run method and the main method, both of which return nothing. The run method prompts the user with a many of various different actions, and establishes a Socket to connect to localhost at port 4242. It reads the user's choice and sends the request to the server. All the menu logic is inside a loop so that the user can perform multiple operations unless they choose to exit. The main method creates a Client object and runs the client logic using the start() method. All the GUIs are in the Client class, so once you run this class (after running Server), you will see the app show up. 
 
 - **ClientInterface.java**: this interface creates the run method implemented in Client.java.
 
