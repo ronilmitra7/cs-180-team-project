@@ -523,7 +523,11 @@ public class Client extends Database implements Runnable, ClientInterface {
                     list = (ArrayList<String>) ois.readObject();
                     originalBalance = (Double) ois.readObject();
 
-                    if (list.isEmpty()) {
+                    boolean isEmpty = list.isEmpty();
+                    oos.writeObject(isEmpty);
+                    oos.flush();
+
+                    if (isEmpty) {
                         JOptionPane.showMessageDialog(frame, "No items found", null, JOptionPane.ERROR_MESSAGE);
                         return;
                     }

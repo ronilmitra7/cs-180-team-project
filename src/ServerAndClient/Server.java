@@ -99,6 +99,12 @@ public class Server extends Database implements Runnable, ServerInterface {
                         oos.writeObject(originalBalance);
                         oos.flush();
 
+                        boolean isEmpty = (Boolean) ois.readObject();
+
+                        if (isEmpty) {
+                            break;
+                        }
+
                         int itemPurchasedIndex = (Integer) ois.readObject();
                         String itemPurchased = itemList.get(itemPurchasedIndex);
                         String[] parts = itemPurchased.split(",");

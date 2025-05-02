@@ -1,4 +1,1 @@
 item-1,item,10.00,ronil
-ccb4defc-4b07-46c3-8c40-f9d005b34607,item,20.00,ronil
-aa6b16e2-a478-4528-91c4-293f1b6abbaa,vinicius,0.10,ronilmit
-d196f43f-3fbf-4535-aed0-770072e367e8,rudiger,0.00,ronil
