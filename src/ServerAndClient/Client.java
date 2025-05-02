@@ -62,10 +62,16 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         JButton loginButton = new JButton("Log in");
         loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBackground(new Color(0, 72, 255, 255));
+
         menuBar.add(loginButton);
 
         JButton signupButton = new JButton("Sign up");
         signupButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        signupButton.setForeground(Color.WHITE);
+        signupButton.setBackground(new Color(0, 72, 255, 255));
+
         menuBar.add(signupButton);
 
         signupButton.addActionListener(new ActionListener() {
@@ -131,6 +137,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         passwordLabel.setBounds(100, 280, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
         passwordLabel.setForeground(Color.WHITE);
+
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
@@ -175,11 +182,13 @@ public class Client extends Database implements Runnable, ClientInterface {
                     user = new User(name, email, username, password);
                     database.signUp(user);
 
+
                     try {
                         oos.writeObject(user);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+
 
                     menuPage(frame);
                 }
@@ -210,7 +219,9 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel usernameLabel = new JLabel("Enter your username");
         usernameLabel.setBounds(100, 150, 250, 30);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+
         usernameLabel.setForeground(Color.WHITE);
+
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
@@ -220,7 +231,9 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel passwordLabel = new JLabel("Enter your password");
         passwordLabel.setBounds(100, 210, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+
         passwordLabel.setForeground(Color.WHITE);
+
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
@@ -246,11 +259,13 @@ public class Client extends Database implements Runnable, ClientInterface {
                 user = new User(username, password);
 
                 if (database.logIn(user)) {
+
                     try {
                         oos.writeObject(user);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+
 
                     menuPage(frame);
                 } else {
@@ -290,6 +305,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         grid.setBackground(new Color(0, 72, 255));
         grid.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
+
         JButton searchButton = new JButton("Search User");
         JButton buyButton = new JButton("Buy Item");
         JButton listButton = new JButton("List Item");
@@ -297,6 +313,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JButton checkMessageButton = new JButton("Check Messages");
         JButton balanceButton = new JButton("Check Balance");
         JButton deleteButton = new JButton("Delete your Account");
+
         JButton logoutButton = new JButton("Log Out");
 
         grid.add(searchButton);
@@ -325,6 +342,7 @@ public class Client extends Database implements Runnable, ClientInterface {
                 searchUserPage(frame);
             }
         });
+
 
         buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -370,10 +388,12 @@ public class Client extends Database implements Runnable, ClientInterface {
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
 
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
+
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -453,7 +473,146 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.revalidate();
         frame.repaint();
 
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BorderLayout());
+        searchPanel.setBackground(new Color(0, 72, 255, 255));
+        searchPanel.setSize(800, 45);
+        content.add(searchPanel, BorderLayout.NORTH);
+
+        JTextField searchField = new JTextField("Search a User");
+        searchField.setBounds(0, 0, 300, 45);
+        searchPanel.add(searchField);
+
+        JTextPane displaySearches = new JTextPane();
+        displaySearches.setSize(800, 555);
+        content.add(displaySearches, BorderLayout.CENTER);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(300, 45, 300, 45);
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String searchTerm = searchField.getText();
+                displaySearches.setText("");
+                //Todo: do smth with searchTerm ^
+            }
+        });
+
+        content.add(searchButton, BorderLayout.SOUTH);
+        frame.add(content);
+        frame.setVisible(true);
+
     }
+
+    private void buyItemPage(JFrame frame) {
+
+    }
+
+    private void listItemPage(JFrame frame) {
+
+    }
+
+    private void messageUserPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JLabel messageLabel = new JLabel("Message: ");
+        messageLabel.setBounds(100, 120, 500, 200);
+        messageLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(messageLabel);
+
+        JTextField messageField = new JTextField();
+        messageField.setBounds(100, 250, 300, 45);
+        panel.add(messageField);
+
+        JButton sendButton = new JButton("Send Message");
+        sendButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        sendButton.setBounds(300, 400, 200, 40);
+        panel.add(sendButton);
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String message = messageField.getText();
+                Database database = new Database();
+
+                if (message.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "You can't send an empty message", null,
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                if (database.userExists(username)) {
+                    JOptionPane.showMessageDialog(frame, "Message Sent", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String error = String.format("User %s doesn't exist", username);
+                    JOptionPane.showMessageDialog(frame, error, null, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+
+    }
+
+    private void receiveMessagePage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setBounds(100, 100, 500, 50);
+        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        panel.add(usernameLabel);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(100, 250, 300, 45);
+        panel.add(usernameField);
+
+        JButton checkMessagesButton = new JButton("Check Messages");
+        checkMessagesButton.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        checkMessagesButton.setBounds(300, 400, 200, 40);
+        panel.add(checkMessagesButton);
+
+        checkMessagesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+
+                Database database = new Database();
+                Messaging messaging = new Messaging(user);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
 
     private void buyItemPage(JFrame frame) {
         frame.getContentPane().removeAll();
@@ -609,6 +768,7 @@ public class Client extends Database implements Runnable, ClientInterface {
 
     private void listItemPage(JFrame frame) {
         frame.getContentPane().removeAll();
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
@@ -888,6 +1048,10 @@ public class Client extends Database implements Runnable, ClientInterface {
 
     private void deletePage(JFrame frame) {
 
+
+        content.add(deleteButton, BorderLayout.SOUTH);
+        frame.add(content);
+        frame.setVisible(true);
     }
 
     public void run() {
