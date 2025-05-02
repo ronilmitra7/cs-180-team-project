@@ -113,15 +113,83 @@ public class UserTest {
         @Test
         public void getBalanceTest() {
             User user = new User("name", "email", "username", "12345");
+
+            ArrayList<String> contents = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader("userBalanceDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userBalanceDatabase.txt"))) {
+                writer.println("username,500.0");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            double balance = user.getBalance();
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userBalanceDatabase.txt"))) {
+                for (String line : contents) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
             Assert.assertEquals("Ensure getBalance() returns the correct result!",
-                    500.0, user.getBalance(), 0.001);
+                    500.0, balance, 0.001);
         }
 
         @Test
         public void setBalanceTest() {
             User user = new User("name", "email", "username", "12345");
+
+            ArrayList<String> contents = new ArrayList<>();
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userBalanceDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    contents.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
             user.setBalance(100.0);
-            Assert.assertEquals("Ensure setBalance() sets the balance correctly!", 100.0, user.getBalance(), 0.001);
+            double balance = 0.0;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader("userBalanceDatabase.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts[0].equals(user.getUsername())) {
+                        balance = Double.parseDouble(parts[1]);
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter("userBalanceDatabase.txt"))) {
+                for (String content : contents) {
+                    writer.println(content);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail("An IOException occurred");
+            }
+            Assert.assertEquals("Ensure setBalance() sets the balance correctly!", 100.0, balance, 0.001);
         }
 
         @Test

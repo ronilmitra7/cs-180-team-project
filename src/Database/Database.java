@@ -140,11 +140,13 @@ public class Database implements DatabaseInterface {
             }
             if (!found) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("userProfileDatabase.txt",
-                        true))) {
+                        true));
+                PrintWriter pw = new PrintWriter(new FileWriter("userBalanceDatabase.txt", true))) {
                     if (User.isValid(user)) {
                         writer.write(user.toString());
                         writer.newLine();
                         System.out.println("Account successfully created!");
+                        pw.printf("%s,%f\n", user.getUsername(), 500.0);
                         return true;
                     } else {
                         System.out.println("Account unable to be created.");

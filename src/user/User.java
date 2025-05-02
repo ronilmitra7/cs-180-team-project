@@ -2,7 +2,7 @@ package user;
 
 import Marketplace.Item;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ public class User implements UserInterface, Serializable {
     private String email;
     private String name;
     private String password;
-    private double balance = 500;
+    private double balance = 500.0;
 
     public User(String name, String email, String username, String password) {
         this.name = name;
@@ -74,11 +74,55 @@ public class User implements UserInterface, Serializable {
     }
 
     public double getBalance() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("userBalanceDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(username)) {
+                    balance = Double.parseDouble(parts[1]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return balance;
     }
 
     public void setBalance(double balance) {
         this.balance = balance;
+
+        ArrayList<String> contents = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("userBalanceDatabase.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                contents.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        boolean found = false;
+        for (int i = 0; i < contents.size(); i++) {
+            String[] parts = contents.get(i).split(",");
+            if (parts[0].equals(username)) {
+                contents.set(i, String.format("%s,%.2f", username, this.balance));
+                found = true;
+            }
+        }
+
+        if (!found) {
+            contents.add(String.format("%s,%.2f", username, this.balance));
+        }
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("userBalanceDatabase.txt"))) {
+            for (String line : contents) {
+                writer.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean isValid(User user) {
