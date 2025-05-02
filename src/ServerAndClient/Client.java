@@ -27,6 +27,8 @@ public class Client extends Database implements Runnable, ClientInterface {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private User user;
+    private ArrayList<String> list;
+    private double originalBalance = 0.0;
 
     private void welcomePage(JFrame frame) {
         frame.getContentPane().removeAll();
@@ -98,6 +100,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel nameLabel = new JLabel("Enter your full name");
         nameLabel.setBounds(100, 100, 250, 30);
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        nameLabel.setForeground(Color.WHITE);
         panel.add(nameLabel);
 
         JTextField nameField = new JTextField();
@@ -107,6 +110,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel emailLabel = new JLabel("Enter your email");
         emailLabel.setBounds(100, 160, 300, 30);
         emailLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        emailLabel.setForeground(Color.WHITE);
         panel.add(emailLabel);
 
         JTextField emailField = new JTextField();
@@ -116,6 +120,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel usernameLabel = new JLabel("Enter your username");
         usernameLabel.setBounds(100, 220, 250, 30);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        usernameLabel.setForeground(Color.WHITE);
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
@@ -125,6 +130,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel passwordLabel = new JLabel("Enter your password");
         passwordLabel.setBounds(100, 280, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        passwordLabel.setForeground(Color.WHITE);
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
@@ -204,6 +210,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel usernameLabel = new JLabel("Enter your username");
         usernameLabel.setBounds(100, 150, 250, 30);
         usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        usernameLabel.setForeground(Color.WHITE);
         panel.add(usernameLabel);
 
         JTextField usernameField = new JTextField();
@@ -213,6 +220,7 @@ public class Client extends Database implements Runnable, ClientInterface {
         JLabel passwordLabel = new JLabel("Enter your password");
         passwordLabel.setBounds(100, 210, 250, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        passwordLabel.setForeground(Color.WHITE);
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField();
@@ -423,6 +431,154 @@ public class Client extends Database implements Runnable, ClientInterface {
     }
 
     private void buyItemPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setBackground(new Color(0, 72, 255, 255));
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(0, 72, 255, 255));
+        panel.setSize(800, 600);
+
+        JLabel itemLabel = new JLabel("Enter item name: ");
+        itemLabel.setBounds(100, 30, 250, 30);
+        itemLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        itemLabel.setForeground(Color.WHITE);
+        panel.add(itemLabel);
+
+        JTextField itemField = new JTextField();
+        itemField.setBounds(100, 60, 300, 30);
+        panel.add(itemField);
+
+        JTextArea itemArea = new JTextArea();
+        itemArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        itemArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(itemArea);
+        scrollPane.setBounds(100, 110, 600, 180);
+        panel.add(scrollPane);
+
+        JLabel selectionLabel = new JLabel("Enter item number to buy: ");
+        selectionLabel.setBounds(100, 310, 250, 30);
+        selectionLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        selectionLabel.setForeground(Color.WHITE);
+        panel.add(selectionLabel);
+
+        JTextField selectionField = new JTextField();
+        selectionField.setBounds(100, 340, 80, 30);
+        panel.add(selectionField);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        searchButton.setBounds(420, 60, 120, 30);
+        panel.add(searchButton);
+
+        JButton buyButton = new JButton("Buy");
+        buyButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        buyButton.setBounds(100, 375, 80, 30);
+        panel.add(buyButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        backButton.setBounds(325, 420, 150, 40);
+        panel.add(backButton);
+
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = itemField.getText();
+
+                if (name == null || name.equals("")) {
+                    JOptionPane.showMessageDialog(frame, "Item name can't be empty", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    oos.writeObject("2");
+                    oos.flush();
+                    oos.writeObject(name);
+                    oos.flush();
+
+                    list = (ArrayList<String>) ois.readObject();
+                    originalBalance = (Double) ois.readObject();
+
+                    if (list.isEmpty()) {
+                        JOptionPane.showMessageDialog(frame, "No items found", null, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    String results = String.format("%-5s %-20s %-10s %-15s%n", "No.", "Item Name", "Price", "Seller");
+                    results += "-------------------------------------------------------------\n";
+
+                    for (int i = 0; i < list.size(); i++) {
+                        String[] parts = list.get(i).split(",");
+
+                        String itemName = parts[1];
+                        String price = parts[2];
+                        String seller = parts[3];
+
+                        results += String.format("%-5d %-20s %-10s %-15s%n", i + 1, itemName, price, seller);
+                    }
+
+                    itemArea.setText(results);
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        buyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selection;
+
+                try {
+                    selection = Integer.parseInt(selectionField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Invalid Selection", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (selection < 1 || selection > list.size()) {
+                    JOptionPane.showMessageDialog(frame, "Invalid Selection", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                selection--;
+
+                double newBalance;
+
+                try {
+                    oos.writeObject(selection);
+                    oos.flush();
+                    newBalance = (Double) ois.readObject();
+
+                    if (originalBalance == newBalance) {
+                        JOptionPane.showMessageDialog(frame, "You don't have enough money to buy this item",
+                                null, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                JOptionPane.showMessageDialog(frame, "Successfully purchased item", null, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
+            }
+        });
+
+        frame.add(panel);
+        frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
 
     }
 
