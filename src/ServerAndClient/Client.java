@@ -282,9 +282,13 @@ public class Client extends Database implements Runnable, ClientInterface {
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(0, 72, 255, 255));
         panel.setSize(800, 600);
+
+        JPanel grid = new JPanel(new GridLayout(4, 2, 10, 10));
+        grid.setBackground(new Color(0, 72, 255));
+        grid.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
         JButton searchButton = new JButton("Search User");
         JButton buyButton = new JButton("Buy Item");
@@ -295,14 +299,14 @@ public class Client extends Database implements Runnable, ClientInterface {
         JButton deleteButton = new JButton("Delete your Account");
         JButton logoutButton = new JButton("Log Out");
 
-        panel.add(searchButton);
-        panel.add(buyButton);
-        panel.add(listButton);
-        panel.add(messageButton);
-        panel.add(checkMessageButton);
-        panel.add(balanceButton);
-        panel.add(deleteButton);
-        panel.add(logoutButton);
+        grid.add(searchButton);
+        grid.add(buyButton);
+        grid.add(listButton);
+        grid.add(messageButton);
+        grid.add(checkMessageButton);
+        grid.add(balanceButton);
+        grid.add(deleteButton);
+        grid.add(logoutButton);
 
         messageButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -334,11 +338,25 @@ public class Client extends Database implements Runnable, ClientInterface {
             }
         });
 
+        balanceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                balancePage(frame);
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deletePage(frame);
+            }
+        });
+
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 welcomePage(frame);
             }
         });
+
+        panel.add(grid);
 
         frame.getContentPane().add(panel);
         panel.setVisible(true);
@@ -402,18 +420,25 @@ public class Client extends Database implements Runnable, ClientInterface {
             public void actionPerformed(ActionEvent e) {
                 String username = searchField.getText();
 
-                if (!userExists(username)) {
-                    JOptionPane.showMessageDialog(frame, "User not found", null, JOptionPane.ERROR_MESSAGE);
+                if (username.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Username can't be empty", null, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 try {
+                    System.out.println("Waiting");
                     oos.writeObject("1");
                     oos.flush();
+                    System.out.println("Sent");
+
+                    System.out.println("Waiting");
                     oos.writeObject(username);
                     oos.flush();
+                    System.out.println("Sent");
 
+                    System.out.println("Waiting");
                     String results = (String) ois.readObject();
+                    System.out.println("Received");
                     searchResult.setText(results);
 
                 } catch (IOException | ClassNotFoundException ex) {
