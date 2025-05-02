@@ -60,7 +60,14 @@ public class Server extends Database implements Runnable, ServerInterface {
                             } else {
                                 response += "This user is selling: \n";
                                 for (int i = 0; i < userItems.size(); i++) {
-                                    response += userItems.get(i) + "\n";
+                                    String itemRep = userItems.get(i);
+                                    int begin = itemRep.indexOf(",") + 1;
+                                    int end = itemRep.lastIndexOf(",");
+                                    itemRep = itemRep.substring(begin, end);
+                                    String item = itemRep.substring(0, itemRep.indexOf(",")) + ": ";
+                                    String price = "$" + itemRep.substring(itemRep.indexOf(",") + 1, itemRep.length());
+                                    itemRep = item + price;
+                                    response += itemRep + "\n";
                                 }
                             }
                         } else {
