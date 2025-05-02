@@ -152,9 +152,10 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                     case "7":
                         String password = (String) ois.readObject();
+                        User fullUser = (User) ois.readObject();
 
-                        if (user.getPassword().equals(password)) {
-                            boolean deleteSuccess = deleteUser(user);
+                        if (fullUser.getPassword().equals(password)) {
+                            boolean deleteSuccess = deleteUser(fullUser);
                             if (deleteSuccess) {
                                 response = "Account successfully deleted";
                                 oos.writeObject(response);
@@ -167,9 +168,9 @@ public class Server extends Database implements Runnable, ServerInterface {
                         } else {
                             message = "Incorrect password";
                             oos.writeObject(message);
+                            oos.flush();
                         }
 
-                        oos.flush();
                         break;
 
                     default:

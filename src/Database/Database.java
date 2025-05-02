@@ -172,10 +172,10 @@ public class Database implements DatabaseInterface {
 
             boolean found = false;
             for (int i = 0; i < users.size(); i++) {
-                if (user.toString().equals(users.get(i))) {
+                if (user.toString().equals(users.get(i).trim())) {
                     users.remove(i);
                     System.out.println("User deleted");
-                    found = true;
+                    return true;
                 }
             }
 

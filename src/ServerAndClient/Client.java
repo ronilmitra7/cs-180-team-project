@@ -916,6 +916,27 @@ public class Client extends Database implements Runnable, ClientInterface {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String password = String.valueOf(passwordField.getText());
+                User fullUser = searchUser(user.getUsername());
+
+                try {
+                    oos.writeObject("7");
+                    oos.flush();
+                    oos.writeObject(password);
+                    oos.flush();
+                    oos.writeObject(fullUser);
+                    oos.flush();
+
+                    String response = (String) ois.readObject();
+                    if (response.contains("Failed") || response.contains("Incorrect")) {
+                        JOptionPane.showMessageDialog(frame, response, null, JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, response, null, JOptionPane.INFORMATION_MESSAGE);
+                        welcomePage(frame);
+                    }
+
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
 
 
             }
