@@ -878,43 +878,56 @@ public class Client extends Database implements Runnable, ClientInterface {
     }
 
     private void deletePage(JFrame frame) {
-        Container content = frame.getContentPane();
-        content.setLayout(new BorderLayout());
+        frame.getContentPane().removeAll();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(new Color(0, 72, 255, 255));
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
 
         JPanel deletePanel = new JPanel();
-        deletePanel.setLayout(new BorderLayout());
+        deletePanel.setLayout(null);
         deletePanel.setBackground(new Color(0, 72, 255, 255));
-        deletePanel.setSize(800, 45);
-        content.add(deletePanel, BorderLayout.NORTH);
+        deletePanel.setSize(800, 600);
 
-        JTextField passwordField = new JTextField("Enter your password to confirm");
-        passwordField.setBounds(0, 0, 300, 45);
+        JLabel deleteLabel = new JLabel("You are about to delete your account.");
+        deleteLabel.setBounds(160, 100, 500, 30);
+        deleteLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        deleteLabel.setForeground(Color.WHITE);
+        deletePanel.add(deleteLabel);
+
+        JLabel confirmLabel = new JLabel("Please enter your password to confirm this: ");
+        confirmLabel.setBounds(160, 130, 500, 30);
+        confirmLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        confirmLabel.setForeground(Color.WHITE);
+        deletePanel.add(confirmLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(160, 180, 300, 30);
         deletePanel.add(passwordField);
 
-        JTextPane confirmationPane = new JTextPane();
-        confirmationPane.setSize(800, 555);
-        confirmationPane.setText("You are about to delete your account. Please enter your password above to confirm.");
-        content.add(confirmationPane, BorderLayout.CENTER);
-
         JButton deleteButton = new JButton("Delete Account");
-        deleteButton.setBounds(300, 45, 300, 45);
+        deleteButton.setBounds(400, 450, 160, 40);
+        deletePanel.add(deleteButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(180, 450, 160, 40);
+        deletePanel.add(backButton);
+
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String password = passwordField.getText();
-                if (password.isEmpty() || password.equals("Enter your password to confirm")) {
-                    confirmationPane.setText("ERROR: Please enter your password to confirm account deletion.");
-                } else {
-                    // Todo: verify password and delete user account
-                }
+                String password = String.valueOf(passwordField.getText());
+
+
             }
         });
 
-        content.add(deleteButton, BorderLayout.SOUTH);
-        frame.add(content);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuPage(frame);
+            }
+        });
+
+        frame.add(deletePanel);
         frame.setVisible(true);
         frame.revalidate();
         frame.repaint();
