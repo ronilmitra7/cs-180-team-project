@@ -32,7 +32,7 @@ public class Messaging implements MessagingInterface {
         } else {
 
             try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt", true))) {
-                writer.printf("%s,%s,%s%n", message, recipient, sender.getUsername());
+                writer.printf("%s,%s,%s\n", message, recipient, sender.getUsername());
                 System.out.printf("Message sent to %s%n", recipient);
 
             } catch (IOException e) {
@@ -41,19 +41,20 @@ public class Messaging implements MessagingInterface {
         }
     }
 
-    public String receiveMessage(String username) {
+    public ArrayList<String> receiveMessage(String username) {
+        ArrayList<String> messages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("messagesDatabase.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[2].equals(username)) {
-                    return String.format("From %s: %s", username, parts[0]);
+                    messages.add(String.format("From %s: %s", parts[2], parts[0]));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "Message not found";
+        return messages;
     }
 }

@@ -163,13 +163,17 @@ public class MessagingTest {
                     contents.add(line);
                 }
 
-                writer.printf("%s,%s,%s%n", "Test", recipient.getUsername(), sender.getUsername());
+                writer.printf("%s,%s,%s\n", "Test", recipient.getUsername(), sender.getUsername());
+                writer.printf("%s,%s,%s\n", "Test1", recipient.getUsername(), sender.getUsername());
+                writer.printf("%s,%s,%s\n", "Test2", recipient.getUsername(), sender.getUsername());
+                writer.printf("%s,%s,%s\n", "Test3", recipient.getUsername(), sender.getUsername());
+                writer.printf("%s,%s,%s\n", "Test4", recipient.getUsername(), sender.getUsername());
             } catch (IOException e) {
                 e.printStackTrace();
                 Assert.fail("An IOException occurred");
             }
 
-            String message = messaging.receiveMessage(sender.getUsername());
+            ArrayList<String> messages = messaging.receiveMessage(sender.getUsername());
 
             try (PrintWriter writer = new PrintWriter(new FileWriter("messagesDatabase.txt"))) {
                 for (String line : contents) {
@@ -180,8 +184,10 @@ public class MessagingTest {
                 Assert.fail("An IOException occurred");
             }
 
-            Assert.assertEquals("Ensure the correct message is received",
-                    "From sender: Test", message);
+            Assert.assertEquals("Ensure receiveMessage() returns an ArrayList of the correct length",
+                    5, messages.size());
+            Assert.assertTrue("Ensure receiveMessage() returns the correct result",
+                    messages.contains("From sender: Test"));
 
         }
     }

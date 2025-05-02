@@ -1,4 +1,5 @@
 package ServerAndClient;
+
 import Database.Database;
 import Marketplace.Item;
 import user.User;
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 
 /**
  * This is the server class where we establish where the user needs to go
- *
- *
+ * <p>
+ * <p>
  * Phase 2
+ *
  * @version April 19, 2025
  */
 
@@ -43,7 +45,9 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                 switch (choice) {
                     case "1":
+                        System.out.println("Waiting");
                         String searchedName = (String) ois.readObject();
+                        System.out.println("Received");
                         User searchedUser = database.searchUser(searchedName);
                         String response = "";
                         if (searchedUser != null) {
@@ -56,13 +60,22 @@ public class Server extends Database implements Runnable, ServerInterface {
                             } else {
                                 response += "This user is selling: \n";
                                 for (int i = 0; i < userItems.size(); i++) {
-                                    response += userItems.get(i) + "\n";
+                                    String itemRep = userItems.get(i);
+                                    int begin = itemRep.indexOf(",") + 1;
+                                    int end = itemRep.lastIndexOf(",");
+                                    itemRep = itemRep.substring(begin, end);
+                                    String item = itemRep.substring(0, itemRep.indexOf(",")) + ": ";
+                                    String price = "$" + itemRep.substring(itemRep.indexOf(",") + 1, itemRep.length());
+                                    itemRep = item + price;
+                                    response += itemRep + "\n";
                                 }
                             }
                         } else {
                             response = "User not found";
                         }
+                        System.out.println("Waiting");
                         oos.writeObject(response);
+                        System.out.println("Sent");
                         oos.flush();
                         break;
 
@@ -125,12 +138,20 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
 
                     case "5":
+                        username = (String) ois.readObject();
+
+                        ArrayList<String> messages = messaging.receiveMessage(username);
+                        oos.writeObject(messages);
+                        oos.flush();
+                        break;
+
+                    case "6":
                         double balance = user.getBalance();
                         oos.writeObject(balance);
                         oos.flush();
                         break;
 
-                    case "6":
+                    case "7":
                         String password = (String) ois.readObject();
 
                         if (user.getPassword().equals(password)) {
@@ -144,8 +165,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                                 oos.writeObject("Failed to delete account");
                                 oos.flush();
                             }
-                        }
-                        else {
+                        } else {
                             message = "Incorrect password";
                             oos.writeObject(message);
                         }
@@ -157,7 +177,7 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
                 }
 
-                String selection;
+                /*String selection;
 
                 try {
                     selection = (String) ois.readObject();
@@ -165,8 +185,8 @@ public class Server extends Database implements Runnable, ServerInterface {
                         break;
                     }
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                    e.printStackTrace();*
+                }*/
 
             } while (true);
 
