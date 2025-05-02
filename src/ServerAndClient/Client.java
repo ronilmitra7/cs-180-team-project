@@ -427,19 +427,13 @@ public class Client extends Database implements Runnable, ClientInterface {
                 }
 
                 try {
-                    System.out.println("Waiting");
                     oos.writeObject("1");
                     oos.flush();
-                    System.out.println("Sent");
 
-                    System.out.println("Waiting");
                     oos.writeObject(username);
                     oos.flush();
-                    System.out.println("Sent");
 
-                    System.out.println("Waiting");
                     String results = (String) ois.readObject();
-                    System.out.println("Received");
                     searchResult.setText(results);
 
                 } catch (IOException | ClassNotFoundException ex) {
@@ -922,6 +916,8 @@ public class Client extends Database implements Runnable, ClientInterface {
         content.add(deleteButton, BorderLayout.SOUTH);
         frame.add(content);
         frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void run() {

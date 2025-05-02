@@ -45,10 +45,9 @@ public class Server extends Database implements Runnable, ServerInterface {
 
                 switch (choice) {
                     case "1":
-                        System.out.println("Waiting");
                         String searchedName = (String) ois.readObject();
-                        System.out.println("Received");
                         User searchedUser = database.searchUser(searchedName);
+
                         String response = "";
                         if (searchedUser != null) {
                             String username = searchedUser.getUsername();
@@ -73,10 +72,10 @@ public class Server extends Database implements Runnable, ServerInterface {
                         } else {
                             response = "User not found";
                         }
-                        System.out.println("Waiting");
+
                         oos.writeObject(response);
-                        System.out.println("Sent");
                         oos.flush();
+
                         break;
 
                     case "2":
