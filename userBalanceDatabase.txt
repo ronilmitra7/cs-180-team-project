@@ -1,2 +1,2 @@
-ronilmit,490.00
-ronil,510.00
+ronilmit,280.00
+ronil,720.00

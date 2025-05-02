@@ -33,8 +33,9 @@ public class Marketplace implements MarketplaceInterface {
             try (BufferedReader reader = new BufferedReader(new FileReader("listedItemsDatabase.txt"));
                 PrintWriter writer = new PrintWriter(new FileWriter("soldItemsDatabase.txt", true))) {
                 String line;
+                boolean purchased = false;
+
                 while ((line = reader.readLine()) != null) {
-                    contents.add(line);
                     if (item.toString().equals(line)) {
                         String[] parts = line.split(",");
                         double price = Double.parseDouble(parts[2]);
@@ -42,21 +43,25 @@ public class Marketplace implements MarketplaceInterface {
 
                         if (user.getBalance() < price) {
                             System.out.println("You do not have enough money to buy this item");
+                            contents.add(line);
                         } else {
                             user.setBalance(user.getBalance() - price);
-                            contents.remove(contents.size() - 1);
                             seller.setBalance(seller.getBalance() + price);
-
-                            PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"));
-                            for (String content : contents) {
-                                pw.println(content);
-                            }
-                            pw.close();
+                            purchased = true;
                         }
+                    } else {
+                        contents.add(line);
                     }
                 }
 
-                writer.println(item.toString());
+                if (purchased) {
+                    try (PrintWriter pw = new PrintWriter(new FileWriter("listedItemsDatabase.txt"))) {
+                        for (String content : contents) {
+                            pw.println(content);
+                        }
+                    }
+                    writer.println(item.toString());
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
