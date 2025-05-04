@@ -36,11 +36,16 @@ public class Server extends Database implements Runnable, ServerInterface {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
 
-            User user = (User) ois.readObject();
+            User user = null;
             Database database = new Database();
-            Messaging messaging = new Messaging(user);
 
             do {
+                if (user == null) {
+                    user = (User) ois.readObject();
+                }
+
+                Messaging messaging = new Messaging(user);
+
                 String choice = (String) ois.readObject();
 
                 switch (choice) {
@@ -177,6 +182,10 @@ public class Server extends Database implements Runnable, ServerInterface {
                             oos.flush();
                         }
 
+                        break;
+
+                    case "8":
+                        user = null;
                         break;
 
                     default:

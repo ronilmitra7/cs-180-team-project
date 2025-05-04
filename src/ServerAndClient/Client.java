@@ -353,6 +353,14 @@ public class Client extends Database implements Runnable, ClientInterface {
 
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                try {
+                    oos.writeObject("8");
+                    oos.flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                user = null;
                 welcomePage(frame);
             }
         });
@@ -973,12 +981,6 @@ public class Client extends Database implements Runnable, ClientInterface {
         welcomePage(frame);
 
         user = introMenu();
-        try {
-            oos.writeObject(user);
-            oos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         do {
             System.out.println("What would you like to do?");
